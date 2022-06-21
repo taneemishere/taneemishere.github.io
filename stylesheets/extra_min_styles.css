@@ -32,7 +32,7 @@ body
 {
   width:260px;
   margin-top:-16px;
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
   list-style-type: none;
   white-space: nowrap;
@@ -40,9 +40,9 @@ body
 
 .navbar_li.navbar_li
 {
-  /*display: inline;*/
+  /* display: inline; */
   margin-bottom: 7px; /* Adds space between each nav item */
-  /*font-weight: lighter;*/
+  /* font-weight: lighter; */
   margin-right:36px;
 }
 
@@ -50,7 +50,7 @@ body
 .navbar_li a:focus
 {
   border-bottom-style: solid;
-  border-top-style: solid;
+  /* border-top-style: solid; */
   border-width: 1px;
   color: #f88c99;
 }
