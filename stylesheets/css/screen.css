@@ -68,7 +68,8 @@ p.date {
 }
 
 body {
-  border-top:5px solid #42B6F3;
+  /* border-top:5px solid #42B6F3; */
+  border-top: 5px;
   padding:50px 0;
 }
 
