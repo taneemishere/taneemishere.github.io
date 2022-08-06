@@ -136,7 +136,7 @@
                     </div>
 
                     <div class="container">
-                        <p><img src="./My-FYP-Work.png" alt="HTML5 Icon"
+                        <p><img src="./backend-architecture.png" alt="HTML5 Icon"
                                 style="float:left;margin-right:2em;margin-bottom:2em;"></p>
                     </div>
                 </div>
@@ -148,30 +148,37 @@
                 <h2>Abstract</h2>
             </div>
             <p>
-                Writing HTML code for web pages is a repetitive and time-consuming task for developers to design the
-                structure of a website, they must write the code for each HTML element and different pages of the same
-                structures in websites. A normal person is unable to design the structure of a website because of lack
-                of experience of writing the HTML code. Stakeholders must repeatedly meet the development team for
-                changes of features in website structures to fulfill their organizational needs. To overcome these
-                issues, we will develop an AI based system that will allow developers to get HTML code from both, hand
-                drawn, and computer designed images. This automated system will reduce the development time and omit the
-                repetitive tasks of writing the same HTML code for different web pages. This automated system will also
-                allow a non-technical person to design website structures by providing the images to the system. The
-                stakeholder will not need to meet the development team repeatedly for changes in website structures,
-                they will hand over their organizational needs in the form of hand drawn images to developers and they
-                will generate the HTML code directly from those hand drawn images.
+                Writing code in a programming language for a designed mockup or a graphical user interface created by
+                designers and UI engineers, is done mostly by developers to build and develop custom websites and
+                software. The development work is not approachable by those unfamiliar with programming, to drive these
+                personas capable of designing and developing the code bases and website structures we come up with an
+                automated system. In this work, we showed and proposed that methods of deep learning and computer vision
+                can be grasped to train a model that will automatically generate HTML code from a single input mockup
+                image and try to build an end-to-end automated system with around 85% of accuracy for developing the
+                structures of a web pages.
             </p>
 
-            <div align="center">
-                <h2>The Architecture</h2>
+            <div>
+                <h2 align="center">The Architecture</h2>
+                <h3></h3>
+                <p>While training, the AI model receives the images which are passed to the autoencoders and it is
+                    the first part of the whole model where it is pretrained on the images before the model learns about
+                    the code. The autoencoder learns the inner features and recreate the images but with lower dimension
+                    and transformed space representation. The second part of our model receives the input code for a
+                    mockup image in the form of an intermediate representation of actual code which is less intensive to
+                    the model in learning, feature mapping and helps in controlling the overfitting problems which are
+                    then represented into embeddings, created by a sequential network. The learned parameters
+                    from autoencoder and the sequence network are concatenated in the middle layer which is then passed
+                    to a recurrent network that learn the parameters and mappings in between the image and the code.
+                    Apart from the autoencoder network, the rest of the model is what we called the main model. </p>
             </div>
 
-            
+
     </div>
 
     <div align="center">
         <p class="date">
-            Last updated July 13, 2022
+            Last updated August 06, 2022
         </p>
         </article>
     </div>
