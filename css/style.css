@@ -2,11 +2,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap");
 body {
   background-color: #fff;
-  padding: 0px;
-  font: 16px/1.5 Crimson Pro, serif;
-  color: #595959;
+  padding: 0px, 0px, 0px, 0px;
+  padding-right: 4%;
+  /* padding-left: 10%; */
+  font: 15px/1.5 Crimson Pro, serif;
+  /* font: 8px; */
+  /* color: #595959; */
+  color: black;
   font-weight: 400;
   margin: 0;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
 .pub-row {
@@ -20,6 +25,7 @@ body {
   width: 2.4rem;
   background-color: transparent;
   color: #043361 !important;
+  /* color: #0637a9 !important; */
   border-radius: 100%;
   text-align: center;
   font-size: 1.15rem;
@@ -29,7 +35,8 @@ body {
 
 @media (prefers-color-scheme: dark) {
   .social-icons a {
-    color: #3eb7f0 !important;
+    /* color: #3eb7f0 !important; */
+    color: blue;
   }
 }
 .social-icons a:last-child {
@@ -291,12 +298,14 @@ h1 {
 }
 
 a {
-  color: #39c;
+  /* color: #39c; */
+  color: blue;
   text-decoration: none;
 }
 
 a:hover {
-  color: #069;
+  /* color: #069; */
+  text-decoration: underline;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -327,12 +336,12 @@ blockquote {
   font-style: italic;
 }
 
-code,
+/* code,
 pre {
   font-family: Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal,
     Consolas, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;
   color: #333;
-}
+} */
 
 pre {
   max-width: 500px;
