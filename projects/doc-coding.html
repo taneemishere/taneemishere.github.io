@@ -69,10 +69,42 @@
 
             <p style="font-size: 12px; text-align: center;">Developed on top of open source &copy; 
                 Taneem Jan 2019–2023</p>
+                <div class="visitor-counter" id="visitor-counter" style="font-size: 12px; margin-top: -20px; text-align: center;">
+                    visitor's count: <span id="visitor-count">0</span>
+                </div>
         </section>
 
     </div>
 
+    <script>
+        (function () {
+            const visitorCounter = document.getElementById('visitor-counter');
+            const visitorCount = document.getElementById('visitor-count');
+    
+            function updateVisitorCount(count) {
+                visitorCount.textContent = count;
+            }
+    
+            function getVisitorCount() {
+                let count = localStorage.getItem('visitor_count');
+                if (count === null) {
+                    count = 0;
+                } else {
+                    count = parseInt(count, 10);
+                }
+                return count;
+            }
+    
+            function incrementVisitorCount() {
+                let count = getVisitorCount();
+                count += 1;
+                localStorage.setItem('visitor_count', count);
+                updateVisitorCount(count);
+            }
+    
+            incrementVisitorCount();
+        })();
+    </script>
     <script src="js/scale.fix.js"></script>
 
     <script>
