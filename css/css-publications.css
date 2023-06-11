@@ -154,6 +154,9 @@ blockquote {
   .social-icons a {
     color: #043361 !important;
   }
+  .publications ol.bibliography li .teaser {
+    background: white !important;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -164,6 +167,9 @@ blockquote {
     padding-right: 0.5rem;
     padding-top: 0.1rem;
     padding-bottom: 0.1rem;
+  }
+  .publications ol.bibliography li .teaser {
+    background: #20212b !important;
   }
   .research {
     color: rgb(36, 150, 203) !important;
