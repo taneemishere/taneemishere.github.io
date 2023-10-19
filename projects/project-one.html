@@ -34,14 +34,15 @@
     <div class="wrapper" style="padding-left: 6%;">
         <section style="margin-top: 5%; margin-right: 2%; width: fit-content;">
 
-            <h1 style="text-align: center; font-size: 35px;">HMTL Code Generation from Images with Deep Neural Networks
+            <h1 style="text-align: center; font-size: 35px;">
+                <span style="color: red;">HTML</span> Code Generation from Images with Deep Neural Networks
             </h1>
 
             <!-- <p style="font-size: large; text-align: center;">Undergrad Research Thesis (University)</p> -->
 
             <div style="display: flex; justify-content: space-around;">
                 <strong style="margin: 0; font-size: large;">
-                    <a href="https://taneemishere.github.io">Taneem Ullah Jan <sup>*1</sup></a>
+                    <a href="https://taneemishere.github.io">Taneem Ullah Jan<sup>*1</sup></a>
                 </strong>
                 <strong style="margin: 0; font-size: large;">
                     <a
@@ -51,9 +52,10 @@
                 </strong>
             </div>
 
-            <p style="margin-top: 3%; text-align: center;"><sup>1</sup>
-                University of Engineering and Technology Peshawar, Pakistan 
-                <br> Undergrad Research Thesis <br>Approaved by JEAS 2022</p>
+            <p style="margin-top: 3%; text-align: center;"><sup>1</sup>University of Engineering and Technology
+                Peshawar, Pakistan
+                <br> Undergrad Research Thesis <br>Approaved by JEAS 2022
+            </p>
 
             <div style="display: flex; justify-content: space-between;">
                 <p><sup>*</sup>First Author</p>
@@ -62,19 +64,121 @@
 
 
 
-            <h2 style="text-align: center; margin-top: 7%;">Abstract</h2>
-            <p style="font-size: large; text-align: justify;">
+            <h2 style="text-align: center; margin-top: 4%;">Abstract</h2>
+            <!-- <p style="font-size: large; text-align: justify;"> -->
+            <p style="font-size: normal; text-align: justify;">
                 Writing code in a programming language for a designed mockup or a graphical
                 user interface created by designers and UI engineers, is done mostly by developers to build and develop
                 custom websites and software. The development work is not approachable by those unfamiliar with
                 programming, to drive these personas capable of designing and developing the code bases and website
-                structures we come up with an automated system. In this work, we showed and proposed that methods of
-                deep learning and computer vision can be grasped to train a model that will automatically generate HTML
-                code from a single input mockup image and try to build an end-to-end automated system with more accuracy
-                for developing the structures of a web pages, than previous systems.</p>
-            <br>
+                structures we come up with an automated system. In this work, we have proposed a model which will use
+                various techniques of deep learning and computer vision to generate HTML code from a single input
+                mock-up
+                image. In addition, we have tried to build an end-to-end automated system for developing web pages with
+                accuracy more than the previous methods. {The code is availlabe <a
+                    href="https://github.com/taneemishere/html-code-generation-from-images-with-deep-neural-networks">
+                    here</a>!}
+            </p>
 
-            <p style="font-size: 12px; text-align: center;">Developed on top of open source &copy; 
+            <p><span style="font-weight: bold; font-size: large">the problem!</span></p>
+            <p style="font-size: normal; text-align: justify;">
+                The essence of the issue lies in the repetitiveness and complexity of translating visual designs
+                into coded and functional web pages. Each component, from buttons to text boxes, must be individually
+                converted into
+                HTML elements, a process that becomes exponentially more challenging with the scale of the website.
+                Stakeholders, particularly those without a programming background, find themselves sidelined, unable to
+                contribute actively to the development phase. They are also bogged down by endless meetings discussing
+                small design changes, significantly slowing down the deployment process.</p>
+
+            <p><span style="font-weight: bold; font-size: large">innovating solutions through research!</span></p>
+            <p style="font-size: normal; text-align: justify;">
+                Recognizing these challenges, our work began with an extensive review of existing literature and
+                methodologies in this field. We analyzed various approaches and understanding their limitations in terms
+                of generalization, context learning, and handling complex design structures. These models, while
+                groundbreaking, faced issues with overfitting and were restricted by the sequential nature of their
+                architectures, limiting their efficiency and scalability. Our exploration didn't stop there; we also
+                delved into machine translation techniques, particularly in image captioning and description generation,
+                drawing parallels between translating visual content into human language and into structured code.</p>
+
+            <p><span style="font-weight: bold; font-size: large">the model architecture!</span></p>
+            <p style="font-size: normal; text-align: justify;">
+                At the core of our system is the AI model; of course, that is doing the actual work. The process begins
+                with
+                autoencoders, a specialized neural networks that compress images into a compact, essential
+                representation,
+                stripping away redundancies while preserving the core structure necessary for code generation.
+
+                But our model doesn't stop there. After the autoencoder, the inputs advances towards the 'main model,' a
+                sophisticated structure where the actual translation occurs. By integrating the insights from the
+                autoencoders with complex sequential and recurrent neural networks, the model maps out and understands
+                the correlation between visual elements and their corresponding code structures.
+                The beauty of this design lies in its attention to detail. While the autoencoders focus on images, the
+                main model also takes into account DSL (Domain-Specific Language), an intermediate coding language that
+                bridges the gap between graphic design and HTML code. This dual-input approach ensures a comprehensive
+                understanding of the task at hand, leading to remarkably accurate code generation.
+            </p>
+            <div style="display: flex; justify-content: space-evenly;">
+                <figure>
+                    <img src="../images/autoencoders.png" width="470" height="230" alt="autoencoder">
+                    <figcaption style="text-align: center; font-size: small; color: grey;">the autoencoder</figcaption>
+                </figure>
+
+                <figure>
+                    <img src="../images/main-model-architecture.png" width="400" height="270" alt="main model">
+                    <figcaption style="text-align: center; font-size: small; color: grey;">the main model</figcaption>
+                </figure>
+
+            </div>
+
+            <p><span style="font-weight: bold; font-size: large">the inference!</span></p>
+            <p style="font-size: normal; text-align: justify;">
+                The inference involves a unique intermediate step that plays a crucial role in the accuracy and
+                efficiency of code generation: the use of Domain Specific Language code.
+
+                When our model analyzes an input image, it doesn't immediately gives out HTML code. Instead, it crafts
+                what we refer to as 'intermediatory form' or DSL. This language, specific to the domain of web layouts,
+                represents various page elements in a simplified manner. For instance, instead of generating a complete
+                header tag filled with HTML content, the model produces a concise DSL command.
+
+                But why add this extra step? The answer lies in the complexity of web design. Directly translating an
+                image into HTML code places an immense contextaul learning load on the model, increasing the risk of
+                errors and the memorization of code rather than true understanding. DSL, with its more straightforward
+                commands, eases this burden significantly. By abstracting the design's essence, our model can focus on
+                accurately interpreting the layout's structure and elements without getting halted in the intricacies of
+                HTML syntax.
+            </p>
+
+            <div style="display: flex; justify-content: space-around;">
+                <figure>
+                    <img src="../images/compiler.png" width="780" height="260" alt="compiler">
+                </figure>
+            </div>
+
+            <div style="display: flex; justify-content: space-around;">
+                <figure>
+                    <img src="../images/backend-architecture.png" width="540" height="310" alt="architecture">
+                    <figcaption style="text-align: center; font-size: small; color: grey;">full model workflow
+                    </figcaption>
+                </figure>
+
+            </div>
+
+            <p><span style="font-weight: bold;">the role of the compiler!</span></p>
+            <p style="font-size: normal; text-align: justify;">
+                The workflow from image to website doesn't end with DSL. These simplified commands don't mean much to a
+                web browser; they need to be translated into a language it understands: the HTML. That's where our
+                custom-designed compiler arrives. This dedicated module takes the DSL code generated by our model and
+                converts it into functional HTML. The benefit of this system is its adaptability; while we currently
+                focus on HTML, the DSL code could be translated into any General-Purpose Language, making our approach
+                versatile across various platforms, for example Android and iOS.
+                <br>
+                :: The code for this work is availlabe <a
+                    href="https://github.com/taneemishere/html-code-generation-from-images-with-deep-neural-networks">
+                    here</a>!
+            </p>
+
+            <br>
+            <p style="font-size: 12px; text-align: center;">Developed on top of open source &copy;
                 Taneem Jan 2019–2023</p>
         </section>
     </div>
