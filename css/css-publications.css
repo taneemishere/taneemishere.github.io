@@ -124,6 +124,11 @@ blockquote {
   font-weight: bolder;
 }
 
+.publications ol.bibliography li .author {
+  /* color: gray; */
+  color: #043361
+}
+
 .publications ol.bibliography li .author a {
   border-bottom: 1px var(--global-theme-color);
 }

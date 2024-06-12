@@ -1,150 +1,208 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html>
 
 <head>
-    <title>face–swapping: Swapping Faces on Target from given Sources</title>
+    <meta charset="utf-8">
 
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:url" content="https://taneemishere.github.io/projects/faceswapping.html" />
+    <meta name="keywords" content="face-swapping; head avatars; face-to-face; digital humans">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Taneem Jan - My Logs">
 
-    <meta name="keywords" content="deep learning html">
+    <title>face-swapping</title>
+    <link rel="icon" type="image/x-icon" href="./static/images/profile/icon-mod.ico">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
-    <link rel="canonical" href="https://taneemishere.github.io/">
+    <link rel="stylesheet" href="../static/css/bulma.min.css">
+    <link rel="stylesheet" href="../static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="../static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="../static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="../static/css/index.css">
 
-    <link rel="icon" type="image/x-icon" href="../images/icon-mod.ico">
-    <script async src="../js/analytics.js"></script>
-    <script src="../js/favicon-switcher.js" type="application/javascript"></script>
-
-    <link rel="stylesheet" href="../css/academicons.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/academicons.min.css" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="../css/all.min.css" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script defer src="../static/js/fontawesome.all.min.js"></script>
+    <script src="../static/js/bulma-carousel.min.js"></script>
+    <script src="../static/js/bulma-slider.min.js"></script>
+    <script src="../static/js/index.js"></script>
 </head>
 
 <body>
-    <div class="content" style="font-size: medium">
-        <header>
-            <p><span><a href="/"><span>Home</span></a></span></p>
-        </header>
-    </div>
-    <div class="wrapper" style="padding-left: 6%;">
-        <section style="margin-top: 5%; margin-right: 2%; width: fit-content;">
 
-            <h1 style="text-align: center; font-size: 35px;">
-                <span style="color: red;">face–swapping</span>: Swapping Faces on Target from given Sources
-            </h1>
-
-
-            <p style="margin-top: 3%; text-align: center;">
-                research and development work conducted at BHuman AI <br>by
-            </p>
-
-            <div style="display: flex; justify-content: space-around;">
-                <strong style="margin: 0; font-size: large;">
-                    <!-- <a href="https://taneemishere.github.io">Taneem Ullah Jan <sup>*1</sup></a> -->
-                    <a href="https://taneemishere.github.io">Taneem Ullah Jan</a>
-                </strong>
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title"><span style="color: red;">face-swapping</span>:
+                            Swapping Faces on Target from given Sources</h1>
+                        <br>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">research and development work conducted at <a
+                                    href="http://bhuman.ai" target="_blank">BHuman AI</a></span>
+                        </div>
+                        <br>
+                        <p>by</p>
+                        <br>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://taneemishere.github.io" target="_blank">Taneem Ullah
+                                    Jan</a></span>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <!-- <p style="margin-top: 3%; text-align: center;"><sup>1</sup>
-                BHuman AI :: <sup>*</sup>First Author
-                <br>research and development work done solely in–house by author</p> -->
-            <br><br>
-            <div style="display: flex; justify-content: space-around;">
-                <iframe width="600" height="400" src="https://www.youtube.com/embed/2f5jMFZd5tw?rel=0" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
-
-                <!-- <iframe width="460" height="300" src="https://www.youtube.com/embed/Iv4EjbDoGLk?rel=0" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe> -->
+    <!-- youtube video teaser result -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <h2 class="title is-3">The Result</h2>
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-four-fifths">
+                        <div class="publication-video">
+                            <iframe src="https://www.youtube.com/embed/2f5jMFZd5tw?rel=0" frameborder="0"
+                                allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <br><br>
-            <h2 style="text-align: center; margin-top: 2%;">Highlights</h2>
-            <br>
-            <p><span style="font-weight: bold;" class="research">about the model!</span></p>
-            <p style="font-size: large; text-align: justify;">
-                In the realm of digital graphics processing and machine leanring, we've reached an unusual milestone
-                with our latest work, called <i>face-swapping</i> This initiative stands as a
-                indication to innovation, diverting from the conventional methods of source-driven or target-oriented in
-                face swapping methodologies. Instead, wee've explored new areas by carefully making sure that the
-                preservation of the source face's unique identity features, all while seamlessly assimilating critical
-                attributes of target faces. These attributes encompass a spectrum of vairations, from gestures and
-                postures
-                to intricate lighting conditions.
-            </p>
-
-            <p style="font-size: large; text-align: justify;">
-                What sets our endeavor apart is the attention to detail and profound understanding of both
-                source and target facial characteristics. By delving deep into the complex layers of facial feature
-                recognition and sophisticated image processing, we've emerged with the capability to maintain the
-                integrity of facial identities, thereby revolutionizing the concept of digital impersonation.
-
-                Moreover, our approach has significant implications in various sectors, including but not limited to
-                entertainment, online social interaction, and opening new avenues for face-swapping
-                applications. Whether it's reimagining historical figures in modern scenarios or enhancing online
-                meeting experiences, the potential is boundless. Also our technique astoundingly negates the necessity
-                for super-resolution models. We achieve this through a state-of-the-art process that highlight facial
-                feature details, harnessing advanced learning algorithms to recreate high-resolution final result. This
-                not only optimizes the computational efficiency but also enriches the visual quality, setting an
-                industry benchmark.
-            </p>
-            <p><span style="font-weight: bold;" class="research">what's more!</span></p>
-            <p style="font-size: large; text-align: justify;">
-                Our model takes face-swapping beyond still images, offering the remarkable ability to transform faces
-                within videos. By simply providing the source images, you can seamlessly replace the faces in your
-                video. Whether you want to swap a single identity or multiple characters, our system intelligently
-                recognizes and applies each new face with precision. This feature opens up dynamic new possibilities for
-                video editing, content creation, and personalized storytelling.
-            </p>
-
-            <br><br>
-
-            <div style="display: flex; flex-direction: column; align-items: center;">
-                <img src="../images/combined_1.png" width="770" height="370" alt="elon musk">
-                <img src="../images/combined_2.png" width="990" height="470" alt="mark">
+    <!-- model description -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">Highlights!</h2>
+                    <div class="content has-text-justified">
+                        <strong>About the Model</strong>
+                        <p>
+                            In the realm of digital graphics processing and machine leanring, we've reached an unusual
+                            milestone with our latest work, called face-swapping This initiative stands as a indication
+                            to innovation, diverting from the conventional methods of source-driven or target-oriented
+                            in face swapping methodologies. Instead, wee've explored new areas by carefully making sure
+                            that the preservation of the source face's unique identity features, all while seamlessly
+                            assimilating critical attributes of target faces. These attributes encompass a spectrum of
+                            vairations, from gestures and postures to intricate lighting conditions.
+                        </p>
+                        <p>What sets our endeavor apart is the attention to detail and profound understanding of both
+                            source and target facial characteristics. By delving deep into the complex layers of facial
+                            feature recognition and sophisticated image processing, we've emerged with the capability to
+                            maintain the integrity of facial identities, thereby revolutionizing the concept of digital
+                            impersonation. Moreover, our approach has significant implications in various sectors,
+                            including but not limited to entertainment, online social interaction, and opening new
+                            avenues for face-swapping applications. Whether it's reimagining historical figures in
+                            modern scenarios or enhancing online meeting experiences, the potential is boundless. Also
+                            our technique astoundingly negates the necessity for super-resolution models. We achieve
+                            this through a state-of-the-art process that highlight facial feature details, harnessing
+                            advanced learning algorithms to recreate high-resolution final result. This not only
+                            optimizes the computational efficiency but also enriches the visual quality, setting an
+                            industry benchmark.</p>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <br><br>
-            <div style="display: flex; justify-content: space-around;">
-                <iframe width="460" height="300" src="https://www.youtube.com/embed/rpLsGp3pjHQ?rel=0" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
-
-                <iframe width="460" height="300" src="https://www.youtube.com/embed/UKYjWVLs9Vc?rel=0" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+    <!-- image carousel -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <div id="results-carousel" class="carousel results-carousel">
+                    <div class="item">
+                        <img src="../static/images/projects/combined_1.png" width="640" height="360"
+                            alt="face swapped image result" style="display: block; margin: 0 auto;" />
+                        <h2 class="subtitle has-text-centered">
+                            On the left is a source image, second is attribute image and on the right is a face swapped
+                            face result
+                        </h2>
+                    </div>
+                    <div class="item">
+                        <img src="../static/images/projects/combined_2.png" width="640" height="360"
+                            alt="face swapped image result" style="display: block; margin: 0 auto;" />
+                        <h2 class="subtitle has-text-centered">
+                            On the left is a source image, second is attribute image and on the right is a face swapped
+                            face result
+                        </h2>
+                    </div>]
+                </div>
             </div>
+        </div>
+    </section>
 
-            <br><br>
-            <p style="font-size: 12px; text-align: center;">Developed on top of open source &copy;
-                Taneem Jan 2019–2024</p>
-        </section>
-    </div>
+    <!-- some more model description -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">What's more!</h2>
+                    <div class="content has-text-justified">
+                        <p>Our model takes face-swapping beyond still images, offering the remarkable ability to
+                            transform faces within videos. By simply providing the source images, you can seamlessly
+                            replace the faces in your video. Whether you want to swap a single identity or multiple
+                            characters, our system intelligently recognizes and applies each new face with precision.
+                            This feature opens up dynamic new possibilities for video editing, content creation, and
+                            personalized storytelling.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <script src="js/scale.fix.js"></script>
+    <!-- youtube video carousel -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <h2 class="title is-3">Video Results</h2>
+                <div id="results-carousel" class="carousel results-carousel">
+                    <div class="item item-video1">
+                        <iframe src="https://www.youtube.com/embed/rpLsGp3pjHQ?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                    <div class="item item-video2">
+                        <iframe src="https://www.youtube.com/embed/UKYjWVLs9Vc?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-        ga('create', 'UA-111540567-4', 'auto');
-        ga('send', 'pageview');
-    </script>
+    <!--BibTex citation -->
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTex</h2>
+            <pre><code>@article{
+        faceswapping-bhumanai, 
+        title={face-swapping: Swapping Faces on Target from given Sources}, 
+        author={Taneem Ullah Jan}, 
+        year={2023}
+      }
+      </code></pre>
+        </div>
+    </section>
 
-
+    <!-- footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content" style="text-align: center;">
+                        <p>
+                          Website template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                            target="_blank">here</a>.
+                        </p>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 

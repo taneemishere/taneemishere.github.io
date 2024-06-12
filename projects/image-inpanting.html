@@ -1,163 +1,262 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html>
 
 <head>
-    <title>Deep Image In-Painting: Generative Vs. Recurrent Models</title>
+  <meta charset="utf-8">
 
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Taneem Jan - My Logs">
+  <meta property="og:url" content="https://taneemishere.github.io/projects/image-inpanting.html" />
+  <meta name="keywords" content="Image Inpainting; GAN; Pixel CNN; LSTM">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="keywords" content="deep learning html">
+  <title>Beyond CNNs :: Image Inpainting</title>
+  <link rel="icon" type="image/x-icon" href="./static/images/profile/icon-mod.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
-    <link rel="canonical" href="https://taneemishere.github.io/">
+  <link rel="stylesheet" href="../static/css/bulma.min.css">
+  <link rel="stylesheet" href="../static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="../static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="../static/css/index.css">
 
-    <link rel="icon" type="image/x-icon" href="../images/icon-mod.ico">
-    <script async src="../js/analytics.js"></script>
-    <script src="../js/favicon-switcher.js" type="application/javascript"></script>
-
-    <link rel="stylesheet" href="../css/academicons.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/academicons.min.css" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="../css/all.min.css" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="../css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="../static/js/fontawesome.all.min.js"></script>
+  <script src="../static/js/bulma-carousel.min.js"></script>
+  <script src="../static/js/bulma-slider.min.js"></script>
+  <script src="../static/js/index.js"></script>
 </head>
 
 <body>
-    <div class="content" style="font-size: medium">
-        <header>
-            <p><span><a href="/"><span>Home</span></a></span></p>
-        </header>
-    </div>
-    <div class="wrapper" style="padding-left: 5%;">
-        <section style="margin-top: 5%; margin-right: 2%; width: fit-content;">
 
-            <h1 style="text-align: center; font-size: 35px;">
-                Deep Image <span style="color: red;">In-Painting</span>: Generative Vs. Recurrent Models
-            </h1>
-            <div style="display: flex; justify-content: space-around;">
-                <strong style="margin: 0; font-size: large;">
-                    <a href="https://taneemishere.github.io" target="_blank">Taneem Ullah Jan<sup>*1</sup></a>
-                </strong>
-                <strong style="margin: 0; font-size: large;">
-                    <a href="https://www.linkedin.com/in/ayesha-noor-7a640924a/" target="_blank">Ayesha
-                        Noor<sup>1</sup></a>
-                </strong>
-                <strong style="margin: 0; font-size: large;">
-                    <a href="https://scholar.google.com/citations?view_op=search_authors&mauthors=zakira+inayat&hl=en&oi=ao"
-                        target="_blank">
-                        Dr. Zakira Inayat<sup>+1</sup>
-                    </a>
-                </strong>
-            </div>
-
-            <p style="margin-top: 3%; text-align: center;"><sup>1</sup>University of Engineering and Technology
-                Peshawar, Pakistan </p>
-
-            <div style="display: flex; justify-content: space-between;">
-                <p><sup>*</sup>First Author</p>
-                <p><sup>+</sup>Supervisor</p>
-            </div>
-
-            <p style="text-align: center; margin-top: 3%; font-size: normal; color: red;">
-                ( the paper is under review at ICTIS'24 and will be uploaded soon! )
-            </p>
-
-            <h2 style="text-align: center; margin-top: 5%;">Abstract</h2>
-            <p style="font-size: normal; text-align: justify;">
-                Our paper presents some novel advancements in the image inpainting techniques for small, simple images
-                for example from the CIFAR10 dataset. This study primarily targeted on improving the performance of the
-                context encoders through the utilsation of several major training methods on Generative Adversarial
-                Networks (GANs). To achieve this, we upscaled the network to Wasserstein GAN (WGAN) and weighed up
-                encoders and discriminators based on the current state-of-the-art models against normal Convolutional
-                Neural Network (CNN) architectures.
-                Side by side to this, we also explored Latent Variable Models' methods and developed several different
-                models, namely Pixel CNN, Diagonal Bidirectional Long Short-Term Memory (BiLSTM), and Row LSTM.
-                Also, we proposed a variation on the Pixel CNN model and developed a simpler and faster model named
-                Flattened Row LSTM. Our experiments show that the proposed models generate high-quality images on
-                CIFAR10 while conforming the L2 loss and visual quality measurement.
-                <br>
-                Our contributions demonstrate the effectiveness of our proposed techniques in image inpainting on small,
-                simple images from CIFAR10. The proposed models and training tricks can be applied to other image
-                datasets and have the potential to advance the state-of-the-art in image inpainting.
-            </p>
-            <p><span style="font-weight: bold; font-size: large">the problem!</span></p>
-            <p style="font-size: normal; text-align: justify;">
-                In the expansive field of computer vision, one challenge has consistently stood out due to its
-                complexity and potential impact: image inpainting. This technique, essential in restoring old
-                photographs and repairing visual content, involves filling in missing or damaged portions of an image in
-                a way that is seamless and unnoticeable. The goal is not just to cover the gaps but to understand the
-                surrounding pixels' context and regenerate the lost part in harmony with the whole image. Traditional
-                methods have halted in maintaining consistency in texture and color, often leaving noticeable
-                mismatches that fails the alterations.
-            </p>
-
-            <p><span style="font-weight: bold; font-size: large">innovating image restoration with deep learning!</span>
-            </p>
-            <p style="font-size: normal; text-align: justify;">
-                Our work sought to advance this process by leveraging deep learning, bringing a nuanced understanding of
-                images at a latent level. We delved into the realm of Generative Adversarial Networks (GANs) and
-                specifically adapted the network to a Wasserstein GAN (WGAN) framework. This adaptation, coupled with
-                strategic training enhancements, fortified our model's ability to handle the softness of image textures
-                and colors.
-
-                Parallelly, our exploration extended into density-based methods, where we experimented with Pixel CNN
-                and various LSTM configurations. A significant development was the introduction of a unique method we
-                called Flattened Row LSTM, simplifying the traditionally complex architectures. This innovation was
-                not just about streamlining but also about enhancing the model's interpretability of the image data.
-            </p>
-
-            <p><span style="font-weight: bold; font-size: large">results: painting a picture of success!</span></p>
-            <p style="font-size: normal; text-align: justify;">
-                Our approach demonstrated remarkable proficiency in handling CIFAR10's diverse and colorful images, a
-                popular dataset known for its complexity. Not only were we able to seamlessly inpaint the images, but we
-                also managed to maintain a delicate balance between L2 loss minimization and visual quality
-                preservation, a well known challenge in image restoration endeavors.
-
-                One of the pivotal successes was the model's ability to reconcile the technical and aesthetic aspects of
-                image inpainting. The results were visually coherent images, with inpainted sections indistinguishable
-                from the original content, showcasing a well blend of art and technology.
-            </p>
-
-            <p><span style="font-weight: bold; font-size: large">future directions: beyond the frame!</span></p>
-            <p style="font-size: normal; text-align: justify;">
-                While our results are promising, the field of innovation remains vast. Potential future explorations
-                include expanding the model's capabilities to handle more complex and higher-resolution images AND
-                videos, essential for real-world applications. Furthermore, integrating more advanced GAN and Diffusion
-                architectures or delving into unsupervised learning territories could unlock even more sophisticated
-                inpainting techniques.
-
-                Another intriguing area is exploring real-time inpainting for video content, a frontier not yet fully
-                charted. This advancement could revolutionize film restoration, live broadcasting, and video editing by
-                providing tools to repair visual content on-the-fly.
-            </p>
-            
-            <p style="text-align: center; margin-top: 3%; font-size: normal; color: red;">
-                ( the paper is under review at ICTIS'24 and will be uploaded soon! )
-            </p>
-
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span style="color: red;">Beyond CNNs</span>: Encoded
+              Context for Image Inpainting with LSTMs and Pixel CNNs</h1>
             <br>
-            <p style="font-size: 12px; text-align: center;">Developed on top of open source &copy;
-                Taneem Jan 2019–2024</p>
-        </section>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://taneemishere.github.io" target="_blank">Taneem Ullah Jan</a><sup>*</sup>,</span>
+              <span class="author-block">
+                <a href="#">Ayesha Noor</a></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">University of Engineering and Technology Peshawar, Pakistan<br>
+                <br>International Conference on Innovations in Computing Technologies and
+                Information Sciences (ICTIS) 2024 <br> International Journal of Innovations in Science & Technology
+                (IJIST) Special Issue</span>
+              <br>
+              <span class="eql-cntrb"><small><br><sup>*</sup>First Author</small></span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://journal.50sea.com/index.php/IJIST/article/view/783/1369" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+
+                <!-- ArXiv abstract Link -->
+                <span class="link-block">
+                  <a href="https://journal.50sea.com/index.php/IJIST/article/view/783" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>IJIST</span>
+                  </a>
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <script src="js/scale.fix.js"></script>
+  <!-- architecture images -->
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <img src="../static/images/projects/fig_3.png" alt="autoencoder model" />
+            <h2 class="subtitle has-text-centered">
+              Autoencoder architecture of our model.
+            </h2>
+          </div>
+          <div class="item">
+            <img src="../static/images/projects/fig_10.png" alt="row flattened lstm model" />
+            <h2 class="subtitle has-text-centered">
+              Row Flattened LSTM Architecture.
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-        ga('create', 'UA-111540567-4', 'auto');
-        ga('send', 'pageview');
-    </script>
+  <!-- paper abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Our paper presents some creative advancements in the image in-painting techniques for small, simple images
+              for example from the CIFAR10 dataset. This study primarily targeted on improving the performance of the
+              context encoders through the utilization of several major training methods on Generative Adversarial
+              Networks (GANs). To achieve this, we upscaled the network Wasserstein GAN (WGAN) and compared the
+              discriminators and encoders with the current state-of-the-art models, alongside standard Convolutional
+              Neural Network (CNN) architectures. Side by side to this, we also explored methods of Latent Variable
+              Models and developed several different models, namely Pixel CNN, Row Long Short Term Memory (LSTM), and
+              Diagonal Bidirectional Long Short-Term Memory (BiLSTM). Moreover, we proposed a model based on the Pixel
+              CNN architectures and developed a faster yet easy approach called Row-wise Flat Pixel LSTM. Our
+              experiments demonstrate that the proposed models generate high-quality images on CIFAR10 while conforming
+              the L2 loss and visual quality measurement.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- image carousel -->
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
 
+          <div class="item">
+            <img src="../static/images/projects/fig_9.png" width="640" height="360" alt="Pixel CNN model result"
+              style="display: block; margin: 0 auto;" />
+            <h2 class="subtitle has-text-centered">
+              On the left is ground truth example and on the right is a reconstructed image from the Pixel CNN model
+            </h2>
+          </div>
+
+          <div class="item">
+            <img src="../static/images/projects/fig_11.png" width="640" height="360" alt="Row-wise Flat Pixel
+            LSTM result" style="display: block; margin: 0 auto;" />
+            <h2 class="subtitle has-text-centered">
+              On the left is ground truth example and on the right is a reconstructed image from our Row-wise Flat Pixel
+              LSTM
+            </h2>
+          </div>
+
+          <div class="item">
+            <img src="../static/images/projects/fig_12.png" width="640" height="360" alt="Final result"
+              style="display: block; margin: 0 auto;" />
+            <h2 class="subtitle has-text-centered">
+              Results from Out-of-sample example
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- paper description -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <div class="content has-text-justified">
+            <p>
+              <strong>The Problem</strong> <br>
+              In the expansive field of computer vision, one challenge has consistently stood out due to its complexity
+              and potential impact: image inpainting. This technique, essential in restoring old photographs and
+              repairing visual content, involves filling in missing or damaged portions of an image in a way that is
+              seamless and unnoticeable. The goal is not just to cover the gaps but to understand the surrounding
+              pixels' context and regenerate the lost part in harmony with the whole image. Traditional methods have
+              halted in maintaining consistency in texture and color, often leaving noticeable mismatches that fails the
+              alterations.
+            </p>
+
+            <strong>Innovating image restoration with deep learning</strong> <br>
+            <p>Our work sought to advance this process by leveraging deep learning, bringing a nuanced understanding of
+              images at a latent level. We delved into the realm of Generative Adversarial Networks (GANs) and
+              specifically adapted the network to a Wasserstein GAN (WGAN) framework. This adaptation, coupled with
+              strategic training enhancements, fortified our model's ability to handle the softness of image textures
+              and colors. Parallelly, our exploration extended into density-based methods, where we experimented with
+              Pixel CNN and various LSTM configurations. A significant development was the introduction of a unique
+              method we called Flattened Row LSTM, simplifying the traditionally complex architectures. This innovation
+              was not just about streamlining but also about enhancing the model's interpretability of the image data.
+            </p>
+
+            <strong>Future directions: beyond the frame!</strong>
+            <p>While our results are promising, the field of innovation remains vast. Potential future explorations
+              include expanding the model's capabilities to handle more complex and higher-resolution images AND videos,
+              essential for real-world applications. Furthermore, integrating more advanced GAN and Diffusion
+              architectures or delving into unsupervised learning territories could unlock even more sophisticated
+              inpainting techniques. Another intriguing area is exploring real-time inpainting for video content, a
+              frontier not yet fully charted. This advancement could revolutionize film restoration, live broadcasting,
+              and video editing by providing tools to repair visual content on-the-fly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- paper slides/poster -->
+  <section class="hero is-small is-light">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title">Slides</h2>
+        <iframe src="../static/files/Beyond CNNs_ Encoded Context for Image Inpainting with LSTMs and Pixel CNNs.pdf"
+          width="100%" height="550">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTex</h2>
+      <pre><code>@article{
+        Jan_Noor_2024, 
+        title={Beyond CNNs: Encoded Context for Image Inpainting with LSTMs and Pixel CNNs}, 
+        volume={6}, 
+        url={https://journal.50sea.com/index.php/IJIST/article/view/783},  
+        number={5}, 
+        journal={International Journal of Innovations in Science &amp; Technology}, 
+        author={Jan, Taneem Ullah and Noor, Ayesha}, 
+        year={2024}, 
+        month={May}, 
+        pages={165-179} 
+      }
+      </code></pre>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content" style="text-align: center;">
+            <p>
+              Website template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                target="_blank">here</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 </body>
 

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <meta property="og:url" content="https://taneemishere.github.io/projects/face2face.html" />
+    <meta name="keywords" content="head avatars; face-to-face; digital humans">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>face2face</title>
+    <link rel="icon" type="image/x-icon" href="./static/images/profile/icon-mod.ico">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/css/bulma.min.css">
+    <link rel="stylesheet" href="../static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="../static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="../static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script defer src="../static/js/fontawesome.all.min.js"></script>
+    <script src="../static/js/bulma-carousel.min.js"></script>
+    <script src="../static/js/bulma-slider.min.js"></script>
+    <script src="../static/js/index.js"></script>
+</head>
+
+<body>
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title"><span style="color: red;">face2face</span>: One-Shot
+                            Talking Head Video Generation from a Static Source Image</h1>
+                        <br>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">research and development work conducted at <a
+                                    href="http://bhuman.ai" target="_blank">BHuman AI</a></span>
+                        </div>
+                        <br>
+                        <p>by</p>
+                        <br>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://taneemishere.github.io" target="_blank">
+                                    Taneem Ullah Jan</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- architecture image -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <img src="../static/images/projects/face2face.png" alt="face2face model architecture" width="50%"
+                    height="50%" style="display: block; margin: 0 auto;" />
+                <h2 class="subtitle has-text-centered">
+                    The BG and KP Encoders encode and predict the key-points and background motion in the source image
+                    and driver video. After this they both go into the affine transformation, though TPS and AT. Our
+                    Dense Motion module then concatenate both the transformations to calculate the optical flow and
+                    binary occlusion masks. Lastly, the source image warps through the In-Painting Module, that feed the
+                    feature maps extracted by the Warping Encoder using optical flow, and mask them with the
+                    corresponding resolution occlusion masks in the Warping Decoder. Finally the image (video frames)
+                    are generated. The Warping Encoder and Decoder are part of the In-Painting Network.
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- model description -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">face2face?</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            Focused on utilizing neural rendering techniques to animate static objects, taking
+                            inspiration from recent advancements in motion transfer methods. This project was motivated
+                            by the recognition of the challenges faced by current unsupervised methods, particularly in
+                            scenarios where a substantial pose gap exists between source and target images. To address
+                            this challenge, we developed a pre-trained unsupervised motion synthesis module. This
+                            approach involves a method to estimate hidden motion using flexible grids, making it easier
+                            to create detailed flow fields. This facilitates the transformation of embeddings from the
+                            source image to align with the features of the target image. To improve the quality, we
+                            added adaptive layers at different levels, effectively addressing and filling the missing
+                            elements. This refinement significantly improved the generation of high-quality images and
+                            videos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- youtube result video -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <h2 class="title is-3">The Result</h2>
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-four-fifths">
+                        <div class="publication-video">
+                            <iframe src="https://www.youtube.com/embed/KVhGZWVpWfk?rel=0" frameborder="0"
+                                allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- some more description -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <div class="content has-text-justified">
+                        <p>
+                            In this, the resulting adaptability is evident in its successful animation of a broader
+                            range of objects and pixels, including talking heads and upper body parts. Through
+                            experimentation, this method exhibited superior performance on benchmarks, exhibiting
+                            noticeable improvements of around 5-10% in animation metrics compared to existing
+                            state-of-the- art approaches.
+                        </p>
+                        <strong>What's the downside!</strong>
+                        <p>Although face2face perform really well on the diverse attributes and has better adaptability
+                            but certain times
+                            it gets stuck. Additionally, the amount of time it takes to generate the video is a bit
+                            longer than expected. Also, this model generates some hight-quality videos but that is not
+                            up to the mark and to make the resolution we still need a resolution upscaling model.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- youtube result carousel (youtube results) -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <h2 class="title is-3">Some Results</h2>
+                <div id="results-carousel" class="carousel results-carousel">
+                    <div class="item item-video1">
+                        <iframe src="https://www.youtube.com/embed/rSUs7Xu3JqQ?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                    <div class="item item-video2">
+                        <iframe src="https://www.youtube.com/embed/K_2giYmNm04?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                    <div class="item item-video3">
+                        <iframe src="https://www.youtube.com/embed/9pQsLQsylEQ?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--BibTex citation -->
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTex</h2>
+            <pre><code>@article{
+        face2face-bhumanai, 
+        title={face2face: One-Shot Talking Head Video Generation from a Static Source Image}, 
+        author={Taneem Ullah Jan}, 
+        year={2023}
+      }
+      </code></pre>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content" style="text-align: center;">
+                        <p>
+                          Website template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                            target="_blank">here</a>.
+                        </p>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
