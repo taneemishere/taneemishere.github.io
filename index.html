@@ -72,11 +72,11 @@
         <p>Currently working independently and contributing to the advancement in the field of neural head avatars and
           virtual humans using computer vision, graphics, and deep neural networks. Prior to this, I worked as Research
           AI Engineer at <a href="https://www.bhuman.ai" target="_blank">BHuman AI</a>. I have done my undergrad from
-          the <a href="https://www.uetpeshawar.edu.pk" target="_blank">University of Engineering &
+          the <a href="https://www.uetpeshawar.edu.pk" target="_blank">University of Engineering and
             Technology Peshawar</a>. Where I pursued my passion for computer science and machine learning under the
           supervision of
           <a href="https://scholar.google.com/citations?view_op=search_authors&mauthors=zakira+inayat&hl=en&oi=ao"
-            target="_blank">Dr. Zakira Inayat</a> in one of the AI Labs.
+            target="_blank">Dr. Zakira Inayat</a>.
         </p>
 
         <!-- Research Interests -->
@@ -87,33 +87,38 @@
       </div>
 
       <!-- News Section -->
-      <h2 id="news">news</h2>
-      <ul>
-        <li> <span style="font-weight: bold;">[Apr. 2024] </span> &ndash; &ndash; Paper accepted at ICTIS-24 and IJIST.
+      <h2 id="news" , onclick="toggleList()">
+        <span id="arrow" style="font-size: 14px;">&#x25BC;</span> news
+      </h2>
+      <ul id="collapsible-list" style="display: none;">
+        <li> Paper accepted at ICTIS-24 and IJIST <span style="font-weight: bold; float: right;">[Apr. 2024] </span>
         </li>
 
-        <li> <span style="font-weight: bold;">[June 2023] </span> &ndash; &ndash; Selected as Language Ambassador for
-          Pashto at <a href="https://cohere.for.ai" target="_blank">Cohere For AI</a> &ndash; &ndash; <a
-            href="https://txt.cohere.com/aya-multilingual/" target="_blank">AYA Project</a>. </li>
+        <li> Selected as Language Ambassador for
+          Pashto at <a href="https://cohere.for.ai" target="_blank">Cohere For AI's</a> &ndash; <a
+            href="https://txt.cohere.com/aya-multilingual/" target="_blank">AYA Project</a> <span
+            style="font-weight: bold; float: right;">[June 2023] </span> </li>
 
-        <li> <span style="font-weight: bold;">[Jan. 2023] </span> &ndash; &ndash; Joined BHuman AI as Research AI
-          Engineer.</li>
+        <li> Joined BHuman AI as Research AI
+          Engineer <span style="font-weight: bold; float: right;">[Jan. 2023] </span> </li>
 
-        <li> <span style="font-weight: bold;">[Oct. 2022] </span> &ndash; &ndash; Young Undergrad Researcher Award for
-          Bachelor Thesis. </li>
+        <li> Young Undergrad Researcher Award for
+          Bachelor Thesis <span style="font-weight: bold; float: right;">[Oct. 2022] </span> </li>
 
-        <li> <span style="font-weight: bold;">[Aug &ndash; Sep 2022] </span> &ndash; &ndash; Defended undergrad research
-          thesis and graduated from University of Engineering and Technology Peshawar. </li>
+        <li> Defended undergraduate
+          thesis and graduated from UET Peshawar <span style="font-weight: bold; float: right;">[Aug &ndash; Sep 2022]
+          </span></li>
 
-        <li> <span style="font-weight: bold;">[Jan. 2022] </span> &ndash; &ndash; Started working as Undergraduate Research
-          Assistant.</li>
+        <li> Started working as Undergraduate
+          Research Assistant <span style="font-weight: bold; float: right;">[Jan. 2022] </span> </li>
 
-        <li> <span style="font-weight: bold;">[July &ndash; Aug 2021] </span> &ndash; &ndash; Invited talks at student
-          societies & clubs for AI in Education & Healthcare. </li>
+        <li> Invited talks at student
+          societies & clubs for AI in Education & Healthcare <span style="font-weight: bold; float: right;">[July
+            &ndash; Aug 2021] </span></li>
 
-        <li> <span style="font-weight: bold;">[Aug. 2021] </span> &ndash; &ndash; Started an internship at <a
-            href="https://naeco.blue/welcome_eng.html" target="_blank">NAECO Blue GmbH, </a>as a Machine Learning
-          Engineer. </li>
+        <li> Started an internship at <a href="https://naeco.blue/welcome_eng.html" target="_blank">NAECO Blue GmbH,
+          </a>as a Machine Learning
+          Engineer <span style="font-weight: bold; float: right;">[Aug. 2021] </span> </li>
 
       </ul>
 
@@ -241,6 +246,21 @@
 
       </div>
     </section>
+
+    <script>
+      function toggleList() {
+        var list = document.getElementById("collapsible-list");
+        var arrow = document.getElementById("arrow");
+
+        if (list.style.display === "none") {
+          list.style.display = "block";
+          arrow.innerHTML = "&#x25B2;"; // Upward arrow
+        } else {
+          list.style.display = "none";
+          arrow.innerHTML = "&#x25BC;"; // Downward arrow
+        }
+      }
+    </script>
 
     <footer style="margin-bottom: -5px;">
       <p style="font-size: 12px;">Developed on top of open source <br> &copy; Taneem Jan 2019 &ndash; 2024</p>
