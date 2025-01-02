@@ -95,12 +95,12 @@
                     <div class="content has-text-justified">
                         <p>
                             Writing code in a programming language for a designed mockup or a graphical user interface
-                            created by designers and UI engineers, is done mostly by developers to build and develop
-                            custom websites and software. The development work is not approachable by those unfamiliar
-                            with programming, to drive these personas capable of designing and developing the code bases
-                            and website structures we come up with an automated system. In this work, we have proposed a
-                            model which will use various techniques of deep learning and computer vision to generate
-                            HTML code from a single input mock-up image. In addition, we have tried to build an
+                            created by designers and UI engineers is done mainly by developers to build and develop
+                            custom websites and software. The development work is not approachable to those unfamiliar
+                            with programming. To drive these personas capable of designing and developing the code bases
+                            and website structures, we come up with an automated system. In this work, we have proposed
+                            a model that will use various techniques of deep learning and computer vision to generate
+                            HTML code from a single input mockup image. In addition, we have tried to build an
                             end-to-end automated system for developing web pages with accuracy more than the previous
                             methods.
                         </p>
@@ -122,7 +122,7 @@
                             designs into coded and functional web pages. Each component, from buttons to text boxes,
                             must be individually converted into HTML elements, a process that becomes exponentially more
                             challenging with the scale of the website. Stakeholders, particularly those without a
-                            programming background, find themselves sidelined, unable to contribute actively to the
+                            programming background, find themselves sidelined and unable to contribute actively to the
                             development phase. They are also bogged down by endless meetings discussing small design
                             changes, significantly slowing down the deployment process.
                         </p>
@@ -135,7 +135,7 @@
                             restricted by the sequential nature of their architectures, limiting their efficiency and
                             scalability. Our exploration didn't stop there; we also explored machine translation
                             techniques, particularly in image captioning and description generation, drawing parallels
-                            between translating visual content into human language and into structured code.
+                            between translating visual content into human language and structured code.
                         </p>
 
                         <strong>The model architecture</strong>
@@ -194,16 +194,16 @@
                         <p>
                             The inference involves a unique intermediate step that plays a crucial role in the accuracy
                             and efficiency of code generation: the use of Domain Specific Language code. When our model
-                            analyzes an input image, it doesn't immediately gives out HTML code. Instead, it crafts what
+                            analyzes an input image, it doesn't immediately give out HTML code. Instead, it crafts what
                             we refer to as 'intermediary form' or DSL. This language, specific to the domain of web
                             layouts, represents various page elements in a simplified manner. For instance, instead of
                             generating a complete header tag filled with HTML content, the model produces a concise DSL
                             command. But why add this extra step? The answer lies in the complexity of web design.
                             Directly translating an image into HTML code places an immense contextual learning load on
-                            the model, increasing the risk of errors and the memorization of code rather than true
+                            the model, increasing the risk of errors and the memorization of code rather than proper
                             understanding. DSL, with its more straightforward commands, eases this burden significantly.
                             By abstracting the design's essence, our model can focus on accurately interpreting the
-                            layout's structure and elements without getting halted in the intricacies of HTML syntax.
+                            layout's structure and elements without getting halted by the intricacies of HTML syntax.
                         </p>
                     </div>
                 </div>
