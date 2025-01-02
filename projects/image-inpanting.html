@@ -177,32 +177,29 @@
             <p>
               <strong>The Problem</strong> <br>
               In the field of computer vision, one challenge has consistently stood out due to its complexity and
-              potential impact: the image inpainting. This technique is essential in restoring old photographs and
-              repairing visual content, involves filling in missing or damaged portions of an image in a way that is
-              seamless and unnoticeable. The goal is not just to cover the gaps but to understand the surrounding
-              pixels' context and regenerate the lost part in harmony with the whole image. Traditional methods have
-              halted in maintaining consistency in texture and color, often leaving noticeable mismatches that fail the
-              alterations
+              potential impact: image-inpainting. This technique is essential in restoring old photographs and repairing
+              visual content, involves filling in missing or damaged portions of an image in a way that is seamless and
+              unnoticeable. The goal is not just to cover the gaps but to understand the surrounding pixels' context and
+              regenerate the lost part in harmony with the whole image. Traditional methods have halted in maintaining
+              consistency in texture and color, often leaving noticeable mismatches that fail the alterations.
             </p>
 
             <strong>Innovating image restoration with deep learning</strong> <br>
-            <p>Our work researched to advance this process with the help of deep learning, bringing a subtle
-              understanding of images at a latent level. We also explored the area of Generative Adversarial Networks
-              (GANs) and specifically adapted the network to a Wasserstein GAN (WGAN) framework. This adaptation,
-              coupled with strategic training enhancements, reinforced our model's ability to handle the softness of
-              image textures and colors. Also, our exploration extended into density-based methods, where we
-              experimented with Pixel CNN and various LSTM configurations. A significant development was the
-              introduction of a unique method, we called <em>Flattened Row LSTM</em>, simplifying the traditionally
-              complex
-              architectures. This new method was not just about streamlining but also about enhancing the model's
-              interpretability of the image data
+            <p>Our work was done to advance this process with the help of deep learning, bringing a subtle understanding
+              of images at a latent level. We also explored the area of Generative Adversarial Networks (GANs) and
+              specifically adapted the network to a Wasserstein GAN (WGAN) framework. This adaptation, coupled with
+              strategic training enhancements, reinforced our model's ability to handle the softness of image textures
+              and colors. Also, our exploration extended into density-based methods, where we experimented with Pixel
+              CNN and various LSTM configurations. A significant development was the introduction of a unique process we
+              called Row-wise Flat Pixel LSTM, simplifying the traditionally complex architectures. This new method was
+              not just about streamlining but also about enhancing the model's interpretability of the image data.
             </p>
 
             <strong>Future directions: beyond the frame!</strong>
             <p>While our results are promising, the field of innovation remains vast. Potential future explorations
               include expanding the model's capabilities to handle more complex and higher-resolution images and videos,
-              essential for real-world applications. Furthermore, integrating more advanced GAN and Diffusion
-              architectures or using the unsupervised learning methods could unlock even more sophisticated inpainting
+              which are essential for real-world applications. Furthermore, integrating more advanced GAN and Diffusion
+              architectures or using unsupervised learning methods could unlock even more sophisticated inpainting
               techniques. Another promising area is exploring real-time inpainting for video content, a frontier not yet
               fully explored. This advancement could revolutionize film restoration, live broadcasting, and even video
               editing by providing tools to repair visual content on-the-fly.</p>

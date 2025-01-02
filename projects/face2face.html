@@ -62,12 +62,12 @@
                 <img src="../static/images/projects/face2face.png" alt="face2face model architecture" width="50%"
                     height="50%" style="display: block; margin: 0 auto;" />
                 <h2 class="subtitle has-text-centered">
-                    The BG and KP Encoders encode and predict the key-points and background motion in the source image
-                    and driver video. After this they both go into the affine transformation, though TPS and AT. Our
-                    Dense Motion module then concatenates both the transformations to calculate the optical flow and
-                    binary occlusion masks. Lastly, the source image warps through the In-Painting Module, that feeds
-                    the feature maps extracted by the Warping Encoder using optical flow, and masks them with the
-                    corresponding resolution occlusion masks in the Warping Decoder. Finally the image (video frames)
+                    The BG and KP Encoders encode and predict the key points and background motion in the source image
+                    and driver video. After this, they both go into the affine transformation through TPS and AT. Our
+                    Dense Motion module then concatenates both transformations to calculate the optical flow and binary
+                    occlusion masks. Lastly, the source image warps through the In-Painting Module, which feeds the
+                    feature maps extracted by the Warping Encoder using optical flow and masks them with the
+                    corresponding resolution occlusion masks in the Warping Decoder. Finally, the image (video frames)
                     are generated. The Warping Encoder and Decoder are part of the In-Painting Network.
                 </h2>
             </div>
@@ -86,13 +86,13 @@
                             recent advancements in motion transfer methods to animate static objects driven by source
                             motion. face2face was motivated by the recognition of the challenges faced by current
                             unsupervised methods, particularly in scenarios where a substantial pose gap exists between
-                            source and target images. To address this challenge, we developed a pre-trained unsupervised
-                            motion synthesis module. This approach involves a method to estimate hidden motion using
-                            flexible grids, making it easier to create detailed flow fields. This facilitates the
-                            transformation of embeddings from the source image to align with the features of the target
-                            image. To improve the quality, we added adaptive layers at different levels, effectively
-                            addressing and filling the missing elements. This refinement significantly improved the
-                            generation of high-quality images and videos.
+                            source and target images. To address this challenge, we developed a pre-trained,
+                            unsupervised motion synthesis module. This approach involves a method to estimate hidden
+                            motion using flexible grids, making it easier to create detailed flow fields. This motion
+                            information facilitates the transformation of embeddings from the source image to align with
+                            the features of the target image. To improve the quality, we added adaptive layers at
+                            different levels, effectively addressing and filling the missing elements. This refinement
+                            significantly enhanced the generation of high-quality images and videos.
                         </p>
                     </div>
                 </div>
@@ -131,11 +131,11 @@
                             state-of-the-art approaches.
                         </p>
                         <strong>What's the downside!</strong>
-                        <p>Although face2face performs really well on the diverse features and has better adaptability
-                            but certain times it gets stuck. Additionally, the amount of time it takes to generate the
-                            video is a bit longer than expected. Also, this model generates some high-quality videos but
-                            that is not up to the mark and to make the resolution higher, we still need a resolution
-                            upscaling model.
+                        <p>Although face2face performs really well on the diverse features and has better adaptability,
+                            but certain times, it gets stuck. Additionally, the amount of time it takes to generate the
+                            video is a bit longer than expected. Also, this model generates some high-quality videos,
+                            but that is not up to the mark, and to make the resolution higher, we still need a
+                            resolution upscaling model.
                         </p>
                     </div>
                 </div>
