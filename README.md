@@ -1,4 +1,4 @@
-# Taneem Jan
+# Taneem Ullah Jan
 
 This is my personal site where I publish all my work and put links to.
 <br>
