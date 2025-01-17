@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <meta property="og:url" content="https://taneemishere.github.io/projects/face2face.html" />
+    <meta name="keywords" content="neural head avatars; lip sync; digital humans">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>lipsyncface</title>
+    <link rel="icon" type="image/x-icon" href="./static/images/profile/icon-mod.ico">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/css/bulma.min.css">
+    <link rel="stylesheet" href="../static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="../static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="../static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script defer src="../static/js/fontawesome.all.min.js"></script>
+    <script src="../static/js/bulma-carousel.min.js"></script>
+    <script src="../static/js/bulma-slider.min.js"></script>
+    <script src="../static/js/index.js"></script>
+</head>
+
+<body>
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title"><span style="color: red;">LipSyncFace</span>:
+                            High-Fidelity Audio-Driven and Lip-Synchronized Talking Face Generation</h1>
+                        <br>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">🛠️ under research and development!</span>
+                        </div>
+                        <br>
+                        <br>
+                        <p>research so far conducted by
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://taneemishere.github.io" target="_blank">
+                                    Taneem Ullah Jan</a></span>
+                        </div>
+                        with
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://scholar.google.com.my/citations?user=xwQwGxYAAAAJ&hl=en"
+                                    target="_blank">
+                                    Dr. Zakira Inayat</a></span>
+                        </div>
+                        </p>
+                        <!-- <br> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- architecture image -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <img src="../static/images/projects/lipsyncface.jpeg" alt="lipsyncface model architecture"
+                    width="60%" height="60%" style="display: block; margin: 0 auto;" /> <br>
+                <!-- <h2 class="subtitle has-text-centered">
+
+                </h2> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- model description -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">Short Background and Introduction</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            Although <a href="https://taneemishere.github.io/projects/lipsync2.html" target="_blank"
+                                rel="noopener noreferrer"><em>lipsync2</em></a> (our previous work) achieved the required goals,
+                            the model used an ensemble network strategy, and the inference time was above standard.
+                            Therefore, the “LipSyncFace” aims to solve the issues we faced in lipsync2, which relied on
+                            an ensemble of networks (and adversarial training framework) and suffered from slow
+                            inference time. To solve these issues, we come up with a two-stage framework. The first
+                            stage consists of audio and video encoders that form the face and predict the approximate
+                            sketch of the lip region conditioned by audio. The first stage generates the face in 160x160
+                            resolution as compared to 96x96 in the method mentioned earlier. In the second stage, a
+                            rendering decoder synchronizes the lip movements with audio and outputs a high-fidelity
+                            talking face. This two-stage framework successfully overcomes the ensemble approach by using
+                            a single and unified network pipeline, which is easier to train. Moreover, due to less
+                            computational complexity, unlike GANs, the inference is now faster, which is crucial for
+                            real-time applications. So far, this method has achieved a PSNR of 34.306 and 7.436 on
+                            metric Lip-Sync Error Confidence (LSE-C) and 6.010 on Lip-Sync Error Distance (LSE-D) on the
+                            LRS2 dataset. These results are an improvement in overall visual quality in lip
+                            synchronization, making it more practical for real-time applications.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- youtube result carousel (youtube results) -->
+    <!-- <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <h2 class="title is-3">Some Results</h2>
+                <div id="results-carousel" class="carousel results-carousel">
+                    <div class="item item-video1">
+                        <iframe src="https://www.youtube.com/embed/rSUs7Xu3JqQ?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                    <div class="item item-video2">
+                        <iframe src="https://www.youtube.com/embed/K_2giYmNm04?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                    <div class="item item-video3">
+                        <iframe src="https://www.youtube.com/embed/9pQsLQsylEQ?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!--BibTex citation -->
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTex</h2>
+            <pre><code>@article{
+        LipSyncFace-Taneem, 
+        title={LipSyncFace: High-Fidelity Audio-Driven and Lip-Synchronized Talking Face Generation}, 
+        author={Taneem Ullah Jan}, 
+        year={2025}
+      }
+      </code></pre>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content" style="text-align: center;">
+                        <p>
+                            Website template adapted from <a
+                                href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                                target="_blank">here</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
