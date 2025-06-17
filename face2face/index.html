@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+    <meta name="keywords" content="neural head avatars; face-to-face; digital humans">
+
+    <title>face2face</title>
+
+    <style type="text/css">
+        #wrap {
+            width: 800px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        #wrap2 {
+            width: 800px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .carousel {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+            overflow: auto;
+            border: 1px solid #000;
+            border-radius: 2px;
+        }
+
+        .carousel-content {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+        .carousel-content iframe {
+            flex: 0 0 auto;
+            width: 600px;
+            height: 340px;
+            border: none;
+            border-right: 0.5px solid #ddd;
+            border-left: 0.5px solid #ddd;
+        }
+    </style>
+</head>
+
+<body bgcolor="#FFFFFF">
+    <div id="wrap">
+        <br>
+        <h1 align="center"> <span style="color: red;">face2face</span>: One-Shot Talking Head Video Generation from a
+            Static Source Image</h1>
+    </div>
+    <br>
+    <center>
+        <p>research and development work conducted at <a href="https://www.bhuman.ai">BHumanAI</a></p>
+        <p>by</p>
+        <p><a href="../index.html">Taneem Ullah Jan</a></p>
+
+    </center>
+
+    <br>
+    <div id="wrap">
+        <center>
+            <div><img src="./images/face2face.png" width="60%" height="60%" border="0"></div>
+        </center>
+
+
+        <p align="justify">The BG and KP Encoders encode and predict the key points and background motion in the source
+            image and driver video. After this, they both go into the affine transformation through TPS and AT. Our
+            Dense Motion module then concatenates both transformations to calculate the optical flow and binary
+            occlusion masks. Lastly, the source image warps through the In-Painting Module, which feeds the feature maps
+            extracted by the Warping Encoder using optical flow and masks them with the corresponding resolution
+            occlusion masks in the Warping Decoder. Finally, the image (video frames) are generated. The Warping Encoder
+            and Decoder are part of the In-Painting Network.</p>
+
+        <hr boader="1">
+        <h3>face2face?</h3>
+        <p align="justify">This work was focused on utilizing neural rendering techniques and taking inspiration from
+            recent advancements in motion transfer methods to animate static objects driven by source motion. face2face
+            was motivated by the recognition of the challenges faced by current unsupervised methods, particularly in
+            scenarios where a substantial pose gap exists between source and target images. To address this challenge,
+            we developed a pre-trained, unsupervised motion synthesis module. This approach involves a method to
+            estimate hidden motion using flexible grids, making it easier to create detailed flow fields. This motion
+            information facilitates the transformation of embeddings from the source image to align with the features of
+            the target image. To improve the quality, we added adaptive layers at different levels, effectively
+            addressing and filling the missing elements. This refinement significantly enhanced the generation of
+            high-quality images and videos.</p>
+
+
+        <hr boader="1">
+        <h3>The Result</h3>
+
+        <center>
+            <div id="wrap"><iframe src="https://www.youtube.com/embed/KVhGZWVpWfk?rel=0" frameborder="0"
+                    allow="autoplay; encrypted-media" allowfullscreen style="width: 600px;" height="400px"></iframe>
+            </div>
+
+            <p align="justify">In this, the resulting adaptability is evident in its successful animation of a broader
+                range of objects and pixels, including talking heads and upper body parts. Through experimentation, this
+                method exhibited superior performance on benchmarks, exhibiting noticeable improvements of around 5-10%
+                in animation metrics compared to existing state-of-the-art approaches. </p>
+
+            <p align="justify"> <strong>What's the downside!</strong><br>
+                Although face2face performs really well on the diverse features and has better adaptability, but certain
+                times, it gets stuck. Additionally, the amount of time it takes to generate the video is a bit longer
+                than expected. Also, this model generates some high-quality videos, but that is not up to the mark, and
+                to make the resolution higher, we still need a resolution upscaling model.</p>
+
+        </center>
+
+        <hr boader="1">
+        <h3>Some Results</h3>
+        <div id="wrap">
+            <div class="carousel">
+                <div class="carousel-content">
+                    <iframe src="https://www.youtube.com/embed/rSUs7Xu3JqQ?rel=0" allow="autoplay; encrypted-media"
+                        allowfullscreen style="width: 600px;" height="400px">
+                    </iframe>
+                    <iframe src="https://www.youtube.com/embed/K_2giYmNm04?rel=0" allow="autoplay; encrypted-media"
+                        allowfullscreen style="width: 600px;" height="400px">
+                    </iframe>
+                    <iframe src="https://www.youtube.com/embed/9pQsLQsylEQ?rel=0" allow="autoplay; encrypted-media"
+                        allowfullscreen style="width: 600px;" height="400px">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+        <hr boader="1">
+        <h3>BibTeX Citation</h3>
+
+        <div style="padding: 10px; margin-bottom: 10px; border: 1px solid #333333;">
+            <pre>@article{
+        face2face-bhumanai,
+        title={face2face: One-Shot Talking Head Video Generation from a Static Source Image},
+        author={Taneem Ullah Jan}, 
+        year={2023}
+        }</pre>
+        </div>
+
+        <p> <a href="https://info.flagcounter.com/48VZ"><img
+                    src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/"
+                    border="0"></a>
+        </p>
+
+    </div>
+</body>
+
+</html>

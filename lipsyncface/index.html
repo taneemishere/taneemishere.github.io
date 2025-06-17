@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+    <meta name="keywords" content="neural head avatars; lip sync; digital humans">
+
+    <title>lipsyncface</title>
+
+    <style type="text/css">
+        #wrap {
+            width: 800px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body bgcolor="#FFFFFF">
+    <div id="wrap">
+        <br>
+        <h1 align="center"> <span style="color: red;">LipSyncFace</span>: High-Fidelity Audio-Driven and
+            Lip-Synchronized
+            Talking Face Generation</h1>
+    </div>
+    <br>
+    
+    <center>
+        <p>research and development work conducted</p>
+        <p>by</p>
+        <p><a href="../index.html">Taneem Ullah Jan</a></p>
+        <p>Supervised by</p>
+        <p><a href="https://scholar.google.com.my/citations?user=xwQwGxYAAAAJ&hl=en" target="_blank">Dr. Zakira
+                Inayat</a></p>
+    </center>
+
+    <br>
+    <div id="wrap">
+
+        <center>
+            <div id="wrap"><img src="./images/lipsyncface.jpeg" width="80%" border="0"></div>
+            <p>A unified model architecture of LipSyncFace</p>
+        </center>
+
+        <hr boader="1">
+        <h3>Short Background and Introduction</h3>
+        <p align="justify">Although <a href="../lipsync2/">lipsync2</a> (our previous work) achieved the required goals, the model used an ensemble
+            network strategy, and the inference time was above standard. Therefore, the “LipSyncFace” aims to solve the
+            issues we faced in lipsync2, which relied on an ensemble of networks (and adversarial training framework)
+            and suffered from slow inference time. To solve these issues, we come up with a two-stage framework. The
+            first stage consists of audio and video encoders that form the face and predict the approximate sketch of
+            the lip region conditioned by audio. The first stage generates the face in 160x160 resolution as compared to
+            96x96 in the method mentioned earlier. In the second stage, a rendering decoder synchronizes the lip
+            movements with audio and outputs a high-fidelity talking face. This two-stage framework successfully
+            overcomes the ensemble approach by using a single and unified network pipeline, which is easier to train.
+            Moreover, due to less computational complexity, unlike GANs, the inference is now faster, which is crucial
+            for real-time applications. So far, this method has achieved a PSNR of 34.306 and 7.436 on metric Lip-Sync
+            Error Confidence (LSE-C) and 6.010 on Lip-Sync Error Distance (LSE-D) on the LRS2 dataset. These results are
+            an improvement in overall visual quality in lip synchronization, making it more practical for real-time
+            applications.</p>
+
+        <hr boader="1">
+        <h3>BibTeX Citation</h3>
+
+        <div style="padding: 10px; margin-bottom: 10px; border: 1px solid #333333;">
+            <pre>@article{
+        LipSyncFace-Taneem,
+        title={LipSyncFace: High-Fidelity Audio-Driven and Lip-Synchronized Talking Face Generation},
+        author={Taneem Ullah Jan},
+        year= {2025}
+        }</pre>
+        </div>
+
+        <p> <a href="https://info.flagcounter.com/48VZ"><img
+                    src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/"
+                    border="0"></a>
+        </p>
+
+    </div>
+</body>
+
+</html>
