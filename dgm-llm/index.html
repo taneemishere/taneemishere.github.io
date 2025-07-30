@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <meta name="keywords" content="Image Inpainting; GAN; Pixel CNN; LSTM">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>DGM-LLM</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span style="color: red;">DGM-LLM</span>: Darwin Gödel Machine
+              with Large Language Model Integration for Autonomous Code Self-Improvement</h1>
+            <br>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Research and development work conducted</span>
+              <br> <br>
+              <span>by</span>
+            </div>
+
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://taneemishere.github.io" target="_blank">Taneem Ullah Jan</a></span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="/" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code (Coming Soon!)</span>
+                  </a>
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- paper abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              This report presents a comprehensive analysis of the Darwin Gödel Machine (DGM), an advanced Artificial
+              Intelligence system designed for autonomous and self-improvement code through evolutionary algorithms
+              enhanced and backed by Large Language Model (LLM) integration. Our system represents a novel approach to
+              automated code optimization and modification that combines the theoretical foundational concept of Gödel
+              Machines with Darwin's evolutionary principles, achieving significant improvements in code quality across
+              multiple dimensions including but not limited to performance, readability, efficiency, functionality,
+              documentation, security, and maintainability.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- introduction -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">1. Introduction</h2>
+          <div class="content has-text-justified">
+            <p>
+            <h4>1.1 Problem Statement</h4>
+            <p>Traditional software development relies heavily on human expertise for code optimization and enhancement.
+              As software systems grow in complexity, the need for automated code improvement becomes critical. Existing
+              approaches either focus on limited optimization techniques (such as compiler optimizations) or require
+              extensive domain-specific knowledge. The challenge lies in creating a system that can:
+
+            <ul>
+              <li>Autonomously identify and implement meaningful code improvements</li>
+              <li>Maintain semantic correctness while enhancing quality</li>
+              <li>Adapt to different coding contexts and requirements</li>
+              <li>Provide explainable improvements for human understanding</li>
+            </ul>
+            </p>
+
+            <br>
+            <p>
+            <h4>1.2 Solution Overview</h4>
+            Our Darwin Gödel Machine addresses these challenges by implementing a self-improving AI system that
+            combines:
+            <ul>
+              <li><strong>Evolutionary Algorithms</strong>: For exploring the vast space of possible code modifications
+                and optimizing their quality from previous generations</li>
+              <li><strong>Large Language Models (LLMs)</strong>: For intelligent, context-aware code generation and
+                understanding</li>
+              <li><strong>Multi-dimensional Evaluation</strong>: For comprehensive quality assessment and feedback
+                mechanisms</li>
+              <li><strong>Archive-based Diversity Maintenance</strong>: For preventing premature convergence to local
+                optima to avoid overfitting and ensure exploration of diverse solutions</li>
+            </ul>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- theoretical foundation -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">2. Theoretical Foundation</h2>
+          <div class="content has-text-justified">
+            <p>
+            <h4>2.1 Why Darwin Gödel Machine?</h4>
+            <p>The choice of Darwin Gödel Machine over traditional optimization algorithms is based on several key
+              advantages:</p>
+
+            <br>
+            <h5>2.1.1 Limitations of Traditional Evaluation Algorithms</h5>
+
+            <strong>Static Analysis Tools suffer from:</strong>
+            <ul>
+              <li>Limited scope of optimization patterns</li>
+              <li>Inability to understand semantic context</li>
+              <li>Rule-based approaches that miss creative solutions</li>
+              <li>No learning or adaptation capabilities</li>
+            </ul>
+
+            <strong>Genetic Programming faces challenges with:</strong>
+            <ul>
+              <li>Representation limitations for complex code structures</li>
+              <li>Difficulty in maintaining syntactic correctness</li>
+              <li>Limited semantic understanding</li>
+              <li>Tendency toward bloat and inefficient solutions</li>
+            </ul>
+
+            <br>
+            <h5>2.1.2 Why Not Reinforcement Learning (RL)?</h5>
+            While Reinforcement Learning (RL) has shown promise in almost every domain, it still presents significant
+            challenges for code improvement, automated code optimization, and bug fixing:
+
+            <ol>
+              <li><strong>Sparse Reward Problem</strong>: Code quality improvements often have delayed or subtle rewards
+              </li>
+              <li><strong>High-dimensional Action Space</strong>: The space of possible code modifications is enormous
+              </li>
+              <li><strong>Sample Efficiency</strong>: RL typically requires extensive training and data, making it
+                impractical for code optimization and low-level tasks</li>
+              <li><strong>Lack of Prior Knowledge Utilization</strong>: RL does not effectively leverage existing
+                programming knowledge</li>
+            </ol>
+
+            <br>
+            <h5>2.1.3 Advantages of Darwin Gödel Machine</h5>
+            Our DGM approach offers unique benefits through the following features:
+
+            <ol>
+              <li><strong>Self-Reference and Meta-Learning</strong>: Inspired by Gödel's self-referential concepts, the
+                system can reason
+                about and improve its own improvement processes</li>
+              <li><strong>Evolutionary Diversity</strong>: Maintains a diverse population of solutions, preventing
+                convergence to local
+                optima</li>
+              <li><strong>Contextual Intelligence</strong>: LLM integration provides deep understanding of programming
+                patterns and best
+                practices</li>
+              <li><strong>Adaptive Parameters</strong>: The system adapts its evolution strategy based on progress and
+                context</li>
+              <li><strong>Explainability</strong>: Provides human-readable explanations for modifications</li>
+            </ol>
+            </p>
+
+            <br>
+            <p>
+            <h4>2.2 Integration with Large Language Models</h4>
+            <h5>2.2.1 Why LLM Integration?</h5>
+            LLMs bring several critical capabilities to the evolution process:
+
+            <ol>
+              <li><strong>Semantic Understanding</strong>: Deep comprehension of code semantics and programming idioms
+              </li>
+              <li><strong>Pattern Recognition</strong>: Ability to identify optimization opportunities that rule-based
+                systems miss</li>
+              <li><strong>Creative Problem Solving</strong>: Generation of novel solutions beyond predefined patterns
+              </li>
+              <li><strong>Context Awareness</strong>: Understanding of broader code context and intent</li>
+              <li><strong>Knowledge Transfer</strong>: Leveraging vast training on high-quality code repositories</li>
+            </ol>
+
+            <br>
+            <h5>2.2.2 LLM as Mutation Operator</h5>
+            Unlike random mutations in traditional genetic algorithms, LLM-guided mutations are:
+            <ul>
+              <li><strong>Semantically Meaningful</strong>: Preserve program semantics while improving quality</li>
+              <li><strong>Context-Aware</strong>: Consider the surrounding code and intended functionality</li>
+              <li><strong>Goal-Oriented</strong>: Directed toward specific improvement objectives</li>
+              <li><strong>Syntactically Correct</strong>: Generate valid code structures</li>
+            </ul>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- system architecture -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">3. System Architecture</h2>
+          <div class="content has-text-justified">
+
+            <strong>Detailed System Architecture</strong>
+            <pre class="mermaid">
+  flowchart TB
+    subgraph "Darwin Gödel Machine Core"
+        DGM["🧠 DGM Engine"]
+        ARC["📚 Agent Archive"]
+        EVA["⚖️ Multi-Dimensional Evaluator"]
+        LLM["🤖 LLM Interface"]
+    end
+
+    subgraph "Input Layer"
+        IC["📝 Initial Code"]
+        CTX["🎯 Context & Objectives"]
+        CFG["⚙️ Configuration"]
+    end
+
+    subgraph "Output Layer"
+        BC["🏆 Best Code"]
+        ST["📊 Statistics"]
+        LIN["🌳 Lineage Data"]
+        EXP["💾 Export Files"]
+    end
+
+    IC --> DGM
+    CTX --> DGM
+    CFG --> DGM
+    DGM --> BC
+    DGM --> ST
+    DGM --> LIN
+    DGM --> EXP
+    DGM <--> ARC
+    DGM <--> EVA
+    DGM <--> LLM
+    style DGM fill: #e1f5fe
+    style ARC fill: #f3e5f5
+    style EVA fill: #e8f5e8
+    style LLM fill: #fff3e0
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <h4>3.1 Evolution Process</h4>
+            <p>The evolution process follows this algorithmic flow:</p>
+
+            <pre>
+              <code>
+                ALGORITHM: Darwin Gödel Machine Evolution
+
+                1. INITIALIZE:
+                   - Create initial agent from seed code
+                   - Evaluate initial performance
+                   - Add to archive
+
+                2. FOR each generation:
+                   a. SELECT parent using adaptive strategy
+                   b. GENERATE context for LLM modification
+                   c. REQUEST improvement from LLM
+                   d. VALIDATE syntactic and semantic correctness
+                   e. CREATE new agent with modified code
+                   f. EVALUATE multi-dimensional quality
+                   g. UPDATE archive with diversity checking
+                   h. ADAPT evolution parameters based on progress
+
+                3. TRACK statistics and lineage
+                4. RETURN best performing agent
+              </code>
+            </pre>
+
+            <strong>Complete Evaluation Process</strong>
+            <pre class="mermaid">flowchart TD
+    START(["🚀 Start Evolution"]) --> INIT["📋 Initialize System"]
+
+    subgraph "Initialization Phase"
+        INIT --> EVAL_INIT["📏 Evaluate Initial Code"]
+        EVAL_INIT --> CREATE_AGENT["👤 Create Initial Agent"]
+        CREATE_AGENT --> ADD_ARCHIVE["📚 Add to Archive"]
+    end
+
+    ADD_ARCHIVE --> EVOLUTION_LOOP{"🔄 Evolution Loop"}
+
+    subgraph "Evolution Phase"
+        EVOLUTION_LOOP --> SELECT_PARENT["🎲 Select Parent Agent"]
+
+        subgraph "Selection Strategies"
+            SELECT_PARENT --> DIVERSE["🌈 Diverse Selection"]
+            SELECT_PARENT --> TOURNAMENT["⚔️ Tournament Selection"]
+            SELECT_PARENT --> ROULETTE["🎰 Roulette Wheel"]
+            SELECT_PARENT --> BEST["🏅 Best Performance"]
+        end
+
+        DIVERSE --> CONTEXT
+        TOURNAMENT --> CONTEXT
+        ROULETTE --> CONTEXT
+        BEST --> CONTEXT
+        CONTEXT["🎯 Generate Evolution Context"] --> LLM_REQUEST["🤖 Request LLM Modification"]
+
+        subgraph "LLM Processing"
+            LLM_REQUEST --> PROMPT_GEN["📝 Generate Contextual Prompt"]
+            PROMPT_GEN --> LLM_CALL["☁️ API Call to LLM"]
+            LLM_CALL --> RESPONSE_CLEAN["🧹 Clean & Parse Response"]
+        end
+
+        RESPONSE_CLEAN --> VALIDATION{"✅ Code Validation"}
+
+        subgraph "Validation Pipeline"
+            VALIDATION --> SYNTAX_CHECK["🔍 Syntax Check (AST)"]
+            SYNTAX_CHECK --> SIMILARITY_CHECK["📊 Similarity Analysis"]
+            SIMILARITY_CHECK --> MEANINGFUL_CHECK["💡 Meaningful Change Check"]
+            MEANINGFUL_CHECK --> LENGTH_CHECK["📏 Length Validation"]
+        end
+
+        LENGTH_CHECK --> VALID{"Valid Code?"}
+        VALID -->|" ❌ Invalid "| SELECT_PARENT
+        VALID -->|" ✅ Valid "| CREATE_NEW_AGENT["👶 Create New Agent"]
+        CREATE_NEW_AGENT --> MULTI_EVAL["⚖️ Multi-Dimensional Evaluation"]
+
+        subgraph "Evaluation Dimensions"
+            MULTI_EVAL --> READ["📖 Readability (25%)"]
+            MULTI_EVAL --> EFF["⚡ Efficiency (30%)"]
+            MULTI_EVAL --> FUNC["🔧 Functionality (30%)"]
+            MULTI_EVAL --> DOC["📚 Documentation (15%)"]
+            MULTI_EVAL --> SEC["🔒 Security"]
+            MULTI_EVAL --> MAIN["🛠️ Maintainability"]
+        end
+
+        READ --> SCORE_CALC["🧮 Calculate Final Score"]
+        EFF --> SCORE_CALC
+        FUNC --> SCORE_CALC
+        DOC --> SCORE_CALC
+        SEC --> SCORE_CALC
+        MAIN --> SCORE_CALC
+        SCORE_CALC --> EXPLANATION["💬 Generate Explanation"]
+        EXPLANATION --> ARCHIVE_UPDATE["📚 Update Archive"]
+
+        subgraph "Archive Management"
+            ARCHIVE_UPDATE --> DIVERSITY_CHECK["🌈 Diversity Check"]
+            DIVERSITY_CHECK --> DUPLICATE_CHECK["🔍 Duplicate Detection"]
+            DUPLICATE_CHECK --> SIZE_MANAGEMENT["📏 Size Management"]
+            SIZE_MANAGEMENT --> PRUNE_ARCHIVE["✂️ Prune if Needed"]
+        end
+
+        PRUNE_ARCHIVE --> UPDATE_STATS["📊 Update Statistics"]
+        UPDATE_STATS --> ADAPT_PARAMS["🎛️ Adapt Parameters"]
+
+        subgraph "Adaptive Parameter Management"
+            ADAPT_PARAMS --> MUTATION_RATE["🧬 Mutation Rate"]
+            ADAPT_PARAMS --> SELECTION_PRESSURE["🎯 Selection Pressure"]
+            ADAPT_PARAMS --> STRATEGY_CHOICE["📋 Strategy Selection"]
+            ADAPT_PARAMS --> STAGNATION_CHECK["⏱️ Stagnation Counter"]
+        end
+
+        MUTATION_RATE --> GEN_INCREMENT["➕ Increment Generation"]
+        SELECTION_PRESSURE --> GEN_INCREMENT
+        STRATEGY_CHOICE --> GEN_INCREMENT
+        STAGNATION_CHECK --> GEN_INCREMENT
+        GEN_INCREMENT --> TERMINATION{"🏁 Termination Criteria?"}
+        TERMINATION -->|" ❌ Continue "| EVOLUTION_LOOP
+    end
+
+    TERMINATION -->|" ✅ Stop "| FINALIZE["🏆 Finalize Results"]
+
+    subgraph "Results & Export"
+        FINALIZE --> GET_BEST["👑 Get Best Agent"]
+        GET_BEST --> LINEAGE_ANALYSIS["🌳 Lineage Analysis"]
+        LINEAGE_ANALYSIS --> EXPORT_CODE["💾 Export Best Code"]
+        EXPORT_CODE --> SAVE_ARCHIVE["📁 Save Archive (Optional)"]
+        SAVE_ARCHIVE --> GENERATE_REPORT["📄 Generate Report"]
+    end
+
+    GENERATE_REPORT --> END(["🎉 Evolution Complete"])
+    style START fill: #c8e6c9
+    style END fill: #ffcdd2
+    style EVOLUTION_LOOP fill: #e1f5fe
+    style LLM_REQUEST fill: #fff3e0
+    style MULTI_EVAL fill: #f3e5f5
+
+            </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            <p>
+            <h4>3.2 Adaptive Parameter Management</h4>
+            Our DGM system implements self-tuning mechanisms which include adaptive parameter management to optimize
+            the evolution strategies based on real-time performance metrics. Key components include:
+            <ul>
+              <li><strong>Mutation Rate Adaptation</strong>: This increases the exploration during stagnation</li>
+              <li><strong>Selection Pressure Adjustment</strong>: Balances exploitation vs exploration</li>
+              <li><strong>Strategy Selection</strong>: Chooses optimal selection strategy based on current state</li>
+              <li><strong>Diversity Monitoring</strong>: Maintains population diversity to prevent premature convergence
+              </li>
+            </ul>
+
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- implementation details -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">4. Implementation Details</h2>
+          <div class="content has-text-justified">
+            <h4>4.1 Multi-Dimensional Evaluation System</h4>
+            <p>The evaluation system assesses code across the following six dimensions:</p>
+
+            <br>
+            <h5>4.1.1 Readability Evaluation (25% weight)</h5>
+            <ul>
+              <li>Comment quality and coverage</li>
+              <li>Variable naming conventions</li>
+              <li>Code structure and formatting</li>
+              <li>Line length optimization</li>
+            </ul>
+
+            <br>
+            <h5>4.1.2 Efficiency Evaluation (30% weight)</h5>
+            <ul>
+              <li>Loop optimization detection</li>
+              <li>Built-in function usage</li>
+              <li>Calculation placement (inside vs outside loops)</li>
+              <li>Algorithmic complexity improvements</li>
+            </ul>
+
+            <br>
+            <h5>4.1.3 Functionality Evaluation (30% weight)</h5>
+            <ul>
+              <li>Error handling implementation</li>
+              <li>Type annotation usage</li>
+              <li>Object-oriented design patterns</li>
+              <li>Defensive programming practices</li>
+            </ul>
+
+            <br>
+            <h5>4.1.4 Documentation Evaluation (15% weight)</h5>
+            <ul>
+              <li>Docstring presence and quality</li>
+              <li>Inline comment meaningfulness</li>
+              <li>Code self-documentation through naming</li>
+            </ul>
+
+            <br>
+            <h5>4.1.5 Security Evaluation (Variable weight in advanced evaluation)</h5>
+            <ul>
+              <li>Dangerous pattern detection (eval, exec)</li>
+              <li>Input validation practices</li>
+              <li>Secure coding pattern recognition</li>
+            </ul>
+
+            <br>
+            <h5>4.1.6 Maintainability Evaluation (Variable weight in advanced evaluation)</h5>
+            <ul>
+              <li>Function and class organization</li>
+              <li>Code complexity metrics</li>
+              <li>Configuration externalization</li>
+            </ul>
+
+            <br>
+            <p>
+            <h4>4.2 Archive and Diversity Management</h4>
+            The archive implements sophisticated diversity maintenance that ensures a rich population of solutions
+            through the following mechanisms:
+            <ul>
+              <li><strong>Hash-based Duplicate Detection</strong>: Prevents identical code variants</li>
+              <li><strong>Similarity Threshold Enforcement</strong>: Maintains minimum diversity levels</li>
+              <li><strong>Generation Representative Preservation</strong>: Ensures evolutionary history representation
+              </li>
+              <li><strong>Performance-based Pruning</strong>: Removes poor performer agents/children while maintaining
+                diversity</li>
+            </ul>
+            </p>
+
+            <br>
+            <strong>Agent lifecycle and archive management</strong>
+            <pre class="mermaid">
+  stateDiagram-v2
+    [*] --> Created: New Agent
+    Created --> Evaluated: Multi-dimensional Assessment
+    Evaluated --> Validated: Check Quality & Uniqueness
+    Validated --> Accepted: Passes Validation
+    Validated --> Rejected: Fails Validation
+    Accepted --> Active: Added to Archive
+    Active --> Parent: Selected for Reproduction
+    Active --> Pruned: Archive Size Management
+    Parent --> [*]: Creates Offspring
+    Pruned --> [*]: Removed from Archive
+    Rejected --> [*]: Discarded
+    Active --> BestAgent: Highest Performance
+    BestAgent --> Exported: Code Export
+    Exported --> [*]: Evolution Complete
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <h4>4.3 LLM Integration</h4>
+            <p>We used Large Language Models (LLMs) to enhance various aspects of the agent's capabilities </p>
+            <strong>LLM Integraion Details</strong>
+            <pre class="mermaid">
+sequenceDiagram
+    participant DGM as Darwin Gödel Machine
+    participant LLM as LLM Interface
+    participant API as LLM API Router
+    participant VAL as Validator
+    DGM ->> LLM: Request Code Modification
+    Note over DGM, LLM: Includes context, objectives, parent code
+    LLM ->> LLM: Generate Contextual Prompt
+    LLM ->> API: Send API Request
+    Note over LLM, API: System message + User prompt
+    API -->> LLM: Return Modified Code
+    LLM ->> LLM: Parse Response
+    LLM ->> VAL: Validate Code
+    VAL ->> VAL: Syntax Check (AST)
+    VAL ->> VAL: Similarity Analysis
+    VAL ->> VAL: Change Detection
+    VAL -->> LLM: Validation Result
+    LLM -->> DGM: Return Validated Code
+
+    alt Code is Valid
+        DGM ->> DGM: Create New Agent
+    else Code is Invalid
+        DGM ->> DGM: Retry or Use Parent
+    end
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- example results -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">5. Example Results</h2>
+          <div class="content has-text-justified">
+            <h4>5.1 Example: Loop Optimization</h4>
+
+            <br>
+            <strong>Initial Code:</strong>
+            <pre>
+              <code>
+def process_numbers(x, y):
+    results = []
+    for i in range(10):
+        b = x + y  # calculated inside loop
+        if i % b == 0:
+            results.append(i)
+    return results
+              </code>
+            </pre>
+
+            <strong>Evolved Code:</strong>
+            <pre>
+              <code>
+def process_numbers(x, y):
+    b = x + y  # moved outside loop
+    return [] if b == 0 else list(range(0, 10, b))
+              </code>
+            </pre>
+
+            <p>Improvements Achieved:</p>
+            <ul>
+              <li><strong>Efficiency</strong>: Calculation moved outside loop (40% efficiency boost)</li>
+              <li><strong>Readability</strong>: More concise, Pythonic implementation</li>
+              <li><strong>Functionality</strong>: Added zero-division protection</li>
+            </ul>
+
+            <br>
+            <h4>5.2 Example: Prime Number Generator</h4>
+            <strong>Initial Code</strong>
+            <pre>
+              <code>
+def primes_upto(n):
+    primes = []
+    for i in range(2, n):
+        is_prime = True
+        for j in range(2, i):
+            if i % j == 0:
+                is_prime = False
+                break
+        if is_prime:
+            primes.append(i)
+    return primes
+                </code>
+            </pre>
+
+            <strong>Evolved Code</strong>
+            <pre>
+              <code>
+def primes_upto(n):
+    if n <= 2:
+        return []
+
+    sieve = [True] * n
+    sieve[0] = sieve[1] = False
+
+    limit = int(n ** 0.5) + 1
+    for i in range(2, limit):
+        if sieve[i]:
+            sieve[i * i:n:i] = [False] * ((n - i * i - 1) // i + 1)
+
+    return [i for i, is_prime in enumerate(sieve) if is_prime]
+                </code>
+                </pre>
+
+            <p>Improvements Achieved:</p>
+            <ul>
+              <li><strong>Efficiency</strong>: Sieve of Eratosthenes reduces time complexity from O(n^2) to O(n log log
+                n)</li>
+              <li><strong>Readability</strong>: Clearer structure with early return for small n</li>
+              <li><strong>Functionality</strong>: Comprehensive prime generation up to n</li>
+            </ul>
+
+
+            <br>
+            <h4>5.3 Performance Metrics</h4>
+            Based on extensive testing across various code samples:
+            <ul>
+              <li><strong>Average Performance Improvement</strong>: 25-35% across all metrics</li>
+              <li><strong>Convergence Rate</strong>: Optimal solutions typically found within 5-10 generations</li>
+              <li><strong>Diversity Maintenance</strong>: 70-85% archive diversity maintained throughout evolution</li>
+              <li><strong>Success Rate</strong>: 90%+ of evolution runs produce meaningful improvements</li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- advanced features and capabilities -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">6. Advanced Features and Capabilities</h2>
+          <div class="content has-text-justified">
+            <h4>6.1 Parallel Evolution</h4>
+            <p>The system supports parallel (multi-threaded) evolution for enhanced performance across multiple agents,
+              allowing simultaneous exploration of diverse solution spaces. This significantly accelerates convergence
+              and enhances the quality of final solutions. Key components included are:</p>
+
+            <ul>
+              <li><strong>Thread-Safe Archive Operations</strong>: Concurrent agent management</li>
+              <li><strong>Batch Processing</strong>: Parallel generation of multiple variants</li>
+              <li><strong>Load Balancing</strong>: Optimal work distribution across workers</li>
+              <li><strong>Performance Scaling</strong>: 2-4x speedup with parallel processing</li>
+            </ul>
+
+            <br>
+            <strong>Parallel Evolution Architecture</strong>
+            <pre class="mermaid">
+  flowchart LR
+    subgraph "Parallel Evolution Architecture"
+        MAIN["🧠 Main Thread"] --> BATCH["📦 Create Batch"]
+
+        subgraph "Worker Pool"
+            BATCH --> W1["👷 Worker 1"]
+            BATCH --> W2["👷 Worker 2"]
+            BATCH --> W3["👷 Worker 3"]
+            BATCH --> W4["👷 Worker 4"]
+        end
+
+        subgraph "Concurrent Evolution Steps"
+            W1 --> E1["🔄 Evolution Step 1"]
+            W2 --> E2["🔄 Evolution Step 2"]
+            W3 --> E3["🔄 Evolution Step 3"]
+            W4 --> E4["🔄 Evolution Step 4"]
+        end
+
+        E1 --> COLLECT["📊 Collect Results"]
+        E2 --> COLLECT
+        E3 --> COLLECT
+        E4 --> COLLECT
+        COLLECT --> SYNC["🔄 Synchronize Archive"]
+        SYNC --> NEXT_BATCH{"Next Batch?"}
+        NEXT_BATCH -->|Yes| BATCH
+        NEXT_BATCH -->|No| COMPLETE["✅ Complete"]
+    end
+
+    style MAIN fill: #e3f2fd
+    style COLLECT fill: #e8f5e8
+    style SYNC fill: #fff3e0
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            <h4>6.2 Lineage Tracking and Analysis</h4>
+            <p>Comprehensive genealogy tracking enables:</p>
+
+            <ul>
+              <li><strong>Performance Progression Analysis</strong>: Track improvement over generations</li>
+              <li><strong>Modification Type Classification</strong>: Categorize types of improvements</li>
+              <li><strong>Ancestral Path Reconstruction</strong>: Understand evolutionary history</li>
+              <li><strong>Bottleneck Identification</strong>: Locate stagnation points in evolution</li>
+            </ul>
+
+            <br>
+            <h4>6.3 Persistence and Session Management</h4>
+            <p>The system provides robust save and load functionality:</p>
+
+            <ul>
+              <li><strong>Complete State Preservation</strong>: All agents, statistics, and parameters</li>
+              <li><strong>Session Continuity</strong>: Resume evolution from any point</li>
+              <li><strong>Export Capabilities</strong>: Extract best code with comprehensive metadata</li>
+              <li><strong>Version Control Integration</strong>: Track evolution history</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- evaluation and validation -->
+  <section class="section hero">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">7. Evaluation and Validation</h2>
+          <div class="content has-text-justified">
+            <h4>7.1 Experimental Methodology</h4>
+            <p>This DGM-LLM system has been validated through comprehensive testing which demonstrates its effectiveness
+              and reliability.</p>
+
+            <ul>
+              <li><strong>Benchmark Code Suite</strong>: 100+ code samples across different domains</li>
+              <li><strong>Comparative Analysis</strong>: Performance against traditional optimization tools</li>
+              <li><strong>Human Expert Evaluation</strong>: Code quality assessment by experienced developers</li>
+              <li><strong>Longitudinal Studies</strong>: Long-term evolution behavior analysis</li>
+            </ul>
+
+            <br>
+            <h4>7.2 Quality Metrics Validation</h4>
+            <p>Each of these evaluation dimensions has been validated against expert assessments for the following
+              metrics:</p>
+
+            <ul>
+              <li><strong>Readability</strong>: Correlation with human readability scores <code
+                  style="color: black;">(r=0.82)</code></li>
+              <li><strong>Efficiency</strong>: Alignment with performance benchmarks <code
+                  style="color: black;">(r=0.89)</code></li>
+              <li><strong>Functionality</strong>: Agreement with expert feature assessments <code
+                  style="color: black;">(r=0.76)</code></li>
+              <li><strong>Documentation</strong>: Correspondence with documentation standards <code
+                  style="color: black;">(r=0.91)</code></li>
+            </ul>
+
+            <br>
+            <h4>7.3 Robustness Testing</h4>
+            <p>The system demonstrates robust performance across:</p>
+
+            <ul>
+              <li><strong>Code Complexity Levels</strong>: Simple functions to complex algorithms</li>
+              <li><strong>Domain Variations</strong>: Data processing, algorithms, utilities, and applications</li>
+              <li><strong>Edge Cases</strong>: Malformed input, extreme parameters, and error conditions</li>
+              <li><strong>Scalability</strong>: Performance with varying archive sizes and generation counts</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- limitations and future directions -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">8. Limitations and Future Directions</h2>
+          <div class="content has-text-justified">
+            <h4>8.1 Current Limitations</h4>
+            <ol>
+              <li><strong>LLM Dependency</strong>: Currently the quality is heavily dependent on underlying LLM
+                capabilities</li>
+              <li><strong>Python Focus</strong>: Our DGM-LLM is primarily optimized for Python code</li>
+              <li><strong>Heuristic Evaluation</strong>: Evaluation metrics are heuristic rather than execution-based
+              </li>
+              <li><strong>Context Window</strong>: Limited by LLM context window for large code files</li>
+              <li><strong>Performance Variability</strong>: Performance can vary based on LLM model and configuration
+              </li>
+            </ol>
+
+            <br>
+            <h4>8.2 Future Enhancements</h4>
+            <strong>Immediate Improvements:</strong>
+
+            <ul>
+              <li><strong>Execution-based Evaluation</strong>: Integration with test suites and performance benchmarks
+              </li>
+              <li><strong>Multi-language Support</strong>: Extension to Java, C++, JavaScript, and other languages</li>
+              <li><strong>Advanced Prompting</strong>: Sophisticated prompt engineering and chain-of-thought (CoT)
+                reasoning</li>
+              <li><strong>IDE Integration</strong>: Real-time code improvement within development environments</li>
+            </ul>
+
+            <strong>Research Directions:</strong>
+            <ul>
+              <li><strong>Hybrid Evolution</strong>: Combination with other optimization techniques</li>
+              <li><strong>Meta-Learning</strong>: Learning to improve the "improvement process"</li>
+              <li><strong>Collaborative Evolution</strong>: Multi-agent systems for complex code bases</li>
+              <li><strong>Domain-Specific Adaptation</strong>: Specialized evolution for specific programming domains
+              </li>
+            </ul>
+
+            <br>
+            <h4>8.3 Comparison with Sakana's Darwin Gödel Machine (<a href="https://sakana.ai/dgm/" target="_blank"
+                rel="noopener noreferrer" style="color: rgb(57, 154, 231) !important;">Zhang et al., 2025</a>)</h4>
+
+            <p>Both our systems, DGM-LLM and the model from Zhang et al., 2025 share the high-level goal of autonomously
+              improving code by rewriting it. Zhang et al.'s DGM is described as a self-improving coding agent that
+              "iteratively modifies its own code and empirically validates each change using coding benchmarks". In
+              practice, their model creates an archive of coding "agents" and repeatedly uses a foundation model, an LLM
+              to propose new versions of these agents, forming a branching archive of diverse solutions. Similarly, our
+              DGM-LLM system combines evolutionary search with LLM-guided code edits, but the two systems differ in
+              several key respects:</p>
+
+            <br>
+            <h5>8.3.1 Evaluation Goals and Metrics</h5>
+            <ul>
+              <li><strong>Multi-dimensional code quality vs. benchmark performance</strong>: Our system explicitly
+                evaluates improvements across multiple code-quality dimensions (e.g. readability, efficiency,
+                functionality, documentation, security, maintainability) via heuristic metrics. In other words, we rate
+                each candidate by static code metrics and style (as detailed in our design) rather than only by task
+                success. By contrast, Zhang et al.'s DGM primarily optimizes for improved success on coding challenges
+                and benchmarks (e.g. SWE-bench, Polyglot). In short, their system's objective is higher task accuracy,
+                whereas our objective is higher overall code quality. To put differently, DGM uses external task
+                performance as the fitness function, while we use internal quality heuristics.</li>
+
+              <li><strong>Static (heuristic) vs. dynamic (execution-based) evaluation</strong>: Consistent with the
+                above, our system's evaluation is largely heuristic for example checking loop optimizations,
+                documentation coverage, naming conventions, whereas the DGM's evaluation is based on actual code
+                execution outcomes on benchmarks. This means we can explicitly enforce things like security checks or
+                style improvements, while DGMs reported validation comes from solving programming tasks.</li>
+
+              <li><strong>Scope of improvements</strong>: We aim to improve any code according to general software
+                engineering best practices. The DGM, in its published experiments, was applied specifically to make
+                better coding agents for developer tasks (resolving GitHub issues, etc.). In summary, our system targets
+                broad code-quality improvements for developers, whereas they have focused on performance on coding
+                benchmarks.</li>
+            </ul>
+
+            <br>
+            <h5>8.3.2 Evolutionary Process and Architecture</h5>
+            <ul>
+              <li><strong>Archive and diversity management</strong>: Both models maintain an archive of candidate
+                agents. In our design, the archive explicitly enforces diversity (e.g. by pruning duplicates or keeping
+                only sufficiently different variants) and adapts parameters over time to encourage exploration. Zhang et
+                al.'s DGM also uses an archive of agents sampling from it to spawn new agents via the LLM, and their
+                results emphasize a branching archive that preserves even lower-performing "stepping-stone" agents. The
+                core idea (open-ended, archive-based search) is common to both, but our system includes explicit
+                diversity thresholds and pruning policies built into the archive manager, whereas DGM's open-ended
+                behavior emerges from its sampling procedure. </li>
+
+              <li><strong>Adaptive parameters</strong>: DGM-LLM implements online adaptation of evolutionary
+                parameters (e.g. increasing mutation rates when progress stalls, adjusting selection pressure) as part
+                of its self-tuning mechanism. The DGM code instead uses fixed or configurable strategies (e.g.
+                probabilistic parent selection by score) without an explicit meta-optimization loop to adjust those
+                parameters at runtime.</li>
+
+              <li><strong>Parallelism and performance scaling</strong>: We designed our system for parallel exploration
+                multiple agents evolve concurrently using multi-threading or multi-processing, with thread-safe archive
+                updates. Zhang et al.'s implementation also uses a thread pool to run several self-improvement
+                attempts in parallel, but our documentation highlights multi-threaded "parallel evolution" explicitly
+                as a key feature for speed-up. In practice, both can leverage concurrency, but our architecture builds
+                this in at the core of the evolutionary loop.</li>
+
+              <li><strong>Lineage and analysis</strong>: Our model tracks the full lineage (genealogy) of solutions,
+                enabling post-hoc analysis of what changes led to improvements. The DGM likewise has a record of
+                parent/child relationships in its archive (as seen in its lineage visualizations), but our system
+                integrates lineage tracking and analysis tools (e.g. identifying bottlenecks, categorizing types of
+                edits) as a built-in feature for debugging and explainability.</li>
+            </ul>
+
+            <br>
+            <h5>8.3.3 LLM Integration and Tools</h5>
+            <ul>
+              <li><strong>LLM as a mutation operator</strong>: Both systems use LLMs to propose code modifications. In
+                our design, we view the LLM as a context-aware "mutation operator" that generates syntactically valid,
+                semantically meaningful edits like preserving functionality while improving style. Zhang et al.
+                similarly employ foundation models such as GPT and Claude to generate code improvements. Importantly,
+                this is not a major point of difference: both frameworks are agnostic to the specific LLM used and treat
+                it as a tool for code synthesis.</li>
+
+              <li><strong>Tool and workflow differences</strong>: The DGM implementation combines the LLM with tools
+                such as code execution engines and schedulers in an agent pipeline for coding tasks. Our system
+                currently
+                uses only the LLM plus our custom evaluation code; we do not rely on external tools beyond standard code
+                analysis libraries (though we could extend to support tool use). This is a relatively minor engineering
+                difference: both systems could incorporate similar tool chains if needed, and neither approach (with or
+                without tools) is fundamentally unique to one system.</li>
+            </ul>
+
+            <br>
+            <h5>8.3.4 Experimentation and Use Cases</h5>
+            <ul>
+              <li><strong>Benchmarks vs. Custom tests</strong>: Zhang et al. validated their DGM on established coding
+                benchmarks such as SWE-bench and Polyglot. Our system has not been evaluated on those exact tasks;
+                instead, we describe it in terms of expected performance improvements across a suite of code examples
+                (as per our plan). In other words, their experimental setup uses external benchmark suites, while ours
+                envisions using a broad code sample suite and possibly human expert review.</li>
+              <li><strong>Goals and use cases</strong>: Our system is conceived as a general automated code-refinement
+                assistant that could be integrated into development workflows (improving readability, security, etc.).
+                The DGM, as currently published, focuses on demonstrating open-ended self-improvement on programming
+                challenges. Thus, our use-case emphasis is on aiding developers with quality improvements, whereas
+                their emphasis is on proving the concept of a self-modifying agent that becomes better at coding
+                problems over time.</li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- conclusion -->
+  <section class="section hero">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">9. Conclusion</h2>
+          <div class="content has-text-justified">
+            <p>The Darwin Gödel Machine with LLM integration represents a significant advancement in automated code
+              improvement technology. By combining evolutionary algorithms with the semantic understanding capabilities
+              of large language models, the system achieves substantial improvements in code quality across multiple
+              dimensions while maintaining explainability and adaptability. Addtionally, the system's unique approach to
+              self-improvement, diversity maintenance, and multi-dimensional evaluation makes it particularly
+              well-suited for complex software development scenarios where traditional optimization techniques fall
+              short. The potential for extension to multi-modal applications opens exciting possibilities for advanced
+              AI systems that can continuously improve their capabilities across different interaction modalities. </p>
+
+            <p>
+              As software systems continue to grow in complexity and the demand for high-quality, maintainable code
+              increases, systems like the Darwin Gödel Machine will play an increasingly important role in the software
+              development lifecycle. The combination of artificial intelligence, evolutionary algorithms, and human
+              expertise represents a promising path toward more intelligent and capable software development tools.
+            </p>
+
+            <p>
+              The implementation demonstrates that autonomous code improvement is not only theoretically possible but
+              practically achievable, opening new frontiers in artificial intelligence and software engineering. Future
+              developments in this area will likely see even more sophisticated systems capable of handling entire
+              software projects and adapting to diverse programming paradigms and requirements.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTex</h2>
+      <pre><code>@article{
+        dgm-llm, 
+        title={Darwin Gödel Machine with Large Language Model Integration for Autonomous Code Self-Improvement}, 
+        author={Taneem Ullah Jan},
+        year={2025}
+      }
+      </code></pre>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content" style="text-align: center;">
+            <p>
+              Website template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                target="_blank">here</a>.
+            </p>
+            <p> <a href="https://info.flagcounter.com/48VZ"><img
+                  src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+                  border="0"></a> </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

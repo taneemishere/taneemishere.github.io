@@ -2,156 +2,216 @@
 <html>
 
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+    <meta charset="utf-8">
+
     <meta name="keywords" content="lipsync; head avatars; audio-to-face; digital humans">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>lipsync2</title>
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
-    <style type="text/css">
-        #wrap {
-            width: 800px;
-            margin-right: auto;
-            margin-left: auto;
-        }
+    <link rel="stylesheet" href="./css/bulma.min.css">
+    <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
-        #wrap2 {
-            width: 800px;
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-        .carousel {
-            width: 80%;
-            max-width: 600px;
-            margin: auto;
-            overflow: auto;
-            border: 1px solid #000;
-            border-radius: 2px;
-        }
-
-        .carousel-content {
-            display: flex;
-            flex-wrap: nowrap;
-        }
-
-        .carousel-content iframe {
-            flex: 0 0 auto;
-            width: 600px;
-            height: 340px;
-            border: none;
-            border-right: 0.5px solid #ddd;
-            border-left: 0.5px solid #ddd;
-        }
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script defer src="./js/fontawesome.all.min.js"></script>
+    <script src="./js/bulma-carousel.min.js"></script>
+    <script src="./js/bulma-slider.min.js"></script>
+    <script src="./js/index.js"></script>
 </head>
 
-<body bgcolor="#FFFFFF">
-    <div id="wrap">
-        <br>
-        <h1 align="center"> <span style="color: red;">lipsync2</span>: Talking Face Generation with Most Accurate Lip
-            Synchronization</h1>
-    </div>
-    <br>
-    <center>
-        <p>research and development work conducted at <a href="https://www.bhuman.ai">BHumanAI</a></p>
-        <p>by</p>
-        <p><a href="../index.html">Taneem Ullah Jan</a></p>
+<body>
 
-    </center>
-
-    <br>
-    <div id="wrap">
-        <center>
-            <div><img src="./images/lipsync.png" width="100%" height="100%" border="0"></div>
-        </center>
-
-        <hr boader="1">
-        <h3>The Bigger Question!</h3>
-        <p align="justify">Why do we call it lipsync2? Where's the first one if this is the second...? The answer is
-            that this is our second model in the series of lip synchronization models. The first one was a great
-            success, but it had its limitations, which we've overcome in this version. We've made it more accurate, more
-            robust, and more efficient.</p>
-
-
-        <hr boader="1">
-        <h3>The Result</h3>
-
-        <center>
-            <div id="wrap"><iframe src="https://www.youtube.com/embed/iSf1JBZff5E?rel=0" frameborder="0"
-                    allow="autoplay; encrypted-media" allowfullscreen style="width: 600px;" height="400px"></iframe>
-            </div>
-            <br>
-            <hr boader="1">
-            <p align="justify">Starting on an immersive experience with our lip synchronization model, where we set new
-                standards in the creation of videos that generate faces talking with accurate lip movements. lipsync2 is
-                our answer to the challenges left unsolved in previous works. The first big win is getting the
-                synchronization of lips and speech just right. It's a game-changer because this is the key to making the
-                characters in the videos convincing. If the lip movements are off, the whole video feels fake, isn't it?
-                Therefore, that is what we have managed to reduce. However, the magic of lipsync2 does not end with
-                lip-syncing. What makes it extra special is its ability to understand and replicate the full range of
-                facial movements from the original video. It is not just about getting the words right; it is about
-                preserving the complete expressions and personality. This attention to detail means the end product is
-                not just a tedious avatar but a true reflection of the individual's unique way of speaking and
-                expression.</p>
-
-            <p align="justify"> <strong>What's more!</strong><br>
-                Well, lipsync2 is a good performer when it comes to long audio sequences. Previously, models, especially
-                ours, would lack when the audio track was too lengthy, messing up the sync and disrupting the video
-                realism. That problem is now in our history. Lipsync2 handles long signals of speech with ease, keeping
-                everything in sync and maintaining a smooth, natural feel throughout.</p>
-
-            <p align="justify">
-                But there is even more to it. This project wasn't just about fixing bugs or an increment to the
-                previous; it was about taking the whole work to a new level. We looked at all the feedback from the
-                first version and used it to make something not just better but innovative. We are talking about a tool
-                that transforms the way we produce and perceive digital and personalized communication, making it more
-                vivid and enjoyable.</p>
-
-        </center>
-
-        <hr boader="1">
-        <h3>Some Results</h3>
-        <div id="wrap">
-            <div class="carousel">
-                <div class="carousel-content">
-                    <iframe src="https://www.youtube.com/embed/Iv4EjbDoGLk?rel=0" allow="autoplay; encrypted-media"
-                        allowfullscreen style="width: 600px;" height="400px">
-                    </iframe>
-                    <iframe src="https://www.youtube.com/embed/xYpCn5VF_Q0?rel=0" allow="autoplay; encrypted-media"
-                        allowfullscreen style="width: 600px;" height="400px">
-                    </iframe>
-                    <iframe src="https://www.youtube.com/embed/srUHaApBUiw?rel=0" allow="autoplay; encrypted-media"
-                        allowfullscreen style="width: 600px;" height="400px">
-                    </iframe>
-                    <iframe src="https://www.youtube.com/embed/9gjm2bTq6_I?rel=0" allow="autoplay; encrypted-media"
-                        allowfullscreen style="width: 600px;" height="400px">
-                    </iframe>
-                    <iframe src="https://www.youtube.com/embed/JW5ggTrFACg?rel=0" allow="autoplay; encrypted-media"
-                        allowfullscreen style="width: 600px;" height="400px">
-                    </iframe>
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title"><span style="color: red;">lipsync2</span>: Talking Face
+                            Generation with Most Accurate Lip Synchronization</h1>
+                        <br>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">research and development work conducted at <a
+                                    href="https://www.bhuman.ai" target="_blank">BHuman AI</a></span>
+                        </div>
+                        <br>
+                        <p>by</p>
+                        <br>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://taneemishere.github.io" target="_blank">
+                                    Taneem Ullah Jan</a></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <br>
+        </div>
+        </div>
+    </section>
 
-        <hr boader="1">
-        <h3>BibTeX Citation</h3>
+    <!-- architecture image -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <img src="./images/lipsync.png" alt="model architecture of lipsync2" />
+            </div>
+        </div>
+    </section>
 
-        <div style="padding: 10px; margin-bottom: 10px; border: 1px solid #333333;">
-            <pre>@article{
-        lipsync2-bhumanai,
-        title={lipsync2: Talking Face Generation with Most Accurate Lip Synchronization},
+    <!-- model description -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <h2 class="title is-3">The Bigger Question!</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            Why do we call it lipsync2? Where's the first one if this is the second...? The answer is
+                            that this is our second model in the series of lip synchronization models. The first one was
+                            a great success, but it had its limitations, which we've overcome in this version. We've
+                            made it more accurate, more robust, and more efficient.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- youtube result video -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+
+                <h2 class="title is-3">The Result</h2>
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-four-fifths">
+                        <div class="publication-video">
+                            <iframe src="https://www.youtube.com/embed/iSf1JBZff5E?rel=0" frameborder="0"
+                                allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- some more description -->
+    <section class="section hero is-light">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-four-fifths">
+                    <!-- <h2 class="title is-3"></h2> -->
+                    <div class="content has-text-justified">
+                        <p>
+                            Starting on an immersive experience with our lip synchronization model, where we set new
+                            standards in the creation of videos that generate faces talking with accurate lip movements.
+                            lipsync2 is our answer to the challenges left unsolved in previous works. The first big win
+                            is getting the synchronization of lips and speech just right. It's a game-changer because
+                            this is the key to making the characters in the videos convincing. If the lip movements are
+                            off, the whole video feels fake, isn't it? Therefore, that is what we have managed to
+                            reduce. However, the magic of lipsync2 does not end with lip-syncing. What makes it extra
+                            special is its ability to understand and replicate the full range of facial movements from
+                            the original video. It is not just about getting the words right; it is about preserving the
+                            complete expressions and personality. This attention to detail means the end product is not
+                            just a tedious avatar but a true reflection of the individual's unique way of speaking and
+                            expression.
+                        </p>
+                        <strong>What's more!</strong>
+                        <p>Well, lipsync2 is a good performer when it comes to long audio sequences. Previously, models,
+                            especially ours, would lack when the audio track was too lengthy, messing up the sync and
+                            disrupting the video realism. That problem is now in our history. Lipsync2 handles long
+                            signals of speech with ease, keeping everything in sync and maintaining a smooth, natural
+                            feel throughout.
+                            
+                            <br><br> But there is even more to it. This project wasn't just about fixing bugs or
+                            an increment to the previous; it was about taking the whole work to a new level. We looked
+                            at all the feedback from the first version and used it to make something not just better but
+                            innovative. We are talking about a tool that transforms the way we produce and perceive
+                            digital and personalized communication, making it more vivid and enjoyable.
+
+                           </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- youtube result carousel (youtube results) -->
+    <section class="hero is-small">
+        <div class="hero-body">
+            <div class="container">
+                <h2 class="title is-3">Some Results</h2>
+                <div id="results-carousel" class="carousel results-carousel">
+                    <div class="item item-video1">
+                        <iframe src="https://www.youtube.com/embed/Iv4EjbDoGLk?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                    <div class="item item-video2">
+                        <iframe src="https://www.youtube.com/embed/xYpCn5VF_Q0?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                    <div class="item item-video3">
+                        <iframe src="https://www.youtube.com/embed/srUHaApBUiw?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                    <div class="item item-video4">
+                        <iframe src="https://www.youtube.com/embed/9gjm2bTq6_I?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                    <div class="item item-video5">
+                        <iframe src="https://www.youtube.com/embed/JW5ggTrFACg?rel=0" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen width="720" height="480"
+                            style="display: block; margin: 0 auto;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--BibTex citation -->
+    <section class="section" id="BibTeX">
+        <div class="container is-max-desktop content">
+            <h2 class="title">BibTex</h2>
+            <pre><code>@article{
+        lipsync2-bhumanai, 
+        title={lipsync2: Talking Face Generation with Most Accurate Lip Synchronization}, 
         author={Taneem Ullah Jan}, 
         year={2023}
-        }</pre>
+      }
+      </code></pre>
         </div>
+    </section>
 
-        <p> <a href="https://info.flagcounter.com/48VZ"><img
-                    src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/"
-                    border="0"></a>
-        </p>
+    <!-- footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content" style="text-align: center;">
+                        <p>
+                            Website template adapted from <a
+                                href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                                target="_blank">here</a>.
+                        </p>
+                        <p> <a href="https://info.flagcounter.com/48VZ"><img
+                            src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+                            border="0"></a> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    </div>
 </body>
 
 </html>
