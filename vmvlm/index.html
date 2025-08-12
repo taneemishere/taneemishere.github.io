@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <meta name="keywords" content="LLM; VLM; VMVLM; VLLM; CLIP; BERT; ViT">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>VMVLM</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span style="color: red;">VMVLM</span>: Vision-Modulated
+              Vision-Language Models for Improved Instruction Following</h1>
+            <br>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Research and development work conducted</span>
+              <br> <br>
+              <span>by</span>
+            </div>
+
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://taneemishere.github.io" target="_blank">Taneem Ullah Jan</a></span>
+            </div>
+
+            <!-- <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span> -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container" style="max-width: 640px; margin: 0 auto;">
+      <img src="./images/meme.jpg" width="640" height="360"
+        style="display: block; margin: 0 auto; width: 100%; max-width: 640px;" /> <br>
+      <h2 class="subtitle has-text-centered" style="font-size: small;">
+        <p style="text-align: justify; justify-content: center; font-family: 'Ubuntu', sans-serif; max-width: 640px; margin: 0 auto; padding: 0 20px;">
+          <span style="color: red;">Question</span>: what do you see in this image?
+          <br><br>
+          <span style="color: red;">Outputs</span>: The image shows a referee talking to two soccer players, wearing Barcelona jerseys.
+          The caption reads, "How many penalties would you like today? Umm, two please." <br>
+          Referee: How many penalties would you like today?<br>
+          Players: Umm, two please. <br>
+          In the image, the referee is asking the two soccer players how many penalties they would like to take.
+          Players respond with "Umm, two please," and the referee agrees to give them two penalties. The caption
+          underneath the image makes a humorous reference to the number of penalties requested by the players. The
+          scene appears to be taking place on a soccer field during a game. The players are wearing jerseys for
+          Barcelona, which is a professional soccer team based in Spain.
+        </p>
+      </h2>
+    </div>
+  </div>
+</section>
+
+  <!-- paper abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              VMVLM (Vision-Modulated Vision-Language Models) is a novel architecture that enhances multimodal
+              instruction-following capabilities through dual-stream visual feature integration. By introducing
+              complementary visual pathways that combine traditional query-based visual encoding with direct
+              intermediate visual feature injection, VMVLM achieves superior performance in vision-language
+              understanding tasks. This approach leverages a frozen Vision Transformer (ViT) encoder, a Q-Former for
+              learned visual queries, and a direct vision projection module that feeds intermediate visual
+              representations directly into the Large Language Model (LLM). Experimental results demonstrate significant
+              improvements in visual question answering, image captioning, and multimodal instruction following across
+              multiple benchmarks.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- introduction -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">1. Introduction</h2>
+          <div class="content has-text-justified">
+            <p>Vision-Language Models (VLMs) have emerged as a critical component in multimodal AI systems, enabling
+              machines to understand and respond to instructions that involve both visual and textual information. While
+              existing low-end approaches like BLIP-2 have shown promising results through query-based visual encoding,
+              they often suffer from information bottlenecks that limit the richness of visual representations passed to
+              the language model.
+
+              <br><br>
+              On the contemporary side VMVLM is a novel architecture that addresses these limitations through a
+              dual-stream approach to visual feature integration. The key contribution is the introduction of a Vision
+              Modulation mechanism that provides the LLM with both compressed visual queries (via Q-Former) and rich
+              intermediate visual features (via direct projection), enabling more nuanced understanding of visual
+              content.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- architecture -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">2. Architecture</h2>
+          <div class="content has-text-justified">
+            <p>
+            <h4>2.1 Overall Design</h4>
+            <p>VMVLM consists of three main components:</p>
+
+            <ol>
+              <li><strong>Vision Encoder</strong>: A frozen EVA-CLIP Vision Transformer that extracts hierarchical
+                visual features</li>
+              <li><strong>Q-Former Module</strong>: A BERT-based transformer that learns visual queries for cross-modal
+                alignment</li>
+              <li><strong>Vision Modulation Layer</strong>: A novel projection module that directly injects intermediate
+                visual features into the LLM</li>
+            </ol>
+
+            <br>
+            <h4>2.2 Model Flow</h4>
+            <pre class="mermaid" style="background-color: white;">
+  graph TD
+    A[Input Image] --> B[Vision Encoder<br/>EVA-CLIP ViT]
+    B --> C[Final Layer Features]
+    B --> D["Intermediate Layer Features"]
+    C --> E[Q-Former<br/>Learned Query Tokens]
+    D --> F[Vision Projection]
+    G[Text Input] --> E
+    E --> H[Q-Former Output<br/>Input for LLM]
+    F --> I[Direct Visual Features<br/>Visual Features for LLM]
+    H --> J["Large Language Model<br/>Vicuna-7B / Flan-T5-XXL"]
+    I --> J
+    K[Text Embeddings] --> J
+    J --> L[Generated Response]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            <h4>2.3 Vision Modulation Mechanism</h4>
+            <p>The core innovation of VMVLM lies in its dual-pathway visual processing:</p>
+            <strong>Pathway 1: Query-Based Encoding</strong>
+            <ul>
+              <li>Utilizes learnable query tokens (32 tokens) processed through Q-Former</li>
+              <li>Provides compressed, task-relevant visual information</li>
+              <li>Maintains compatibility with existing BLIP-2 architectures</li>
+            </ul>
+
+            <strong>Pathway 2: Direct Feature Injection</strong>
+            <ul>
+              <li>Extracts intermediate features from the second-to-last ViT layer</li>
+              <li>Projects features directly into LLM embedding space</li>
+              <li>Preserves fine-grained visual details often lost in query-based approaches</li>
+            </ul>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- implementation details -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">3. Implementation Details</h2>
+          <div class="content has-text-justified">
+
+            <h4>3.1 Model Variants</h4>
+            <p>This model has been implemented into two primary variants of VMVLM:</p>
+            <strong>VMVLM-Vicuna:</strong>
+            <ul>
+              <li>Uses Vicuna-7B as the backbone LLM</li>
+              <li>Employs causal language modeling objective</li>
+              <li>Supports interactive dialogue and instruction following</li>
+            </ul>
+
+            <strong>VMVLM-FlanT5:</strong>
+            <ul>
+              <li>Uses Flan-T5-XXL as the backbone LLM</li>
+              <li>Employs encoder-decoder architecture</li>
+              <li>Optimized for structured question-answering tasks</li>
+            </ul>
+
+            <br>
+            <p>
+            <h4>3.2 Training Pipeline</h4>
+            <pre class="mermaid">
+  graph TD
+    subgraph "Stage 1 Details"
+        D[Image-Text Pairs] --> E[Vision Modulation<br/>Learning]
+        E --> F[Cross-modal<br/>Alignment]
+    end
+
+    subgraph "Stage 2 Details"
+        G[Instruction Datasets<br/>VQA, Captioning, etc.] --> H[Task-specific<br/>Adaptation]
+        H --> I[End-to-end<br/>Fine-tuning]
+    end
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <pre class="mermaid">
+  graph LR
+  A[Stage 1:<br/>Vision-Language<br/>Pretraining] --> B[Stage 2:<br/>Instruction<br/>Finetuning]
+    B --> C[Optional:<br/>LoRA Adaptation]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            <h4>3.3 Key Technical Components</h4>
+            <strong>Vision Encoder Configuration:</strong>
+            <ul>
+              <li>EVA-CLIP ViT-g with 224x224 input resolution</li>
+              <li>Frozen weights during training for stability</li>
+              <li>FP16 precision for efficiency</li>
+            </ul>
+
+            <strong>Q-Former Setup:</strong>
+            <ul>
+              <li>BERT-base architecture with cross-attention layers</li>
+              <li>32 learnable query tokens</li>
+              <li>Text input integration capability</li>
+            </ul>
+
+            <strong>Vision Projection:</strong>
+            <ul>
+              <li>Linear projection: Vision Features → LLM Embedding Dim</li>
+              <li>Applied to intermediate ViT features</li>
+              <li>Excludes CLS token, focuses on spatial features</li>
+            </ul>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- training methodology -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">4. Training Methodology</h2>
+          <div class="content has-text-justified">
+            <h4>4.1 Loss Function Design</h4>
+            <p>The model employs carefully designed loss masking to ensure optimal training dynamics and prevent
+              interference between different input modalities. This sophisticated masking strategy implements selective
+              gradient computation that distinguishes between instructional content and target responses, while properly
+              handling the dual visual pathways. The loss masking mechanism operates at the token level, applying
+              different treatment strategies based on token type and origin within the input sequence. This approach
+              ensures that the model learns to generate appropriate responses without being penalized for the visual or
+              instructional components, leading to more stable training and improved instruction-following capabilities.
+            </p>
+            <ul>
+              <li>No loss applied to visual tokens (both Q-Former and direct features)</li>
+              <li>No loss applied to instruction text (input)</li>
+              <li>Loss applied only to target response tokens</li>
+              <li>Padding tokens excluded from loss calculation</li>
+            </ul>
+
+            <br>
+            <h4>4.2 Multi-stage Training</h4>
+            <strong>Stage 1: Vision-Language Pretraining</strong>
+            <br>
+            <pre style="border: 1px solid #ccc; background-color: white;">
+              <code>
+# Key components trained:
+# - Q-Former parameters
+# - LLM projection layers  
+# - Vision projection module
+
+# Frozen: ViT encoder, LLM backbone
+              </code>
+            </pre>
+
+            <br>
+            <strong>Stage 2: Instruction Finetuning</strong>
+            <br>
+            <pre style="border: 1px solid #ccc; background-color: white;">
+              <code>
+# Datasets: VQA, Image Captioning, Instruction Following
+# Full model fine-tuning with task-specific prompts
+# Supports both generative and discriminative tasks
+              </code>
+            </pre>
+
+            <br>
+            <h4>4.3 Inference Pipeline</h4>
+            <pre class="mermaid" style="background-color: white;">
+  sequenceDiagram
+    participant U as User
+    participant M as VMVLM
+    participant V as Vision Encoder
+    participant Q as Q-Former
+    participant P as Vision Projection
+    participant L as LLM
+    U ->> M: Image + Question
+    M ->> V: Extract visual features
+    V ->> Q: Final layer features
+    V ->> P: Intermediate layer features
+    Q ->> L: Compressed visual queries
+    P ->> L: Direct visual features
+    M ->> L: Text embeddings
+    L ->> M: Generated response
+    M ->> U: Final answer
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- experimental setup -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">5. Experimental Setup</h2>
+          <div class="content has-text-justified">
+            <h4>5.1 Supported Tasks</h4>
+
+            <ul>
+              <li><strong>Visual Question Answering</strong>: COCO-VQA, OK-VQA, A-OKVQA</li>
+              <li><strong>Image Captioning</strong>: COCO Captions, NoCaps</li>
+              <li><strong>Text-rich VQA</strong>: TextVQA, OCR-VQA, DocVQA</li>
+              <li><strong>Instruction Following</strong>: LLaVA instruction dataset</li>
+            </ul>
+
+            <br>
+            <h4>5.2 Evaluation Metrics</h4>
+            <ul>
+              <li><strong>Generation Tasks</strong>: BLEU, ROUGE, CIDEr scores</li>
+              <li><strong>Classification Tasks</strong>: Accuracy, F1-score</li>
+              <li><strong>Multiple Choice</strong>: Candidate ranking via likelihood</li>
+            </ul>
+
+            <br>
+            <h4>5.3 Model Configuration</h4>
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+              <thead>
+                <tr style="background-color: #f5f5f5;">
+                  <th style="border: 1px solid #ddd; padding: 12px; text-align: left; font-weight: bold;">Component</th>
+                  <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">VMVLM-Vicuna
+                  </th>
+                  <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">VMVLM-FlanT5
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border: 1px solid #ddd; padding: 12px; font-weight: bold;">Vision Encoder</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">EVA-CLIP ViT-g</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">EVA-CLIP ViT-g</td>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                  <td style="border: 1px solid #ddd; padding: 12px; font-weight: bold;">LLM Backbone</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Vicuna-7B</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">Flan-T5-XXL</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid #ddd; padding: 12px; font-weight: bold;">Query Tokens</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">32</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">32</td>
+                </tr>
+                <tr style="background-color: #f9f9f9;">
+                  <td style="border: 1px solid #ddd; padding: 12px; font-weight: bold;">Max Text Length</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">128</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">128</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid #ddd; padding: 12px; font-weight: bold;">Max Output Length</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">256</td>
+                  <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">256</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- key innovations -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">6. Key Innovations</h2>
+          <div class="content has-text-justified">
+            <h4>6.1 Parallel Evolution</h4>
+            <p>Unlike other single-pathway approaches, VMVLM maintains two complementary streams of visual information,
+              enabling both high-level semantic understanding and fine-grained detail preservation.</p>
+
+            <br>
+            <h4>6.2 Intermediate Feature Utilization</h4>
+            <p>By using intermediate ViT layers rather than only final representations, the model captures multi-scale
+              visual features that prove crucial for complex reasoning tasks.</p>
+
+            <br>
+            <h4>6.3 Flexible Architecture Support</h4>
+            <p>The vision modulation approach is architecture-agnostic and can be applied to both autoregressive
+              (Vicuna) and encoder-decoder (FlanT5) language models.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- conlusion -->
+  <section class="section hero">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">7. Conclusion</h2>
+          <div class="content has-text-justified">
+            <h4>7.1 Experimental Methodology</h4>
+            <p>VMVLM represents a significant advancement in small and efficient vision-language modeling through its
+              innovative dual-stream visual processing architecture. By combining the benefits of learned visual queries
+              with direct intermediate feature injection, the model achieves superior performance across diverse
+              multimodal tasks while maintaining computational efficiency. The architecture's flexibility and strong
+              empirical results demonstrate its potential as a foundation for future multimodal AI systems.</p>
+
+            <br>
+            <h4>7.2 Future Work</h4>
+            <ul>
+              <li><strong>Temporal Modeling</strong>: Use and enhanced the video understanding capabilities</li>
+              <li><strong>Efficiency Optimization</strong>: Model compression and acceleration techniques</li>
+              <li><strong>Multi-Resolution Processing</strong>: Adaptive visual feature extraction</li>
+              <li><strong>Domain Adaptation</strong>: Specialized variants for medical, scientific imaging etc.</li>
+            </ul>
+
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTex</h2>
+      <pre><code>@article{
+        vmvlm, 
+        title={Vision-Modulated Vision-Language Models for Improved Instruction Following}, 
+        author={Taneem Ullah Jan},
+        year={2025}
+      }
+      </code></pre>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content" style="text-align: center;">
+            <p>
+              Website template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                target="_blank">here</a>.
+            </p>
+            <p> <a href="https://info.flagcounter.com/48VZ"><img
+                  src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+                  border="0"></a> </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
