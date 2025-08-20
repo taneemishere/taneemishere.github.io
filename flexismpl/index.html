@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <meta name="keywords" content="SMPL; FlexiSMPL; Open3D; 3D Visualization; 3D Rendering; 3D Body; Mesh">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>FlexiSMPL</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span style="color: red;">FlexiSMPL</span>: Flexible SMPL Body
+              Modeling with Real-time 3D Visualization and Measurement Control</h1>
+            <br>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Research and development work conducted</span>
+              <br> <br>
+              <span>by</span>
+            </div>
+
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://taneemishere.github.io" target="_blank">Taneem Ullah Jan</a></span>
+            </div>
+
+            <!-- <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span> -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- demo video -->
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container" style="max-width: 740px; margin: 0 auto;">
+        <video width="740" height="460" controls autoplay muted loop
+          style="display: block; margin: 0 auto; width: 100%; max-width: 740px;">
+          <source src="./images/video_1_demo.mp4" type="video/mp4">
+          your browser does not support the video tag
+        </video>
+        <br>
+      </div>
+    </div>
+  </section>
+
+  <!-- paper abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              FlexiSMPL is an interactive 3D visualization framework that provides real-time, measurement-based control
+              of SMPL body shapes through an intuitive 3D interface. The system enables users to manipulate 23
+              anthropometric measurements (chest width, hip depth, etc.) via interactive sliders while observing
+              immediate changes in a fully navigable 3D body model. Built on Open3D and PyTorch, FlexiSMPL maintains the
+              semantic measurement-to-beta regression approach of LocalSMPL while introducing smooth 3D interaction,
+              wireframe visualization modes, and optimized rendering performance. The system serves researchers,
+              designers, and developers requiring precise anthropometric control with immediate visual feedback.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- introduction -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Introduction</h2>
+          <div class="content has-text-justified">
+            <p>The SMPL (Skinned Multi-Person Linear) model has become a standard for 3D human body representation in
+              computer vision and graphics applications. While some other implementations provided measurement-based
+              shape control through 2D front/side projections, many applications require full 3D visualization
+              capabilities for comprehensive shape analysis and manipulation.
+
+              <br><br>
+              FlexiSMPL addresses this limitation with a complete 3D visualization pipeline. The system utilizes
+              measurement-to-beta regression methodology along with an interactive 3D mesh viewing, real-time shape
+              updates, and advanced visualization modes. Users can manipulate body measurements through an intuitive
+              slider interface and immediately observe changes in a fully interactive 3D environment supporting
+              rotation, zoom, and pan operations.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- architecture -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">System Architecture</h2>
+          <div class="content has-text-justified">
+            <p>
+            <p>The system architecture emphasizes performance optimization through one-time mesh topology computation,
+              vertex-only updates during shape changes, and continuous event polling for smooth 3D interaction. This
+              approach ensures responsive interaction during shape transformations while maintaining the semantic
+              meaning of anthropometric measurements.</p>
+
+            <br>
+            <pre class="mermaid" style="background-color: white;">
+  flowchart TD
+    A["User Input<br/>Measurement Sliders"] -->|" Measurement "| B["SMPL Controller"]
+    B --> C["Measurement-to-Beta<br/>Regression Model"]
+    C -->|" Shape Parameters "| D["SMPL Model<br/>PyTorch"]
+    D -->|" 3D Vertices "| E["3D Viewer<br/>Open3D"]
+    E --> F["Interactive 3D Display<br/>Mouse Controls"]
+    G["Wireframe Toggle"] --> E
+    H["Matplotlib Timer<br/>Continuous Polling at 60FPS"] --> E
+    E --> I["Rendering Optimizations"]
+    I --> J["One-time Topology Setup<br/>triangles computed once"]
+    I --> K["Vertex-only Updates<br/>no mesh recalculation"]
+    I --> L["Immediate Visual Style<br/>wireframe toggle"]
+    style A fill: #e1f5fe
+    style E fill: #f3e5f5
+    style D fill: #fff3e0
+    style C fill: #e8f5e8
+    style I fill: #fff8e1
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- key components -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Key Components</h2>
+          <div class="content has-text-justified">
+            <ul>
+              <li><strong>Measurement Interface</strong>: Interactive sliders for 23 anthropometric measurements with
+                real-time value conversion and immediate shape updates via callback functions.</li>
+              <li><strong>SMPL Model</strong>: Uses pre-trained measurement-to-beta regression models for semantic shape
+                control, generating new vertex positions through standard SMPL forward pass.</li>
+              <li><strong>3D Visualization Engine</strong>: Open3D-based renderer implementing optimized mesh updates,
+                native wireframe mode support, and coordinate frame visualization with customizable camera controls.
+              </li>
+              <li><strong>Continuous Interaction System</strong>: Runs at 60 FPS to ensure smooth 3D mouse interaction
+                through continuous event polling and renderer updates.</li>
+              <li><strong>Rendering Optimizations</strong>: One-time mesh topology computation (triangles set once),
+                vertex-only updates during shape changes, and immediate visual style application for wireframe toggling.
+              </li>
+            </ul>
+
+            <br>
+            <h3>Technical Specifications</h3>
+            <ul>
+              <li><strong>SMPL Support</strong>: 300-PC shape space with male/female/neutral model variants</li>
+              <li><strong>Performance</strong>: ~60 FPS interaction rate with sub-50ms measurement update latency</li>
+              <li><strong>Measurements</strong>: 23 semantic body measurements (widths, depths, circumferences, lengths)
+              </li>
+              <li><strong>Visualization</strong>: Real-time 3D mesh rendering with wireframe toggle and full mouse
+                navigation</li>
+              <li><strong>Architecture</strong>: Modular design with separate controller, viewer, and UI components</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTex</h2>
+      <pre><code>@article{
+        flexismpl, 
+        title={Flexible SMPL Body Modeling with Real-time 3D Visualization and Measurement Control}, 
+        author={Taneem Ullah Jan},
+        year={2025}
+      }
+      </code></pre>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content" style="text-align: center;">
+            <p>
+              Website template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                target="_blank">here</a>.
+            </p>
+            <p> <a href="https://info.flagcounter.com/48VZ"><img
+                  src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+                  border="0"></a> </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

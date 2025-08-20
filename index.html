@@ -100,6 +100,48 @@
             style="width:100%; border:0px; border-spacing:0px; border-collapse:separate; margin-right:auto; margin-left:auto;">
             <tbody>
 
+              <!-- flexismpl -->
+              <tr onmouseout="flexismpl_stop()" onmouseover="flexismpl_start()" bgcolor="#ffffd0">
+                <td style="padding:16px;width:20%;vertical-align:middle">
+                  <div class="one" style="position: relative; width: 100%; height: 0; padding-bottom: 100%;">
+                    <div class="two" id="flexismpl_image"
+                      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 1;">
+                      <img src="./images/flexismpl-gif.gif" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <img src="./images/flexismpl-img.png"
+                      style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 0;">
+                  </div>
+                  <script type="text/javascript">
+                    function flexismpl_start() {
+                      document.getElementById('flexismpl_image').style.opacity = "1";
+                    }
+
+                    function flexismpl_stop() {
+                      document.getElementById('flexismpl_image').style.opacity = "0";
+                    }
+                    flexismpl_stop();
+                  </script>
+                </td>
+                <td style="padding:8px;width:80%;vertical-align:middle">
+                  <a href="./flexismpl/">
+                    <span class="papertitle">FlexiSMPL: Flexible SMPL Body Modeling with Real-time 3D Visualization and
+                      Measurement Control</span></a>
+                  <br>
+                  <strong>Taneem Ullah Jan</strong>
+                  <br>
+                  [<a href="./flexismpl/">project page</a>]
+                  <p>
+                    <strong>tldr</strong>: An interactive 3D body modeling system that allows real-time
+                    manipulation of human body shapes through intuitive measurement sliders with immediate visual
+                    feedback in a fully navigable 3D environment.
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td><br></td>
+              </tr>
+
               <!-- vmvlm -->
               <tr onmouseout="vmvlm_stop()" onmouseover="vmvlm_start()" bgcolor="#F5F5F7">
                 <td style="padding:16px;width:20%;vertical-align:middle;">
@@ -120,15 +162,14 @@
                 <td style="padding:8px;width:80%;vertical-align:middle">
                   <a href="./vmvlm/">
                     <span class="papertitle">VMVLM: Vision-Modulated Vision-Language Models for Improved Instruction
-                      Following</span>
-                  </a>
+                      Following</span> </a>
                   <br>
                   <strong>Taneem Ullah Jan</strong>
                   <br>
                   [<a href="./vmvlm/">project page</a>]
                   <p>
-                    <strong>tldr</strong>: VMVLM enhances vision-language models by using dual visual pathways, combining
-                    Q-Former queries with direct ViT feature injection for improved multimodal instruction following.
+                    <strong>tldr</strong>: VMVLM enhances vision-language models by using dual visual pathways,
+                    combining Q-Former queries with direct ViT feature injection for improved multimodal instruction following.
                   </p>
                 </td>
               </tr>
