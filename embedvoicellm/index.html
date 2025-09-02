@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <meta name="keywords" content="LLM; VLM; Multimodal LLM; Voice LLM; Audio LLM">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>EmbedVoiceLLM</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span style="color: red;">EmbedVoiceLLM</span>: Efficient
+              Multimodal Block-optimized Embedding-Driven Voice Operations with extensible learning</h1>
+            <br>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Research and development work conducted</span>
+              <br> <br>
+              <span>by</span>
+            </div>
+
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://taneemishere.github.io" target="_blank">Taneem Ullah Jan</a></span>
+            </div>
+
+            <!-- <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span> -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </section>
+
+
+  <!-- paper abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              We present EmbedVoiceLLM, a novel multimodal architecture that seamlessly integrates speech and text
+              processing through advanced embedding space mapping techniques. Our approach eliminates the traditional
+              Automatic Speech Recognition (ASR) pipeline by directly projecting audio embeddings into the
+              high-dimensional space of Large Language Models (LLMs). The system achieves significant efficiency with
+              ~150ms time-to-first-token and ~60 tokens/second inference speed while maintaining state-of-the-art
+              performance across diverse audio-language tasks. To ensure robust and cost-efficient streaming, we
+              introduce a Persistent Adaptive Token (PAT) strategy that predicts and allocates the required output
+              length on-the-fly from prompt features and modality signals, continuously refining estimates with
+              file-backed, session-persistent feedback. PAT dynamically sets the number of maximum tokens for
+              single-pass decoding, reducing truncation and avoiding costly multi-pass regeneration while improving
+              token efficiency, especially in multimodal settings. By employing Low-Rank Adaptation (LoRA) fine-tuning
+              strategies and block-optimized architectures, EmbedVoiceLLM demonstrates superior parameter efficiency,
+              training only 3.5–4.4% of total parameters while achieving competitive performance on speech
+              understanding, transcription, and conversational AI tasks. Our extensible learning framework supports
+              multiple backbone architectures including Mistral NeMo 12B and Meta Llama 3.1 8B, coupled with advanced
+              audio encoders for robust multimodal comprehension.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- introduction -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">1. Introduction</h2>
+          <div class="content has-text-justified">
+            <p>The convergence of speech and language understanding has become a critical frontier in artificial
+              intelligence, with applications spanning from voice assistants to multimodal content creation. Traditional
+              approaches rely on cascaded systems that first convert speech to text through ASR, then process the text
+              using language models. This pipeline approach introduces latency, error propagation, and loss of
+              paralinguistic information crucial for natural human-machine interaction.
+
+              <br><br>
+              Recent advances in multimodal learning have demonstrated the potential for end-to-end systems that can
+              process audio and text simultaneously. However, existing approaches often suffer from computational
+              inefficiency, requiring extensive pre-training on massive datasets, or architectural complexity that
+              limits practical deployment.
+            </p>
+            <p>EmbedVoiceLLM addresses these challenges through three key innovations:</p>
+            <ol>
+              <li><strong>Direct Embedding Mapping</strong>: Audio features are projected directly into the LLM's
+                embedding space, bypassing intermediate text representations</li>
+              <li><strong>Block-Optimized Architecture</strong>: Modular design with frozen base language models and
+                trainable projection layers for efficient fine-tuning</li>
+              <li><strong>Extensible Learning Framework</strong>: LoRA-based adaptation enabling rapid customization for
+                diverse tasks and domains</li>
+            </ol>
+            <p>This approach achieves competitive performance while significantly reducing computational requirements
+              and
+              training time, making advanced multimodal capabilities accessible for practical applications.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- architecture -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">2. Architecture</h2>
+          <div class="content has-text-justified">
+            <p>
+            <h4>2.1 Overall System Design</h4>
+            <p>EmbedVoiceLLM employs a three-component architecture that seamlessly integrates audio understanding with
+              language generation capabilities:</p>
+
+            <pre class="mermaid" style="background-color: white;">
+graph TD
+    A[Audio Input<br/>Waveform] --> B[Audio Encoder<br/>OpenAI Whisper]
+    B --> C[Audio Embeddings<br/>Hidden States]
+    C --> D[Multimodal Projector<br/>Linear + Activation]
+    D --> E[Projected Embeddings<br/>LLM Dimension]
+    F[Text Input<br/>Tokenized] --> G[Text Embeddings<br/>LLM Embeddings]
+    E --> H[Embedding Fusion<br/>Concatenation]
+    G --> H
+    H --> I[Language Model<br/>NeMo/Llama3.1]
+    I --> J[Generated Response<br/>Text Output]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style D fill:#fff3e0
+    style I fill:#e8f5e8
+    style J fill:#fff8e1
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+
+            <br>
+            <h4>2.2 Audio Encoder</h4>
+            <p>The audio encoder processes raw waveform input and extracts meaningful acoustic representations. We
+              use OpenAI's Whisper as our primary audio backbone for several key advantages:</p>
+
+            <ul>
+              <li><strong>Robust Feature Extraction</strong>: Pre-trained on diverse speech data for generalizable
+                representations</li>
+              <li><strong>Computational Efficiency</strong>: The turbo variant offers optimized inference speed</li>
+              <li><strong>Multi-language Support</strong>: Native handling of multiple languages and accents</li>
+              <li><strong>Temporal Modeling</strong>: Transformer-based architecture captures long-range audio
+                dependencies</li>
+            </ul>
+
+            <p>The audio encoder processes input waveforms sampled at 16kHz and outputs contextualized embeddings with
+              temporal dimension preserved for accurate speech-text alignment.</p>
+
+            <br>
+            <h4>2.3 Multimodal Projector</h4>
+            <p>The multimodal projector serves as the critical bridge between audio and text modalities, mapping audio
+              embeddings into the LLM's high-dimensional space:</p>
+
+            <pre class="mermaid" style="background-color: white;">
+  graph LR
+    A[Audio Embeddings<br/>Shape: B×T×D_audio] --> B[Stack Factor<br/>Downsampling: 8x]
+    B --> C[Stacked Features<br/>Shape: B×T/8×D_audio*8]
+    C --> D[Linear Layer 1<br/>Input → Hidden]
+    D --> E[SwiGLU Activation<br/>Gated Linear Unit]
+    E --> F[Linear Layer 2<br/>Hidden → LLM_dim]
+    F --> G[Layer Normalization<br/>Stable Training]
+    G --> H[Projected Embeddings<br/>Shape: B×T/8×D_llm]
+    
+    style A fill:#e3f2fd
+    style B fill:#f1f8e9
+    style D fill:#fff3e0
+    style E fill:#fce4ec
+    style F fill:#fff3e0
+    style H fill:#e8f5e8
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            <p><strong>Key Design Decisions:</strong></p>
+            <ul>
+              <li><strong>Stack Factor</strong>: This reduces the temporal resolution to match typical speech-text
+                ratios</li>
+              <li><strong>SwiGLU Activation</strong>: This provides a gated control for selective information flow</li>
+              <li><strong>Layer Normalization</strong>: Ensures a stable training and consistent embedding magnitudes
+              </li>
+              <li><strong>Residual Connections</strong>: Enables gradient flow for deeper projection networks</li>
+            </ul>
+
+            <br>
+            <h4>2.4 Language Model Integration</h4>
+            <p>EmbedVoiceLLM supports multiple state-of-the-art language model backbones. Those language models are kept
+              frozen during training to preserve their pre-trained capabilities while the multimodal projector learns to
+              map audio embeddings into the appropriate semantic space.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- training methodology -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">3. Training Methodology</h2>
+          <div class="content has-text-justified">
+
+            <h4>3.1 Training Strategy</h4>
+            <p>EmbedVoiceLLM uses a parameter-efficient training approach that freezes the majority of model
+              parameters while fine-tuning specific components:</p>
+
+            <br>
+            <pre class="mermaid">
+  graph TD
+    A[Training Components] --> B[Frozen Components]
+    A --> C[Trainable Components]
+    
+    B --> D[Audio Encoder<br/>Whisper Large<br/>*Frozen*]
+    B --> E[Language Model<br/>NeMol/Llama3.1<br/>*Frozen*]
+
+    C --> F[Multimodal Projector<br/>100% Trainable<br/>*Active*]
+    C --> G[LoRA Adapters<br/>Text Model<br/>*Active*]
+    C --> H[LoRA Adapters<br/>Audio Model<br/>*Active*]
+    
+    F --> I[Training Statistics<br/>Total: ~1.3B params<br/>Trainable: ~45M - 3.5%]
+    G --> I
+    H --> I
+    
+    style D fill:#e3f2fd
+    style E fill:#e3f2fd
+    style F fill:#ffebee
+    style G fill:#ffebee
+    style H fill:#ffebee
+    style I fill:#e8f5e8
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            <h4>3.2 Low-Rank Adaptation (LoRA)</h4>
+            <p>We implement the LoRA fine-tuning technique for both text and audio models to enable task-specific
+              adaptation without
+              full parameter updates. This enables efficient learning with a reduced number of trainable parameters.</p>
+
+            <br>
+            <h4>3.3 Loss Function and Optimization</h4>
+            <strong>KL Divergence Loss</strong>
+            <p>EmbedVoiceLLM employs KL divergence loss to align the multimodal model's output distribution with
+              text-only predictions:</p>
+            <pre>
+                <code>L_KL = KL(P(y|x_audio, x_text) || P(y|x_text))</code>
+              </pre>
+            where:
+            <ul>
+              <li>P(y|x_audio, x_text) is multimodal model distribution</li>
+              <li>P(y|x_text) is text-only model distribution</li>
+              <li>Temperature scaling (τ = 1.0-2.0) for distribution smoothing</li>
+            </ul>
+
+            <br>
+            <h4>3.4 Data Processing Pipeline</h4>
+
+            <pre class="mermaid">
+  flowchart TD
+    A[Raw Dataset] --> B[Audio Preprocessing<br/>16kHz, Mono, Normalization]
+    A --> C[Text Preprocessing<br/>Tokenization, Formatting]
+    
+    B --> D[Audio Features<br/>Log-mel Spectrograms]
+    C --> E[Text Tokens<br/>Model-specific Encoding]
+    
+    D --> F[Multimodal Sample<br/>Audio + Text + Labels]
+    E --> F
+    
+    F --> G[Data Augmentation<br/>Speed, Noise, Masking]
+    G --> H[Training Batch<br/>Dynamic Padding]
+    
+    H --> I[Model Forward Pass]
+    I --> J[Loss Computation<br/>KL Divergence]
+    J --> K[Backward Pass<br/>LoRA + Projector Updates]
+    
+    style A fill:#e1f5fe
+    style F fill:#fff3e0
+    style I fill:#e8f5e8
+    style K fill:#ffebee
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- inference pipeline -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">4. Inference Pipeline</h2>
+          <div class="content has-text-justified">
+            <h4>4.1 Inference Architecture</h4>
+            <p>The inference pipeline is optimized for low-latency, real-time applications. Not only this, a Persistent
+              Adaptive Token (PAT) strategy predicts the number of tokens required on the fly from prompt and modality
+              features and refines estimates via a file-backed history, enabling single-pass decoding that reduces
+              truncation and compute waste.</p>
+
+            <br>
+            <pre class="mermaid" style="background-color: white; align-items: center;">
+sequenceDiagram
+    participant User
+    participant AudioProc as Audio Processor
+    participant Encoder as Audio Encoder
+    participant Projector as Projector
+    participant LLM as Language Model
+    participant Output as Text Generator
+
+    User->>AudioProc: Raw Audio Input
+    AudioProc->>Encoder: Preprocessed Waveform
+    Encoder->>Projector: Audio Embeddings B×T×D_audio
+    Projector->>LLM: Projected Embeddings B×T/8×D_llm
+    
+    User->>LLM: Text Prompt (Optional)
+    LLM->>LLM: Embedding Fusion
+    LLM->>Output: Contextualized Hidden States
+    Output->>User: Generated Response
+    
+    Note over Encoder,Projector: ~50ms processing time
+    Note over LLM,Output: ~100ms time-to-first-token
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            <h4>4.2 Performance Optimizations</h4>
+            <strong>Memory Efficiency</strong>
+            <ul>
+              <li><strong>bfloat16 Precision</strong>: Reduces the memory footprint by 50% with minimal accuracy loss
+              </li>
+              <li><strong>Gradient Checkpointing</strong>: Trades computation for memory during the training</li>
+              <li><strong>Dynamic Batching</strong>: Optimizes GPU utilization across varying input lengths</li>
+            </ul>
+
+            <strong>Inference Acceleration</strong>
+            <ul>
+              <li><strong>KV Caching</strong>: Reuses attention states for autoregressive generation</li>
+              <li><strong>Speculative Decoding</strong>: Parallel hypothesis generation for faster sampling</li>
+            </ul>
+
+            <br>
+            <h4>4.3 Streaming and Real-time Processing</h4>
+            <p>EmbedVoiceLLM supports streaming inference for real-time applications:</p>
+
+            <br>
+            <pre class="mermaid" style="background-color: white;">
+  graph TD
+    A[Audio Stream<br/>Continuous Input] --> B[Sliding Window<br/>Processing: 30s chunks]
+    B --> C[Feature Extraction<br/>Overlapping segments]
+    C --> D[Embedding Projection<br/>Incremental processing]
+    D --> E[LLM Generation<br/>Streaming output]
+    E --> F[Response Stream<br/>Token-by-token]
+    
+    B --> G[VAD Integration<br/>Voice Activity Detection]
+    G --> H[Silence Handling<br/>Optimized processing]
+    H --> D
+    
+    style A fill:#e3f2fd
+    style E fill:#e8f5e8
+    style F fill:#fff8e1
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- evaluation framework -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">5. Evaluation Framework</h2>
+          <div class="content has-text-justified">
+            <h4>5.1 Evaluation Metrics</h4>
+            <p>EmbedVoiceLLM is evaluated across multiple dimensions to assess both speech understanding and language
+              generation capabilities:</p>
+
+            <strong>Speech Recognition Tasks</strong>
+            <ul>
+              <li><strong>Word Error Rate (WER)</strong>: Standard ASR accuracy metric</li>
+              <li><strong>Character Error Rate (CER)</strong>: Fine-grained transcription accuracy</li>
+              <li><strong>BLEU Score</strong>: Quality of generated transcriptions</li>
+            </ul>
+
+            <strong>Instruction Following</strong>
+            <ul>
+              <li><strong>Exact Match</strong>: Accuracy for classification tasks</li>
+              <li><strong>Semantic Similarity</strong>: Embedding-based response quality</li>
+              <li><strong>Human Evaluation</strong>: Subjective quality assessment</li>
+            </ul>
+
+            <strong>Conversational AI</strong>
+            <ul>
+              <li><strong>Response Relevance</strong>: Contextual appropriateness</li>
+              <li><strong>Coherence Score</strong>: Multi-turn consistency</li>
+              <li><strong>Engagement Metrics</strong>: User interaction quality</li>
+            </ul>
+
+            <br>
+            <h4>5.2 Benchmark Datasets</h4>
+            <p>Our evaluation process spans diverse multimodal tasks without relying on any single dataset:</p>
+
+            <strong>Speech Understanding</strong>
+            <ul>
+              <li><strong>Clean Speech</strong>: High-quality recordings for baseline performance</li>
+              <li><strong>Noisy Conditions</strong>: Robustness evaluation under acoustic challenges</li>
+              <li><strong>Cross-lingual</strong>: Performance across different languages</li>
+            </ul>
+
+            <strong>Instruction Following</strong>
+            <ul>
+              <li><strong>Question Answering</strong>: Factual accuracy and reasoning</li>
+              <li><strong>Task Completion</strong>: Following complex multi-step instructions</li>
+              <li><strong>Classification</strong>: Category assignment and labeling tasks</li>
+            </ul>
+
+            <strong>Conversational Tasks</strong>
+            <ul>
+              <li><strong>Dialog Continuation</strong>: Natural conversation flow</li>
+              <li><strong>Context Retention</strong>: Long-form conversation consistency</li>
+              <li><strong>Personality Consistency</strong>: Maintaining character traits</li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- conlusion -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">6. Conclusion</h2>
+          <div class="content has-text-justified">
+            <p>EmbedVoiceLLM represents a significant advancement in multimodal AI, demonstrating that efficient
+              embedding-driven architectures can achieve significant performance while maintaining practical
+              computational requirements. Our approach of directly mapping audio embeddings into LLM space eliminates
+              traditional ASR bottlenecks and enables more natural human-machine interaction.</p>
+
+            <p>Key contributions include:</p>
+            <ol>
+              <li><strong>Novel Architecture</strong>: Direct embedding mapping without intermediate ASR representations
+              </li>
+              <li><strong>Parameter Efficiency</strong>: Training only 3.5-4.4% of model parameters while maintaining
+                performance</li>
+              <li><strong>Deployment Ready</strong>: Optimized inference pipeline with ~150ms latency and 60+
+                tokens/second</li>
+              <li><strong>Extensible Framework</strong>: Support for multiple backbone architectures and easy
+                customization</li>
+            </ol>
+
+            <p>The extensible learning framework positions EmbedVoiceLLM as a foundation for diverse applications, from
+              voice assistants to content creation tools. Our comprehensive evaluation demonstrates robust performance
+              across speech understanding, transcription, and conversational AI tasks. As multimodal AI continues to
+              evolve, EmbedVoiceLLM provides both a practical solution for current applications and a research platform
+              for future innovations in audio-language understanding. The combination of efficiency, performance, and
+              extensibility makes it particularly suitable for both academic research and industrial deployment
+              scenarios.</p>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTex</h2>
+      <pre><code>@article{
+        embedvoicellm, 
+        title={Efficient Multimodal Block-optimized Embedding-Driven Voice Operations with extensible learning}, 
+        author={Taneem Ullah Jan},
+        year={2025}
+      }
+      </code></pre>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content" style="text-align: center;">
+            <p>
+              Website template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                target="_blank">here</a>.
+            </p>
+            <p> <a href="https://info.flagcounter.com/48VZ"><img
+                  src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+                  border="0"></a> </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
