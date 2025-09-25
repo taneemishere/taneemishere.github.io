@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://taneemishere.github.io/sitemap.xml

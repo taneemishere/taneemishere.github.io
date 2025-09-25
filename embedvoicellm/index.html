@@ -4,10 +4,48 @@
 <head>
   <meta charset="utf-8">
 
-  <meta name="keywords" content="LLM; VLM; Multimodal LLM; Voice LLM; Audio LLM">
+  <meta name="description"
+    content="EmbedVoiceLLM: Multimodal Block-optimized Embedding-Driven Voice Operations with extensible learning">
+  <meta name="keywords"
+    content="EmbedVoiceLLM, multimodal AI, voice operations, embedding-driven, LLM, VLM, Multimodal LLM, Voice LLM, Audio LLM, machine learning">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/embedvoicellm/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title"
+    content="EmbedVoiceLLM: Multimodal Block-optimized Embedding-Driven Voice Operations with extensible learning">
+  <meta property="og:description"
+    content="An embedding-driven approach combines audio encoders with multimodal projectors to enable direct speech-to-text processing, achieving significant performance while training minimal parameters through block optimization.">
+  <meta property="og:url" content="https://taneemishere.github.io/embedvoicellm/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/embedvoicellm_image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EmbedVoiceLLM">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/embedvoicellm_image.png">
 
   <title>EmbedVoiceLLM</title>
+
+  <script type="application/ld+json"> 
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "EmbedVoiceLLM: Multimodal Block-optimized Embedding-Driven Voice Operations with extensible learning",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/embedvoicellm/",
+      "description": "An embedding-driven approach combines audio encoders with multimodal projectors to enable direct speech-to-text processing, achieving significant performance while training minimal parameters through block optimization.",
+      "datePublished": "2025-09-02",
+      "dateModified": "2025-09-25",
+      "keywords": "EmbedVoiceLLM, multimodal AI, voice operations, LLM, VLM",
+      "inLanguage": "en",
+    }
+  </script>
+
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
   <link rel="stylesheet" href="./css/bulma.min.css">
@@ -67,39 +105,41 @@
     </div>
   </section>
 
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container" style="max-width: 640px; margin: 0 auto; border: 2px solid #333; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
-      <audio controls style="width: 100%; margin-bottom: 15px;">
-        <source src="./images/driver_audio.wav" type="audio/mpeg">
-        your browser does not support the audio element
-      </audio>
-      <h2 class="subtitle has-text-centered" style="font-size: medium;;">
-        <p style="text-align: justify; justify-content: center; max-width: 640px; margin: 0 auto;">
-          <span style="color: red;">>> user</span>: What the speaker is trying to test?
-          <br><br>
-          <span style="color: red;">>> assistant</span>: The speaker is trying to test the functionality and
-          effectiveness of the driver.
-          <br><br>
-          <span style="color: red;">>> user</span>: Is this a male or a female voice?
-          <br><br>
-          <span style="color: red;">>> assistant</span>: Male. The use of "Hello, name" and the intonation suggest a
-          male speaker.
-          <br><br>
-          <span style="color: red;">>> user</span>: Can you transcribe this voice for me?
-          <br><br>
-          <span style="color: red;">>> assistant</span>: Hello, name. This is the driver video. So in this video, I'm
-          going to talk a little bit about how the driver works, and we're going to experiment to see how the results
-          are.
-          <br><br>
-          <span style="color: red;">>> user</span>: What was my first question in this conversation?
-          <br><br>
-          <span style="color: red;">>> assistant</span>: Your first question in this conversation was: "What the speaker is trying to test?"
-        </p>
-      </h2>
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container"
+        style="max-width: 640px; margin: 0 auto; border: 2px solid #333; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+        <audio controls style="width: 100%; margin-bottom: 15px;">
+          <source src="./images/driver_audio.wav" type="audio/mpeg">
+          your browser does not support the audio element
+        </audio>
+        <h2 class="subtitle has-text-centered" style="font-size: medium;;">
+          <p style="text-align: justify; justify-content: center; max-width: 640px; margin: 0 auto;">
+            <span style="color: red;">>> user</span>: What the speaker is trying to test?
+            <br><br>
+            <span style="color: red;">>> assistant</span>: The speaker is trying to test the functionality and
+            effectiveness of the driver.
+            <br><br>
+            <span style="color: red;">>> user</span>: Is this a male or a female voice?
+            <br><br>
+            <span style="color: red;">>> assistant</span>: Male. The use of "Hello, name" and the intonation suggest a
+            male speaker.
+            <br><br>
+            <span style="color: red;">>> user</span>: Can you transcribe this voice for me?
+            <br><br>
+            <span style="color: red;">>> assistant</span>: Hello, name. This is the driver video. So in this video, I'm
+            going to talk a little bit about how the driver works, and we're going to experiment to see how the results
+            are.
+            <br><br>
+            <span style="color: red;">>> user</span>: What was my first question in this conversation?
+            <br><br>
+            <span style="color: red;">>> assistant</span>: Your first question in this conversation was: "What the
+            speaker is trying to test?"
+          </p>
+        </h2>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
   <!-- paper abstract -->

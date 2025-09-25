@@ -4,10 +4,47 @@
 <head>
   <meta charset="utf-8">
 
-  <meta name="keywords" content="LLM; VLM; VMVLM; VLLM; CLIP; BERT; ViT">
+  <meta name="description" content="VMVLM: Vision-Modulated Vision-Language Models for Improved Instruction Following">
+  <meta name="keywords"
+    content="Vision-Modulated Vision-Language Models, VMVLM, Vision-Language Models, VLM, Large Language Models, LLM, Multimodal Models, Multimodal LLM, Vision Modulation, Q-Former, EVA-CLIP, ViT, BERT, Vicuna, Flan-T5">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/vmvlm/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="VMVLM: Vision-Modulated Vision-Language Models for Improved Instruction Following">
+  <meta property="og:description"
+    content="VMVLM enhances vision-language models by using dual visual pathways, combining Q-Former queries with direct ViT feature injection for improved multimodal instruction following.">
+  <meta property="og:url" content="https://taneemishere.github.io/vmvlm/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/vmvlm_model.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VMVLM">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/vmvlm_model.png">
+
 
   <title>VMVLM</title>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "VMVLM: Vision-Modulated Vision-Language Models for Improved Instruction Following",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/vmvlm/",
+      "description": "VMVLM enhances vision-language models by using dual visual pathways, combining Q-Former queries with direct ViT feature injection for improved multimodal instruction following.",
+      "datePublished": "2025-08-02",
+      "dateModified": "2025-09-25",
+      "keywords": "VMVLM, Vision-Modulated Vision-Language Models, Vision-Language Models, VLM, Large Language Models, LLM, Multimodal Models, Multimodal LLM, Vision Modulation, Q-Former, EVA-CLIP, ViT, BERT, Vicuna, Flan-T5",
+      "inLanguage": "en",
+    }
+  </script>
+
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
   <link rel="stylesheet" href="./css/bulma.min.css">
@@ -59,38 +96,40 @@
                   </a>
                 </span> -->
 
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
+    </div>
+    </div>
   </section>
 
 
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container" style="max-width: 640px; margin: 0 auto;">
-      <img src="./images/meme.jpg" width="640" height="360"
-        style="display: block; margin: 0 auto; width: 100%; max-width: 640px;" /> <br>
-      <h2 class="subtitle has-text-centered" style="font-size: small;">
-        <p style="text-align: justify; justify-content: center; font-family: 'Ubuntu', sans-serif; max-width: 640px; margin: 0 auto; padding: 0 20px;">
-          <span style="color: red;">Question</span>: what do you see in this image?
-          <br><br>
-          <span style="color: red;">Outputs</span>: The image shows a referee talking to two soccer players, wearing Barcelona jerseys.
-          The caption reads, "How many penalties would you like today? Umm, two please." <br>
-          Referee: How many penalties would you like today?<br>
-          Players: Umm, two please. <br>
-          In the image, the referee is asking the two soccer players how many penalties they would like to take.
-          Players respond with "Umm, two please," and the referee agrees to give them two penalties. The caption
-          underneath the image makes a humorous reference to the number of penalties requested by the players. The
-          scene appears to be taking place on a soccer field during a game. The players are wearing jerseys for
-          Barcelona, which is a professional soccer team based in Spain.
-        </p>
-      </h2>
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container" style="max-width: 640px; margin: 0 auto;">
+        <img src="./images/meme.jpg" width="640" height="360"
+          style="display: block; margin: 0 auto; width: 100%; max-width: 640px;" /> <br>
+        <h2 class="subtitle has-text-centered" style="font-size: small;">
+          <p
+            style="text-align: justify; justify-content: center; font-family: 'Ubuntu', sans-serif; max-width: 640px; margin: 0 auto; padding: 0 20px;">
+            <span style="color: red;">Question</span>: what do you see in this image?
+            <br><br>
+            <span style="color: red;">Outputs</span>: The image shows a referee talking to two soccer players, wearing
+            Barcelona jerseys.
+            The caption reads, "How many penalties would you like today? Umm, two please." <br>
+            Referee: How many penalties would you like today?<br>
+            Players: Umm, two please. <br>
+            In the image, the referee is asking the two soccer players how many penalties they would like to take.
+            Players respond with "Umm, two please," and the referee agrees to give them two penalties. The caption
+            underneath the image makes a humorous reference to the number of penalties requested by the players. The
+            scene appears to be taking place on a soccer field during a game. The players are wearing jerseys for
+            Barcelona, which is a professional soccer team based in Spain.
+          </p>
+        </h2>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- paper abstract -->
   <section class="section hero is-light">
