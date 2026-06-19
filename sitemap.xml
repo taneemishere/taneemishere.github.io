@@ -6,6 +6,11 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://taneemishere.github.io/darwinpatch/</loc>
+    <lastmod>2026-06-19</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://taneemishere.github.io/embedvoicellm/</loc>
     <lastmod>2025-09-25</lastmod>
     <priority>0.9</priority>

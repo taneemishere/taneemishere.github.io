@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <meta name="description" content="DarwinPatch: A Budgeted Repair-Search Controller for Reliable Coding Agents">
+  <meta name="keywords"
+    content="DarwinPatch, LLM, machine learning, autonomous coding, coding ai, ai coding agents, agent harness, agent loop, devin, coginition">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/darwinpatch/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="DarwinPatch: A Budgeted Repair-Search Controller for Reliable Coding Agents">
+  <meta property="og:description"
+    content="DarwinPatch is a budgeted repair-search controller for coding agents that converts failed patch attempts into bounded evidence, routes follow-up repairs through hard verification gates, and records auditable candidate lineage.">
+  <meta property="og:url" content="https://taneemishere.github.io/darwinpatch/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/darwinpatch_image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DarwinPatch">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/darwinpatch_image.png">
+
+  <title>DarwinPatch</title>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "DarwinPatch: A Budgeted Repair-Search Controller for Reliable Coding Agents",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/darwinpatch/",
+      "description": "DarwinPatch is a budgeted repair-search controller for coding agents that converts failed patch attempts into bounded evidence, routes follow-up repairs through hard verification gates, and records auditable candidate lineage.",
+      "datePublished": "2025-09-02",
+      "dateModified": "2025-09-25",
+      "keywords": "DarwinPatch, DarwinPatch, LLM, machine learning, autonomous coding, coding ai, ai coding agents, agent harness, agent loop, devin, coginition",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span style="color: red;">DarwinPatch</span>: A Budgeted
+              Repair-Search Controller for Reliable Coding Agents</h1>
+            <br>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Research and development work conducted</span>
+              <br> <br>
+              <span>by</span>
+            </div>
+
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://taneemishere.github.io" target="_blank">Taneem Ullah Jan</a></span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://github.com/taneemishere/darwinpatch" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- paper abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <!-- <h2 class="title is-3">Abstract</h2> -->
+          <div class="content has-text-justified">
+            <p>
+              DarwinPatch is a runnable prototype for making coding-agent repair loops more reliable. It does not
+              try to replace a coding agent. Instead, it wraps candidate code patches with a disciplined controller that
+              verifies, rejects, routes, archives, and reports the repair process.
+
+              <br><br> The core idea is simple:
+
+            <blockquote>The coding agent should not just generate a patch. It should generate a patch, test it through
+              hard gates, learn only from bounded evidence, route the next attempt deliberately, and leave behind an
+              audit trail that explains why a candidate was rejected or promoted.</blockquote>
+
+            DarwinPatch demonstrates that idea in a controlled benchmark: </p>
+
+            <pre>
+              <code>
+single_shot:            solve@budget = 0.2
+linear_retry:           solve@budget = 0.6
+clean_context_review:   solve@budget = 0.6
+archive_no_routing:     solve@budget = 0.6
+evidence_aware_review:  solve@budget = 0.9
+full_darwinpatch:       solve@budget = 0.9
+              </code>
+              </pre>
+
+            <p>
+              The most important result is not just that <code>full_darwinpatch</code> reaches <code>0.9</code>. The
+              stronger interpretation is:
+            <ul>
+              <li>Ordered retry is not enough.</li>
+              <li>Bounded evidence plus route-compatible candidate metadata provides the main repair-selection lift.
+              </li>
+              <li>Full DarwinPatch turns that lift into an auditable reliability system: gates, evidence packets,
+                candidate archives, lineage, failure fingerprints, policy selection, and static reports.</li>
+            </ul>
+
+            The default benchmark is deterministic and offline so the behavior is reproducible. Optional LLM mode can
+            be used for the hero task, but the controlled benchmark uses curated candidate pools with explicit metadata.
+            Please note that, this is a small work not a full autonomous coding product.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- the problem -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">The Problem</h2>
+          <div class="content has-text-justified">
+            <p>Modern coding agents can produce impressive patches to code, but the long-horizon coding work has a
+              certain reliability problem. That is, a single generated patch may:
+            </p>
+            <ul>
+              <li>pass visible tests while breaking hidden behavior,</li>
+              <li>touch files outside the intended scope,</li>
+              <li>introduce syntax errors or secret-like material,</li>
+              <li>repeat the same failure mode,</li>
+              <li>give the user no clear evidence trail,</li>
+              <li>or require a human reviewer to reconstruct what happened after the fact.</li>
+            </ul>
+            <p>The usual retry loop is oftentimes too weak:</p>
+
+            <pre><code>generate patch -> run tests -> if failed, try again</code></pre>
+
+            <p>That loop misses the real engineering issue. The question is not only "can the model eventually produce a
+              working patch?" The better question is:</p>
+
+            <blockquote>Can the system control the repair process so failed attempts become bounded evidence, unsafe
+              patches are rejected, regressions stay hidden from the repair loop, and the final promotion is
+              explainable?</blockquote>
+
+            <p>DarwinPatch is the answer to that question.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- design goals -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Design Goals</h2>
+          <div class="content has-text-justified">
+            <p>DarwinPatch is designed around five goals:</p>
+
+            <ol>
+              <li><strong>Hard verification before promotion</strong></li>
+              <p>A patch is promoted only after scope checks, patch application, AST parsing, secret scanning, visible
+                tests, and release-gate regression tests pass.</p>
+
+              <li><strong>Bounded evidence, not raw failure leakage</strong></li>
+              <p>The controller receives compact <code>EvidencePacket</code> objects. Visible failures expose limited
+                details;
+                release-gate regressions deliberately withhold full output.</p>
+
+              <li><strong>Route-aware repair selection</strong></li>
+              <p>After a failure, the controller maps the evidence to a repair route such as
+                <code>behavior_repair</code>,
+                <code>regression_repair</code>, <code>scope_repair</code>, or <code>syntax_repair</code>.
+              </p>
+
+              <li><strong>Auditability</strong></li>
+              <p>Every candidate is recorded with route, status, score, parent, generation, touched files, verifier
+                results, failure fingerprint, and evidence ID.</p>
+
+              <li><strong>Controlled evaluation</strong></li>
+              <p>The repo includes a deterministic benchmark, ablations, confidence intervals, policy selection, and
+                claim-to-artifact reporting.</p>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- system overview -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">System Overview</h2>
+          <div class="content has-text-justified">
+            <p>At a high level, DarwinPatch is a reliability layer around candidate patches.</p>
+
+            <br>
+            <pre class="mermaid">
+  flowchart LR
+    A["Task spec and source repo"] --> B["Candidate patch"]
+    B --> C["DarwinPatch gates"]
+    C --> D{"All gates pass?"}
+    D -- "yes" --> E["Promote candidate"]
+    D -- "no" --> F["Build bounded EvidencePacket"]
+    F --> G["Route next repair"]
+    G --> H["Select route-compatible candidate"]
+    H --> C
+    C --> I["Candidate archive and traces"]
+    I --> J["HTML report and benchmark artifacts"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            <p>The flow has four conceptual stages. First, DarwinPatch receives a task specification, an isolated source
+              workspace, and one or more candidate patches. Second, each candidate is executed through hard verification
+              gates so unsafe, malformed, or regressive edits are rejected before promotion. Third, failed candidates
+              are compressed into bounded evidence and mapped to a repair route, which determines how the next candidate
+              is selected. Finally, the system records candidate lineage, failure fingerprints, evidence IDs, benchmark
+              results, and static report artifacts so the repair process is inspectable after the run.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- repair loop -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Repair Loop</h2>
+          <div class="content has-text-justified">
+            <p>The full DarwinPatch loop begins with an ordered first candidate. If it fails, the failure is classified
+              and converted into bounded evidence. The critic maps that evidence to a route, and the next candidate is
+              selected using declared candidate metadata such as <code>compatible_routes</code>, <code>generator</code>,
+              and <code>intent</code>.</p>
+
+            <p>Importantly, route-aware selection does <strong>not</strong> inspect patch filenames to guess which
+              candidate is correct. Path-only inputs remain supported for simple CLI use, but without route metadata
+              they fall back to original order.</p>
+            <br>
+            <pre class="mermaid" style="background-color: white; align-items: center;">
+sequenceDiagram
+    participant C as Controller
+    participant R as Runner
+    participant G as Gates
+    participant E as Evidence
+    participant K as Critic
+    participant A as Archive
+
+    C->>R: Run candidate patch
+    R->>G: Scope, apply, AST, secret scan, visible tests, release gate
+    G-->>R: Gate results
+    R-->>C: RunResult
+    alt Candidate promoted
+        C->>A: Record promoted candidate
+        C-->>C: Stop with promoted status
+    else Candidate rejected
+        C->>E: Build bounded EvidencePacket
+        E-->>C: Evidence summary and limited details
+        C->>K: Route next attempt from evidence
+        K-->>C: behavior_repair / regression_repair / scope_repair / ...
+        C->>A: Record candidate, evidence, fingerprint, lineage
+        C-->>C: Select next route-compatible candidate
+    end
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- verification gates -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Verification Gates</h2>
+          <div class="content has-text-justified">
+            <p>DarwinPatch treats verification as a hard boundary. A candidate cannot be promoted unless every
+              configured gate passes.</p>
+
+            <pre class="mermaid">
+  flowchart TD
+    A["Candidate patch"] --> B["Scope guard"]
+    B --> C["Patch applies"]
+    C --> D["Python AST parse"]
+    D --> E["Secret scan"]
+    E --> F["Visible developer tests"]
+    F --> G["Release-gate regression tests"]
+    G --> H["Promote"]
+
+    B -- "fail" --> R["Reject and build evidence"]
+    C -- "fail" --> R
+    D -- "fail" --> R
+    E -- "fail" --> R
+    F -- "fail" --> R
+    G -- "fail" --> R
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <p>The release gate is intentionally different from visible tests. Visible test failures can expose bounded
+              stdout/stderr tails. Release-gate regression failures return limited diagnostics and withhold the full
+              failure output from the repair loop. This simulates a realistic hidden-test boundary: the system can know
+              that it regressed behavior without leaking the exact hidden assertion.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- evidence packets -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Evidence Packets</h2>
+          <div class="content has-text-justified">
+            <p>Each failed candidate produces an <code>EvidencePacket</code> with:</p>
+            <ul>
+              <li><code>evidence_id</code></li>
+              <li>failing gate</li>
+              <li>failure type</li>
+              <li>human-readable summary</li>
+              <li>bounded details</li>
+              <li>packet IDs describing what kind of context is admitted</li>
+            </ul>
+
+            <p>Example evidence summaries include:</p>
+
+            <pre>
+              <blockquote>
+visible developer tests failed
+release-gate regressions failed with limited diagnostics
+patch touched blocked paths: ...
+patched Python did not parse
+secret-like material detected
+candidate patch did not apply
+              </blockquote>
+              </pre>
+
+            <p>This is the important reliability distinction: DarwinPatch does not feed arbitrary logs back into the
+              next attempt. It turns verifier output into a small evidence object with controlled information flow.</p>
+
+            <pre class="mermaid" style="background-color: white; align-items: center;">
+flowchart LR
+    A["Raw gate result"] --> B["Failure classifier"]
+    B --> C["EvidencePacket"]
+    C --> D["Route decision"]
+    C --> E["Candidate archive"]
+    C --> F["HTML report"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- candidate metadata -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Candidate Metadata</h2>
+          <div class="content has-text-justified">
+            <p>The benchmark uses structured candidate metadata:</p>
+
+            <pre>
+              <code>
+{
+    "patch": "candidate.patch",
+    "label": "spec_complete_repair",
+    "generator": "synthetic_generator",
+    "intent": "complete_spec_repair",
+    "compatible_routes": [
+      "behavior_repair",
+      "regression_repair",
+      "scope_repair"
+    ]
+}</code></pre>
+
+            <p>This separation prevents the controller from inferring candidate quality from patch filenames.
+              Route-aware selection relies only on declared candidate metadata, while generated reports record
+              metadata-route matches for auditability.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- baseline -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Baseline</h2>
+          <div class="content has-text-justified">
+            <p>The benchmark includes the following six baselines:</p>
+
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Baseline</th>
+                  <th>What It Tests</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>single_shot</code></td>
+                  <td>One candidate, no correction loop.</td>
+                </tr>
+                <tr>
+                  <td><code>linear_retry</code></td>
+                  <td>Ordered retry up to the same candidate budget.</td>
+                </tr>
+                <tr>
+                  <td><code>clean_context_review</code></td>
+                  <td>Ordered retry without DarwinPatch route-aware selection or evidence archive.</td>
+                </tr>
+                <tr>
+                  <td><code>archive_no_routing</code></td>
+                  <td>Archive-compatible retry without route-aware selection.</td>
+                </tr>
+                <tr>
+                  <td><code>evidence_aware_review</code></td>
+                  <td>Uses bounded evidence plus candidate metadata, but no archive, lineage, parent scoring,
+                    fingerprint stopping, or policy machinery.</td>
+                </tr>
+                <tr>
+                  <td><code>full_darwinpatch</code></td>
+                  <td>Full controller with evidence packets, failure fingerprints, archive, route-aware selection, hard
+                    gates, reports, and policy experiment support.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>The <code>evidence_aware_review</code> baseline is especially important. It answers the skeptical
+              question:</p>
+
+            <blockquote>Is DarwinPatch only beating dumb ordered retry?</blockquote>
+
+            <p>The answer is <strong>no</strong>. The stronger baseline shows that bounded evidence plus route metadata
+              is the main
+              selection lift. Full DarwinPatch then adds the engineering system around that lift.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- benchmark design -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Benchmark Design</h2>
+          <div class="content has-text-justified">
+            <p>The default benchmark is a 40-case deterministic repair-search study across the following four task
+              families:</p>
+
+            <ul>
+              <li>Markdown table parsing</li>
+              <li>string slugification</li>
+              <li>config loading</li>
+              <li>numeric range parsing</li>
+            </ul>
+
+            <p>Each task family includes:</p>
+            <ul>
+              <li>successful first attempts,</li>
+              <li>visible-test failures,</li>
+              <li>withheld-regression failures,</li>
+              <li>scope-policy failures,</li>
+              <li>route-decoy cases,</li>
+              <li>repeated unsolved failures.</li>
+            </ul>
+
+            <p>This keeps the benchmark small enough to run locally but broad enough to exercise the reliability story.
+            </p>
+            <p>Please note again, that the default demo is offline and deterministic what is intentional, it keeps the
+              evaluation reproducible and makes the benchmark suitable for controlled comparison before adding live LLM
+              variability.</p>
+
+            <pre class="mermaid">
+  flowchart TD
+    A["40 benchmark cases"] --> B["4 task families"]
+    B --> C["Markdown parser"]
+    B --> D["Slugifier"]
+    B --> E["Config loader"]
+    B --> F["Range parser"]
+
+    A --> G["Failure modes"]
+    G --> H["Visible test failure"]
+    G --> I["Withheld regression failure"]
+    G --> J["Scope violation"]
+    G --> K["Route decoy"]
+    G --> L["Repeated unsolved failure"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- results -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Results</h2>
+          <div class="content has-text-justified">
+            <p>The current deterministic benchmark result shape is:</p>
+
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Baseline</th>
+                  <th style="text-align: right;">solve@budget</th>
+                  <th style="text-align: right;">95% CI</th>
+                  <th style="text-align: right;">Avg Attempts</th>
+                  <th style="text-align: right;">Evidence Packets</th>
+                  <th style="text-align: right;">Route Metadata Matches</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>single_shot</code></td>
+                  <td style="text-align: right;">0.2</td>
+                  <td style="text-align: right;">0.105-0.3476</td>
+                  <td style="text-align: right;">1.0</td>
+                  <td style="text-align: right;">0</td>
+                  <td style="text-align: right;">0</td>
+                </tr>
+                <tr>
+                  <td><code>linear_retry</code></td>
+                  <td style="text-align: right;">0.6</td>
+                  <td style="text-align: right;">0.446-0.7365</td>
+                  <td style="text-align: right;">1.8</td>
+                  <td style="text-align: right;">0</td>
+                  <td style="text-align: right;">0</td>
+                </tr>
+                <tr>
+                  <td><code>clean_context_review</code></td>
+                  <td style="text-align: right;">0.6</td>
+                  <td style="text-align: right;">0.446-0.7365</td>
+                  <td style="text-align: right;">1.8</td>
+                  <td style="text-align: right;">0</td>
+                  <td style="text-align: right;">0</td>
+                </tr>
+                <tr>
+                  <td><code>archive_no_routing</code></td>
+                  <td style="text-align: right;">0.6</td>
+                  <td style="text-align: right;">0.446-0.7365</td>
+                  <td style="text-align: right;">1.8</td>
+                  <td style="text-align: right;">0</td>
+                  <td style="text-align: right;">0</td>
+                </tr>
+                <tr>
+                  <td><code>evidence_aware_review</code></td>
+                  <td style="text-align: right;">0.9</td>
+                  <td style="text-align: right;">0.7695-0.9604</td>
+                  <td style="text-align: right;">1.8</td>
+                  <td style="text-align: right;">36</td>
+                  <td style="text-align: right;">28</td>
+                </tr>
+                <tr>
+                  <td><code>full_darwinpatch</code></td>
+                  <td style="text-align: right;">0.9</td>
+                  <td style="text-align: right;">0.7695-0.9604</td>
+                  <td style="text-align: right;">1.8</td>
+                  <td style="text-align: right;">36</td>
+                  <td style="text-align: right;">28</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>The result is intentionally interpreted with care:</p>
+
+            <ul>
+              <li><code>single_shot</code> shows that one attempt is not reliable enough.</li>
+              <li>ordered retry baselines improve solve rate, but fail route-decoy cases.</li>
+              <li><code>evidence_aware_review</code> shows that bounded evidence plus candidate metadata is the main
+                repair-selection mechanism.</li>
+              <li><code>full_darwinpatch</code> ties that solve rate while adding auditability, fingerprints, lineage,
+                policy selection, and reportability.</li>
+            </ul>
+
+            <p>That is a more honest result than claiming the full controller magically beats every ablation.
+              DarwinPatch is a reliability system: the selection lift is isolated, and the full product value is in
+              turning that lift into controlled, inspectable engineering behavior.</p>
+
+            <h3>Evaluation Artifacts</h3> 
+            <p>After running the evaluation, the following artifacts are generated:</p>
+            <ul>
+              <li><a href="./hero_report.html" style="color: blue; font-style: underline;">Hero repair trace</a> </li>
+              <li><a href="./benchmark_report.html" style="color: blue; font-style: underline;">Benchmark report</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- policy experiment -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Policy Experiment</h2>
+          <div class="content has-text-justified">
+            <p>DarwinPatch also includes a guarded train/validation/test policy experiment.</p>
+
+            <pre class="mermaid">
+  flowchart LR
+    A["Source benchmark suite"] --> B["Train split"]
+    A --> C["Validation split"]
+    A --> D["Held-out test split"]
+
+    B --> E["Policy tuning"]
+    C --> F["Policy selection"]
+    F --> G["Selected policy"]
+    G --> D
+    D --> H["Final report only"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <p>The included policies are:</p>
+
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th style="text-align: right;">Max Candidates</th>
+                  <th style="text-align: right;">Max Repeated Failures</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>one_attempt_conservative</code></td>
+                  <td style="text-align: right;">1</td>
+                  <td style="text-align: right;">2</td>
+                </tr>
+                <tr>
+                  <td><code>two_attempt_budgeted</code></td>
+                  <td style="text-align: right;">2</td>
+                  <td style="text-align: right;">2</td>
+                </tr>
+                <tr>
+                  <td><code>strict_repeat_stop</code></td>
+                  <td style="text-align: right;">3</td>
+                  <td style="text-align: right;">1</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>The selected policy is:</p>
+            <blockquote>two_attempt_budgeted</blockquote>
+            <p>The held-out test path runs only the selected policy and is not used for tuning or policy selection.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- what it demostrates -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">What This Demonstrates </h2>
+          <div class="content has-text-justified">
+            <p>DarwinPatch demonstrates a compact but meaningful reliability pattern for coding agents:</p>
+
+            <ol>
+              <li><strong>Self-correction should be verifier-grounded:</strong>
+                The next attempt should be routed from actual failure evidence, not just a generic "try again" prompt.
+              </li>
+
+              <li><strong>Hidden regression gates should stay hidden:</strong>
+                A system can know that a release gate failed without leaking the entire hidden test output into the
+                repair loop.</li>
+
+              <li><strong>Repair attempts should be auditable:</strong>
+                A promoted patch should come with a trail: what failed, what evidence was admitted, what route was
+                chosen, what candidate was selected, and which gates passed.</li>
+
+              <li><strong>Ablations matter:</strong>
+                The project does not only compare against single-shot generation. It includes ordered retry, archive
+                without routing, and evidence-aware review.</li>
+
+              <li><strong>Such MVPs can be honest and still impressive:</strong>
+                The benchmark is curated and deterministic. That limitation is stated directly. The result is not "we
+                solved autonomous software engineering." The result is "we built and measured a small reliability
+                controller that makes repair-search behavior inspectable and reproducible."</li>
+            </ol>
+
+            <p>The same verification-grounded repair pattern applies directly to long-horizon coding agent loops where a
+              subagent may propose file edits that pass surface tests but regress hidden behavior, exactly like the
+              failure mode DarwinPatch's release-gate boundary is designed to contain.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- limitations -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Limitations</h2>
+          <div class="content has-text-justified">
+            <p>DarwinPatch is still a controlled MVP. The main limitations are:</p>
+
+            <ul>
+              <li>The multi-task benchmark uses curated candidate patch pools rather than live generated candidates.
+              </li>
+              <li><code>evidence_aware_review</code> ties <code>full_darwinpatch</code> on code, so the full
+                controller's added value is auditability and reliability infrastructure rather than a higher controlled
+                solve rate.
+              </li>
+              <li>The current tasks are small Python repair tasks, not large multi-file product changes.</li>
+              <li>The optional LLM mode is demonstrated on the hero task, not yet across the full benchmark suite.</li>
+              <li>Cost and token metrics are intentionally left out for now.</li>
+            </ul>
+
+            <p>These limitations are acceptable for the current goal: build a strong, reproducible technical demo that
+              tells a clear story and can be extended into a larger agent reliability system.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- future work -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Future Work </h2>
+          <div class="content has-text-justified">
+            <p>The next steps are straightforward:</p>
+
+            <ol>
+              <li>Add a cached live-LLM benchmark subset across multiple tasks.</li>
+              <li>Compare different model families on the same hard gates and report artifacts.</li>
+              <li>Add token and wall-clock cost accounting.</li>
+              <li>Expand tasks to larger multi-file repairs.</li>
+              <li>Add richer candidate generators so metadata comes from real generation traces instead of curated
+                benchmark specs.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- conclusion -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Conclusion</h2>
+          <div class="content has-text-justified">
+            <p>DarwinPatch is a small project, but the design target is serious: make coding-agent self-correction
+              measurable, bounded, and inspectable.</p>
+
+            <p>The strongest version of the claim is:</p>
+
+            <blockquote>
+              DarwinPatch shows that a coding agent repair loop can be wrapped with hard verification, bounded evidence,
+              route-aware selection, and auditable reporting. In the controlled benchmark, bounded evidence plus route
+              metadata lifts solve@budget from ordered retry's 0.6 to 0.9, while the full DarwinPatch controller turns
+              that behavior into a reproducible reliability system.
+            </blockquote>
+
+            <p>That's it, that's the story of DarwinPatch is meant to tell.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTex</h2>
+      <pre><code>@article{
+        darwinpatch, 
+        title={DarwinPatch: A Budgeted Repair-Search Controller for Reliable Coding Agents}, 
+        author={Taneem Ullah Jan},
+        year={2026}
+      }
+      </code></pre>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content" style="text-align: center;">
+            <p>
+              Website template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                target="_blank">here</a>.
+            </p>
+            <p> <a href="https://info.flagcounter.com/48VZ"><img
+                  src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+                  border="0"></a> </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

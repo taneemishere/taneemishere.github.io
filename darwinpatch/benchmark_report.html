@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DarwinPatch Report</title>
+  <style>
+    :root { color-scheme: light; --ok: #d7f7df; --bad: #ffe1de; --ink: #17202a; --muted: #687385; }
+    body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; margin: 32px; color: var(--ink); }
+    h1 { margin-bottom: 4px; }
+    section { margin: 28px 0; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #d9dee7; padding: 8px 10px; text-align: left; }
+    th { background: #f5f7fb; }
+    pre { background: #111827; color: #e5e7eb; overflow-x: auto; padding: 12px; border-radius: 8px; }
+    .muted { color: var(--muted); }
+    .lineage { margin: 14px 0; line-height: 2.1; }
+    .node { border: 1px solid #c7ced9; border-radius: 999px; padding: 5px 9px; margin-right: 6px; }
+    .node.promoted, .candidate.promoted { background: var(--ok); }
+    .node.rejected, .candidate.rejected, .candidate.stopped { background: var(--bad); }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    .candidate { border: 1px solid #c7ced9; border-radius: 12px; padding: 14px; }
+    .candidate dl { display: grid; grid-template-columns: 90px 1fr; gap: 4px 10px; }
+    .candidate dt { font-weight: 700; }
+    .gates .passed { color: #166534; }
+    .gates .failed { color: #991b1b; font-weight: 700; }
+    .evidence { border-left: 4px solid #f59e0b; padding-left: 10px; }
+  </style>
+</head>
+<body>
+  <h1>DarwinPatch Report</h1>
+  <p class="muted">Static report generated from DarwinPatch JSON artifacts.</p>
+  
+<section>
+  <h2>Benchmark summary: phase3_smoke_suite</h2>
+  <p class="muted">Results: darwinpatch_runs/demo/benchmark/benchmark_results.json</p>
+  
+  <div class="claims">
+    <h3>Claim-to-artifact links</h3>
+    <ul>
+      <li><strong>Claim:</strong> budgeted repair search improves solve@budget over single shot.
+        <br><span class="muted">Evidence: full_darwinpatch=0.9 vs single_shot=0.2 in darwinpatch_runs/demo/benchmark/benchmark_results.json.</span></li>
+      <li><strong>Claim:</strong> bounded evidence plus route metadata is isolated as a stronger review baseline.
+        <br><span class="muted">Evidence: evidence_aware_review=0.9 vs full_darwinpatch=0.9; full DarwinPatch adds archive, lineage, fingerprints, policy, and report artifacts.</span></li>
+      <li><strong>Claim:</strong> route-aware selection uses declared candidate metadata, not patch filenames.
+        <br><span class="muted">Evidence: route metadata matches=28 plus candidate archives and controller traces.</span></li>
+      <li><strong>Claim:</strong> hard gates block regressions and invalid patches before promotion.
+        <br><span class="muted">Evidence: regression and invalid rejection counts in this summary plus nested candidate traces.</span></li>
+    </ul>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Baseline</th>
+        <th>solve@budget</th>
+        <th>95% CI</th>
+        <th>Avg attempts</th>
+        <th>Regressions blocked</th>
+        <th>Invalid rejected</th>
+        <th>Evidence packets</th>
+        <th>Unsolved cost</th>
+        <th>Route metadata matches</th>
+      </tr>
+    </thead>
+    <tbody><tr><td>archive_no_routing</td><td>0.6</td><td>0.446-0.7365</td><td>1.8</td><td>12</td><td>15</td><td>0</td><td>32</td><td>0</td></tr>
+<tr><td>clean_context_review</td><td>0.6</td><td>0.446-0.7365</td><td>1.8</td><td>12</td><td>15</td><td>0</td><td>32</td><td>0</td></tr>
+<tr><td>evidence_aware_review</td><td>0.9</td><td>0.7695-0.9604</td><td>1.8</td><td>12</td><td>9</td><td>36</td><td>8</td><td>28</td></tr>
+<tr><td>full_darwinpatch</td><td>0.9</td><td>0.7695-0.9604</td><td>1.8</td><td>12</td><td>9</td><td>36</td><td>8</td><td>28</td></tr>
+<tr><td>linear_retry</td><td>0.6</td><td>0.446-0.7365</td><td>1.8</td><td>12</td><td>15</td><td>0</td><td>32</td><td>0</td></tr>
+<tr><td>single_shot</td><td>0.2</td><td>0.105-0.3476</td><td>1.0</td><td>12</td><td>8</td><td>0</td><td>32</td><td>0</td></tr></tbody>
+  </table>
+</section>
+
+
+<section>
+  <h2>parser_single_success_01 / full_darwinpatch</h2>
+  <p class="muted">Archive: /Users/taneemishere/Developer/darwin-patch/darwinpatch/darwinpatch_runs/demo/benchmark/parser_single_success_01/full_darwinpatch/rep_001/candidate_archive.json</p>
+  <div class="lineage"><span class='node promoted'>candidate_001</span></div>
+  <div class="cards">
+<article class="candidate promoted">
+  <h3>1. candidate_001 — promoted</h3>
+  <dl>
+    <dt>Route</dt><dd>initial_repair</dd>
+    <dt>Selected by</dt><dd>initial_order</dd>
+    <dt>Intent</dt><dd>complete_spec_repair</dd>
+    <dt>Parent</dt><dd>none</dd>
+    <dt>Gen</dt><dd>0</dd>
+    <dt>Failure</dt><dd>none</dd>
+    <dt>Fingerprint</dt><dd>none</dd>
+    <dt>Score</dt><dd>1.0</dd>
+  </dl>
+  <ul class="gates"><li class='passed'>scope_guard: PASS</li>
+<li class='passed'>patch_applies: PASS</li>
+<li class='passed'>python_ast: PASS</li>
+<li class='passed'>secret_scan: PASS</li>
+<li class='passed'>visible_tests: PASS</li>
+<li class='passed'>release_gate_regressions: PASS</li></ul>
+  <p class='muted'>No failure evidence; candidate promoted.</p>
+  <details><summary>Patch diff: /Users/taneemishere/Developer/darwin-patch/darwinpatch/tasks/smoke_markdown_parser/candidate.patch</summary><pre>diff --git a/parser.py b/parser.py
+index e6f2d6f..7db8a9f 100644
+--- a/parser.py
++++ b/parser.py
+@@ -1,13 +1,44 @@
++def _split_row(line):
++    cells = []
++    current = []
++    escaped = False
++    inner = line.strip()
++    if inner.startswith(&quot;|&quot;):
++        inner = inner[1:]
++    if inner.endswith(&quot;|&quot;):
++        inner = inner[:-1]
++
++    for char in inner:
++        if escaped:
++            current.append(char)
++            escaped = False
++            continue
++        if char == &quot;\\&quot;:
++            escaped = True
++            continue
++        if char == &quot;|&quot;:
++            cells.append(&quot;&quot;.join(current).strip())
++            current = []
++            continue
++        current.append(char)
++
++    if escaped:
++        current.append(&quot;\\&quot;)
++    cells.append(&quot;&quot;.join(current).strip())
++    return cells
++
++
+ def parse_table(markdown):
+     &quot;&quot;&quot;Parse a simple Markdown table into row dictionaries.&quot;&quot;&quot;
+-    lines = [line.strip() for line in markdown.splitlines() if line.strip()]
+-    table_lines = [line for line in lines if line.startswith(&quot;|&quot;)]
++    table_lines = [line.strip() for line in markdown.splitlines() if line.strip().startswith(&quot;|&quot;)]
+     if len(table_lines) &lt; 2:
+         return []
+ 
+-    headers = [cell.strip() for cell in table_lines[0].strip(&quot;|&quot;).split(&quot;|&quot;)]
++    headers = _split_row(table_lines[0])
+     rows = []
+     for line in table_lines[2:]:
+-        values = [cell.strip() for cell in line.strip(&quot;|&quot;).split(&quot;|&quot;)]
++        values = _split_row(line)
++        if len(values) != len(headers):
++            raise ValueError(&quot;row has a different number of cells than the header&quot;)
+         rows.append(dict(zip(headers, values)))
+     return rows
+</pre></details>
+</article>
+</div>
+</section>
+
+
+<section>
+  <h2>parser_single_success_02 / full_darwinpatch</h2>
+  <p class="muted">Archive: /Users/taneemishere/Developer/darwin-patch/darwinpatch/darwinpatch_runs/demo/benchmark/parser_single_success_02/full_darwinpatch/rep_001/candidate_archive.json</p>
+  <div class="lineage"><span class='node promoted'>candidate_001</span></div>
+  <div class="cards">
+<article class="candidate promoted">
+  <h3>1. candidate_001 — promoted</h3>
+  <dl>
+    <dt>Route</dt><dd>initial_repair</dd>
+    <dt>Selected by</dt><dd>initial_order</dd>
+    <dt>Intent</dt><dd>complete_spec_repair</dd>
+    <dt>Parent</dt><dd>none</dd>
+    <dt>Gen</dt><dd>0</dd>
+    <dt>Failure</dt><dd>none</dd>
+    <dt>Fingerprint</dt><dd>none</dd>
+    <dt>Score</dt><dd>1.0</dd>
+  </dl>
+  <ul class="gates"><li class='passed'>scope_guard: PASS</li>
+<li class='passed'>patch_applies: PASS</li>
+<li class='passed'>python_ast: PASS</li>
+<li class='passed'>secret_scan: PASS</li>
+<li class='passed'>visible_tests: PASS</li>
+<li class='passed'>release_gate_regressions: PASS</li></ul>
+  <p class='muted'>No failure evidence; candidate promoted.</p>
+  <details><summary>Patch diff: /Users/taneemishere/Developer/darwin-patch/darwinpatch/tasks/smoke_markdown_parser/candidate.patch</summary><pre>diff --git a/parser.py b/parser.py
+index e6f2d6f..7db8a9f 100644
+--- a/parser.py
++++ b/parser.py
+@@ -1,13 +1,44 @@
++def _split_row(line):
++    cells = []
++    current = []
++    escaped = False
++    inner = line.strip()
++    if inner.startswith(&quot;|&quot;):
++        inner = inner[1:]
++    if inner.endswith(&quot;|&quot;):
++        inner = inner[:-1]
++
++    for char in inner:
++        if escaped:
++            current.append(char)
++            escaped = False
++            continue
++        if char == &quot;\\&quot;:
++            escaped = True
++            continue
++        if char == &quot;|&quot;:
++            cells.append(&quot;&quot;.join(current).strip())
++            current = []
++            continue
++        current.append(char)
++
++    if escaped:
++        current.append(&quot;\\&quot;)
++    cells.append(&quot;&quot;.join(current).strip())
++    return cells
++
++
+ def parse_table(markdown):
+     &quot;&quot;&quot;Parse a simple Markdown table into row dictionaries.&quot;&quot;&quot;
+-    lines = [line.strip() for line in markdown.splitlines() if line.strip()]
+-    table_lines = [line for line in lines if line.startswith(&quot;|&quot;)]
++    table_lines = [line.strip() for line in markdown.splitlines() if line.strip().startswith(&quot;|&quot;)]
+     if len(table_lines) &lt; 2:
+         return []
+ 
+-    headers = [cell.strip() for cell in table_lines[0].strip(&quot;|&quot;).split(&quot;|&quot;)]
++    headers = _split_row(table_lines[0])
+     rows = []
+     for line in table_lines[2:]:
+-        values = [cell.strip() for cell in line.strip(&quot;|&quot;).split(&quot;|&quot;)]
++        values = _split_row(line)
++        if len(values) != len(headers):
++            raise ValueError(&quot;row has a different number of cells than the header&quot;)
+         rows.append(dict(zip(headers, values)))
+     return rows
+</pre></details>
+</article>
+</div>
+</section>
+
+
+<section>
+  <h2>parser_visible_then_success_01 / full_darwinpatch</h2>
+  <p class="muted">Archive: /Users/taneemishere/Developer/darwin-patch/darwinpatch/darwinpatch_runs/demo/benchmark/parser_visible_then_success_01/full_darwinpatch/rep_001/candidate_archive.json</p>
+  <div class="lineage"><span class='node rejected'>candidate_001</span> → <span class='node promoted'>candidate_002</span></div>
+  <div class="cards">
+<article class="candidate rejected">
+  <h3>1. candidate_001 — rejected</h3>
+  <dl>
+    <dt>Route</dt><dd>initial_repair</dd>
+    <dt>Selected by</dt><dd>initial_order</dd>
+    <dt>Intent</dt><dd>first_pass_attempt_for_gate_coverage</dd>
+    <dt>Parent</dt><dd>none</dd>
+    <dt>Gen</dt><dd>0</dd>
+    <dt>Failure</dt><dd>visible_tests</dd>
+    <dt>Fingerprint</dt><dd>visible_tests:tests/visible/test_parser_visible.py::test_escaped_pipe_stays_inside_cell</dd>
+    <dt>Score</dt><dd>0.4</dd>
+  </dl>
+  <ul class="gates"><li class='passed'>scope_guard: PASS</li>
+<li class='passed'>patch_applies: PASS</li>
+<li class='passed'>python_ast: PASS</li>
+<li class='passed'>secret_scan: PASS</li>
+<li class='failed'>visible_tests: FAIL</li></ul>
+  <div class='evidence'><strong>visible developer tests failed</strong><p class='muted'>Evidence ID: ev_3355097a5d9f</p><pre>{
+  &quot;returncode&quot;: 1,
+  &quot;stderr_tail&quot;: &quot;&quot;,
+  &quot;stdout_tail&quot;: &quot;.F                                                                       [100%]\n=================================== FAILURES ===================================\n_____________________ test_escaped_pipe_stays_inside_cell ______________________\n\n    def test_escaped_pipe_stays_inside_cell():\n        markdown = r\&quot;\&quot;\&quot;\n        | name | value |\n        | --- | --- |\n        | alpha | one \\| two |\n        \&quot;\&quot;\&quot;\n    \n&gt;       assert parse_table(markdown) == [{\&quot;name\&quot;: \&quot;alpha\&quot;, \&quot;value\&quot;: \&quot;one | two\&quot;}]\nE       AssertionError: assert [{&#x27;name&#x27;: &#x27;al...e&#x27;: &#x27;one \\\\&#x27;}] == [{&#x27;name&#x27;: &#x27;al... &#x27;one | two&#x27;}]\nE         \nE         At index 0 diff: {&#x27;name&#x27;: &#x27;alpha&#x27;, &#x27;value&#x27;: &#x27;one \\\\&#x27;} != {&#x27;name&#x27;: &#x27;alpha&#x27;, &#x27;value&#x27;: &#x27;one | two&#x27;}\nE         Use -v to get more diff\n\ntests/visible/test_parser_visible.py:22: AssertionError\n=========================== short test summary info ============================\nFAILED tests/visible/test_parser_visible.py::test_escaped_pipe_stays_inside_cell\n1 failed, 1 passed in 0.02s\n&quot;
+}</pre></div>
+  <details><summary>Patch diff: /Users/taneemishere/Developer/darwin-patch/darwinpatch/tasks/smoke_markdown_parser/candidate_visible_fail.patch</summary><pre>diff --git a/parser.py b/parser.py
+index e6f2d6f..96d3ee1 100644
+--- a/parser.py
++++ b/parser.py
+@@ -1,13 +1,13 @@
+ def parse_table(markdown):
+     &quot;&quot;&quot;Parse a simple Markdown table into row dictionaries.&quot;&quot;&quot;
+-    lines = [line.strip() for line in markdown.splitlines() if line.strip()]
+-    table_lines = [line for line in lines if line.startswith(&quot;|&quot;)]
++    table_lines = [line.strip() for line in markdown.splitlines() if line.strip().startswith(&quot;|&quot;)]
+     if len(table_lines) &lt; 2:
+         return []
+ 
+     headers = [cell.strip() for cell in table_lines[0].strip(&quot;|&quot;).split(&quot;|&quot;)]
+     rows = []
+     for line in table_lines[2:]:
+         values = [cell.strip() for cell in line.strip(&quot;|&quot;).split(&quot;|&quot;)]
++        values = values[: len(headers)]
+         rows.append(dict(zip(headers, values)))
+     return rows
+</pre></details>
+</article>
+
+
+<article class="candidate promoted">
+  <h3>2. candidate_002 — promoted</h3>
+  <dl>
+    <dt>Route</dt><dd>behavior_repair</dd>
+    <dt>Selected by</dt><dd>metadata_route_match:behavior_repair</dd>
+    <dt>Intent</dt><dd>complete_spec_repair</dd>
+    <dt>Parent</dt><dd>candidate_001</dd>
+    <dt>Gen</dt><dd>1</dd>
+    <dt>Failure</dt><dd>none</dd>
+    <dt>Fingerprint</dt><dd>none</dd>
+    <dt>Score</dt><dd>1.0</dd>
+  </dl>
+  <ul class="gates"><li class='passed'>scope_guard: PASS</li>
+<li class='passed'>patch_applies: PASS</li>
+<li class='passed'>python_ast: PASS</li>
+<li class='passed'>secret_scan: PASS</li>
+<li class='passed'>visible_tests: PASS</li>
+<li class='passed'>release_gate_regressions: PASS</li></ul>
+  <p class='muted'>No failure evidence; candidate promoted.</p>
+  <details><summary>Patch diff: /Users/taneemishere/Developer/darwin-patch/darwinpatch/tasks/smoke_markdown_parser/candidate.patch</summary><pre>diff --git a/parser.py b/parser.py
+index e6f2d6f..7db8a9f 100644
+--- a/parser.py
++++ b/parser.py
+@@ -1,13 +1,44 @@
++def _split_row(line):
++    cells = []
++    current = []
++    escaped = False
++    inner = line.strip()
++    if inner.startswith(&quot;|&quot;):
++        inner = inner[1:]
++    if inner.endswith(&quot;|&quot;):
++        inner = inner[:-1]
++
++    for char in inner:
++        if escaped:
++            current.append(char)
++            escaped = False
++            continue
++        if char == &quot;\\&quot;:
++            escaped = True
++            continue
++        if char == &quot;|&quot;:
++            cells.append(&quot;&quot;.join(current).strip())
++            current = []
++            continue
++        current.append(char)
++
++    if escaped:
++        current.append(&quot;\\&quot;)
++    cells.append(&quot;&quot;.join(current).strip())
++    return cells
++
++
+ def parse_table(markdown):
+     &quot;&quot;&quot;Parse a simple Markdown table into row dictionaries.&quot;&quot;&quot;
+-    lines = [line.strip() for line in markdown.splitlines() if line.strip()]
+-    table_lines = [line for line in lines if line.startswith(&quot;|&quot;)]
++    table_lines = [line.strip() for line in markdown.splitlines() if line.strip().startswith(&quot;|&quot;)]
+     if len(table_lines) &lt; 2:
+         return []
+ 
+-    headers = [cell.strip() for cell in table_lines[0].strip(&quot;|&quot;).split(&quot;|&quot;)]
++    headers = _split_row(table_lines[0])
+     rows = []
+     for line in table_lines[2:]:
+-        values = [cell.strip() for cell in line.strip(&quot;|&quot;).split(&quot;|&quot;)]
++        values = _split_row(line)
++        if len(values) != len(headers):
++            raise ValueError(&quot;row has a different number of cells than the header&quot;)
+         rows.append(dict(zip(headers, values)))
+     return rows
+</pre></details>
+</article>
+</div>
+</section>
+
+</body>
+</html>

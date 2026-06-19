@@ -92,9 +92,9 @@
                 <td style="padding:16px;width:100%;vertical-align:middle">
                   <br>
                   <h2>Research Work</h2>
-                  <p style="text-align: justify;">My work spans the intersection of multimodal learning, generative
-                    modeling, and computational neuroscience, advancing systems that
-                    move from pattern recognition toward causal understanding of intelligent behavior.
+                  <p style="text-align: justify;">My work spans multimodal learning, generative modeling, and
+                    intelligent systems, with a focus on building reliable AI that moves from research into real-world
+                    deployment.
                     <!-- Some projects are <span class="highlight">highlighted</span>. -->
                   </p>
                 </td>
@@ -106,6 +106,44 @@
           <table
             style="width:100%; border:0px; border-spacing:0px; border-collapse:separate; margin-right:auto; margin-left:auto;">
             <tbody>
+
+              <!-- darwinpatch -->
+              <tr onmouseout="darwinpatch_stop()" onmouseover="darwinpatch_start()" bgcolor="#F5F5F7">
+                <td style="padding:16px;width:20%;vertical-align:middle;">
+                  <div class="one">
+                    <img src='./images/darwinpatch_image.png' width=100%>
+                  </div>
+                  <script type="text/javascript">
+                    function darwinpatch_start() {
+                      document.getElementById('darwinpatch').style.opacity = "1";
+                    }
+
+                    function darwinpatch_stop() {
+                      document.getElementById('darwinpatch').style.opacity = "0";
+                    }
+                    darwinpatch_stop()
+                  </script>
+                </td>
+                <td style="padding:8px;width:80%;vertical-align:middle">
+                  <a href="./darwinpatch" target="_blank" rel="noopener noreferrer">
+                    <span class="papertitle">DarwinPatch: A Budgeted Repair-Search Controller for Reliable Coding Agents
+                    </span> </a>
+                  <br>
+                  <br>
+                  <strong>Taneem Ullah Jan</strong>
+                  <br>
+                  [<a href="./darwinpatch" target="_blank" rel="noopener noreferrer">project page</a>]
+                  <p>
+                    DarwinPatch is a budgeted repair-search controller for coding agents that converts failed patch
+                    attempts into bounded evidence, routes follow-up repairs through hard verification gates, and
+                    records auditable candidate lineage.
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td><br></td>
+              </tr>
 
               <!-- synapse work -->
               <tr onmouseout="synapse_stop()" onmouseover="synapse_start()" bgcolor="#F5F5F7">
