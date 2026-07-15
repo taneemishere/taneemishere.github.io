@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <meta name="description"
+    content="PatchProof: Gate-Verified Repair Search and Reproducible Benchmarks for Coding Agents">
+  <meta name="keywords"
+    content="PatchProof, LLM, machine learning, autonomous coding, coding ai, ai coding agents, agent harness, agent loop, devin, coginition">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/patchproof/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title"
+    content="PatchProof: Gate-Verified Repair Search and Reproducible Benchmarks for Coding Agents">
+  <meta property="og:description"
+    content="PatchProof is a gate-verified repair search framework for coding agents that ensures reproducibility, verifiability, and auditable lineage of code patches.">
+  <meta property="og:url" content="https://taneemishere.github.io/patchproof/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/patchproof_image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PatchProof">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/patchproof_image.png">
+
+  <title>PatchProof</title>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "PatchProof: Gate-Verified Repair Search and Reproducible Benchmarks for Coding Agents",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/patchproof/",
+      "description": "PatchProof is a gate-verified repair search framework for coding agents that ensures reproducibility, verifiability, and auditable lineage of code patches.",
+      "datePublished": "2026-07-15",
+      "dateModified": "2026-07-15",
+      "keywords": "PatchProof, PatchProof, LLM, machine learning, autonomous coding, coding ai, ai coding agents, agent harness, agent loop, devin, coginition",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><span style="color: red;">PatchProof</span>: Gate-Verified Repair
+              Search and Reproducible Benchmarks for Coding Agents</h1>
+            <br>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Research and development work conducted</span>
+              <br> <br>
+              <span>by</span>
+            </div>
+
+            <br>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://taneemishere.github.io" target="_blank">Taneem Ullah Jan</a></span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://github.com/taneemishere/patchproof" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Starting From the Earlier Limitations</h2>
+          <div class="content has-text-justified">
+            <p>
+              PatchProof is the successor to the earlier DarwinPatch. The earlier work established the
+              core reliability controller: hard verification gates, bounded failure evidence, route-aware repair
+              selection, candidate archives, and deterministic benchmark ablations. Its technical report is available at
+              <a href="https://taneemishere.github.io/darwinpatch/" target="_blank"
+                style="font-weight: bold; text-decoration: underline; color: blue;">DarwinPatch: A Budgeted
+                Repair-Search Controller
+                for Reliable Coding Agents.</a>
+            </p>
+
+            <br>That report stated five limitations:
+
+            <ol>
+              <li>The multi-task benchmark replayed curated candidate patch pools rather than live model-generated
+                candidates.</li>
+              <li><code>evidence_aware_review</code> tied <code>full_darwinpatch</code> on controlled solve@budget, so
+                the full controller added auditability and reliability infrastructure rather than a higher deterministic
+                solve rate.</li>
+              <li>The tasks were small Python repairs rather than coordinated multi-file changes.</li>
+              <li>Live LLM behavior was demonstrated only on a hero task, not across a multi-task benchmark.</li>
+              <li>Token, latency, and monetary cost information was unavailable.</li>
+            </ol>
+
+            <p>
+              Those limits were appropriate for initial work. They protected the original claim: the controller was
+              measurable and reproducible, but it was not presented as evidence that arbitrary live coding agents had
+              been solved.
+              <br><br>
+              PatchProof now retains that discipline while extending the system where the older work stopped. It adds
+              live
+              LLM repair search across providers, live benchmark execution across task families, model-matrix
+              comparisons, cached responses, reproducibility metadata, provider usage accounting, optional price
+              schedules, generator-declared metadata, multi-file tasks, and comparative HTML reporting.
+              <br><br>
+              The older deterministic benchmark remains valuable. It is still the controlled ablation environment. The
+              live benchmark is a complementary experiment that measures the same gated repair process under model and
+              provider variability.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- the summary -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">The Executive Summary</h2>
+          <div class="content has-text-justified">
+            <p>PatchProof is a reproducible benchmark harness and repair-search controller for reliable coding agents.
+              It does not to replace the model that proposes code changes, <strong>never!</strong>. It makes that
+              model's repair loop measurable,
+              gate-verified, route-aware, and auditable.
+
+              <br><br>
+              The central principle is unchanged:
+            </p>
+            <blockquote>A coding agent should not promote a patch merely because it generated one. It should generate a
+              patch, verify it through hard gates, receive only bounded evidence when it fails, route the next attempt
+              deliberately, and preserve enough provenance to reproduce and inspect the result.</blockquote>
+            <p>
+              PatchProof extends this principle to with live LLM experiments. A single code path can run compatible
+              endpoint. Every generated candidate passes through the same scope, application, syntax, safety,
+              visible-test, and hidden regression gates used by the deterministic controller.
+
+              <br><br>
+              The system has two complementary evaluation modes:
+            </p>
+            
+            <ul>
+              <li>A deterministic benchmark with curated candidate pools and ablations. This remains the controlled
+                mechanism study.</li>
+
+              <li>A live LLM benchmark that generates and evaluates patches across unique task families and repetitions.
+                This measures observed reliability, attempts, token usage, latency, and cost when available.</li>
+            </ul>
+            
+            <p>PatchProof does not claim that a benchmark result generalizes to every repository, model, or provider. It
+              provides a disciplined way to produce those measurements and retain the artifacts needed to inspect them.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- design goals -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Design Goals</h2>
+          <div class="content has-text-justified">
+            <p>PatchProof is designed around seven goals:</p>
+
+            <ol>
+              <li><strong>Hard verification before promotion</strong></li>
+              <p>A candidate patch must pass scope validation, patch application, Python AST parsing, secret scanning,
+                visible developer tests, and release-gate regressions.</p>
+
+              <li><strong>Bounded evidence rather than unrestricted logs</strong></li>
+              <p>The repair loop receives compact <code>EvidencePacket</code> objects. Visible failures expose bounded
+                output. Release-gate regressions identify the failure without disclosing the hidden assertion details.
+              </p>
+
+              <li><strong>Live generation under the same controller</strong></li>
+              <p>A live LLM candidate is not trusted differently from a curated candidate. It is passed through the same
+                gates, evidence construction, routing, stopping logic, archive, and reports.
+              </p>
+
+              <li><strong>Provider-neutral experimentation</strong></li>
+              <p>The system supports OpenRouter and OpenAI-compatible endpoints, including vLLM, with provider,
+                endpoint, model, temperature, reasoning, and seed recorded as run metadata.</p>
+
+              <li><strong>Reproducible measurement</strong></li>
+              <p>Cached requests, explicit budgets, run configuration fingerprints, source revision metadata,
+                repetitions, and static artifacts make results inspectable and repeatable.</p>
+
+              <li><strong>Fair model comparison</strong></li>
+              <p>A model matrix runs multiple model configurations through the same task suite, budgets, gates, and
+                summary format, then produces JSON, Markdown, and comparative HTML artifacts.</p>
+
+              <li><strong>Traceable candidate intent</strong></li>
+              <p>A generator may declare an intent and compatible repair routes for its patch. PatchProof records this
+                as generator-derived metadata, validates it against the known route taxonomy, and falls back to
+                controller-derived metadata when it is absent or unusable.</p>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- system overview -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">System Overview</h2>
+          <div class="content has-text-justified">
+            <p>PatchProof is a reliability layer around a model's patch proposals.</p>
+
+            <br>
+            <pre class="mermaid">
+  flowchart LR
+    A["Task specification and source workspace"] --> B["LLM or curated candidate patch"]
+    B --> C["Hard verification gates"]
+    C --> D{"All gates pass?"}
+    D -- "yes" --> E["Promote candidate"]
+    D -- "no" --> F["Build bounded EvidencePacket"]
+    F --> G["Route next repair"]
+    G --> H["Request or select next candidate"]
+    H --> C
+    C --> I["Archive, trace, provenance, and metrics"]
+    I --> J["Showcase, benchmark, and model-matrix reports"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <br>
+            <p>The same structure supports two sources of candidates:</p>
+
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Candidate source</th>
+                  <th>Purpose</th>
+                  <th>Selection behavior</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Curated patch pool</td>
+                  <td>Deterministic ablations and reproducible controller tests</td>
+                  <td>Uses structured candidate metadata or ordered fallback.</td>
+                </tr>
+                <tr>
+                  <td>Live LLM response</td>
+                  <td>Live repair demos, benchmark runs, and model comparisons</td>
+                  <td>Generates a patch from the current bounded context and then enters the same verification loop.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>This separation is important. PatchProof does not present a curated result as a live-model result, and it
+              does not let a live model bypass the controller simply because its output was generated online.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DarwinPatch to PatchProof -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">From DarwinPatch to PatchProof</h2>
+          <div class="content has-text-justified">
+            <p>The earlier report's future work directly maps to this current system:</p>
+
+            <br>
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Earlier limitation or future work</th>
+                  <th>PatchProof capability</th>
+                  <th>Scope of the claim</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Curated benchmark candidates</td>
+                  <td><code>benchmark-llm</code> runs live generation over unique task families and repetitions.
+                    <code>benchmark --llm-generate</code> can build live candidate pools for baseline evaluation.
+                  </td>
+                  <td>The controlled benchmark remains curated by design.</td>
+                </tr>
+                <tr>
+                  <td>Compare model families</td>
+                  <td>Repeated <code>--llm-model</code> arguments run a model matrix with a merged JSON, Markdown, and
+                    HTML comparison report.</td>
+                  <td>A comparison is only as broad as the supplied model configurations and task suite.</td>
+                </tr>
+                <tr>
+                  <td>Token and wall-clock accounting</td>
+                  <td>Provider-reported prompt and completion usage, wall-clock duration, token source, optional price
+                    schedules, currency, and variance summaries are recorded.</td>
+                  <td>Cost is omitted when complete provider usage is unavailable.</td>
+                </tr>
+                <tr>
+                  <td>Larger multi-file repairs</td>
+                  <td><code>csv_report</code>, <code>pricing_cart</code>, and <code>order_service</code> add coordinated
+                    multi-file tasks and a dedicated <code>multifile_suite</code>.</td>
+                  <td>These remain compact research tasks, not a claim of production-scale repository coverage.</td>
+                </tr>
+                <tr>
+                  <td>Real generation traces</td>
+                  <td>LLM responses, generated patches, search/replace conversion artifacts, generator metadata,
+                    archives, and controller traces are persisted.</td>
+                  <td>Generator metadata is optional and validated before use.</td>
+                </tr>
+              </tbody>
+            </table>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gate-Verified Repair Loop -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Gate-Verified Repair Loop</h2>
+          <div class="content has-text-justified">
+            <p>Every candidate, whether curated or generated by an LLM, is evaluated in an isolated workspace. A
+              candidate is promoted only after each required gate passes.</p>
+
+            <pre class="mermaid">
+  flowchart TD
+    A["Candidate patch"] --> B["Scope guard"]
+    B --> C["Patch applies"]
+    C --> D["Python AST parse"]
+    D --> E["Secret scan"]
+    E --> F["Visible developer tests"]
+    F --> G["Release-gate regression tests"]
+    G --> H["Promote"]
+
+    B -- "fail" --> R["Reject and build bounded evidence"]
+    C -- "fail" --> R
+    D -- "fail" --> R
+    E -- "fail" --> R
+    F -- "fail" --> R
+    G -- "fail" --> R
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <p>The release gate is intentionally different from visible tests. A visible failure may reveal a bounded
+              stdout or stderr tail so the next repair can be targeted. A release-gate regression exposes only limited
+              diagnostics, such as test identifiers, and withholds assertion values and full output. This preserves a
+              hidden-test boundary and reduces the risk of direct overfitting to withheld cases.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bounded Evidence and Repair Routes -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Bounded Evidence and Repair Routes</h2>
+          <div class="content has-text-justified">
+            <p>After rejection, PatchProof does not pass arbitrary raw logs back to the generator. It constructs a
+              compact <code>EvidencePacket</code> containing a failure type, summary, bounded details, and packet
+              identifiers for admitted context.</p>
+
+            <pre class="mermaid" style="background-color: white; align-items: center;">
+flowchart LR
+    A["Raw gate result"] --> B["Failure classifier"]
+    B --> C["EvidencePacket"]
+    C --> D["Route decision"]
+    C --> E["Candidate archive"]
+    C --> F["HTML report"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <p>Typical routes include <code>behavior_repair</code>, <code>regression_repair</code>,
+              <code>scope_repair</code>, <code>syntax_repair</code>, <code>safety_repair</code>,
+              <code>patch_format_repair</code>, and <code>general_repair</code>. Repeated failure fingerprints can
+              trigger a diversification route
+              so the controller does not repeatedly request the same failing approach.
+            </p>
+
+            <p>The repair prompt includes the task specification, permitted source files, visible tests, bounded failure
+              evidence, and short records of previous rejected approaches. Each attempt is applied independently to the
+              original task workspace. This prevents an LLM from silently relying on an unverified edit from an earlier
+              failed attempt.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live LLM Generation -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Live LLM Generation</h2>
+          <div class="content has-text-justified">
+            <p>The PatchProof's live repair loop accepts unified diffs and structured search/replace blocks. Search/replace blocks
+              are converted to a patch against the original task source, with matching diagnostics preserved in the
+              trace. This gives models a robust edit format while retaining gate-verifiable patch artifacts.</p>
+
+            <pre class="mermaid">
+  sequenceDiagram
+    participant P as PatchProof
+    participant M as LLM provider
+    participant V as Verification gates
+    participant A as Archive
+
+    P->>M: Task context and allowed paths
+    M-->>P: Patch plus optional metadata
+    P->>V: Evaluate candidate in isolated workspace
+    V-->>P: Gate outcomes
+    P->>A: Store response, patch, evidence, route, and metrics
+    alt Candidate promoted
+        P-->>P: Finish with promoted status
+    else Candidate rejected
+        P->>M: Bounded evidence and repair route
+    end
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Generator-Declared Metadata -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Generator-Declared Metadata</h2>
+          <div class="content has-text-justified">
+            <p>An LLM may append an optional <code>patchproof-metadata</code> block to describe the patch it
+              generated:</p>
+
+            <pre>
+              <code>
+patchproof-metadata
+  {
+    "intent": "complete_spec_repair", 
+    "compatible_routes": 
+      ["behavior_repair", "regression_repair"]
+  }
+              </code>
+            </pre>
+
+            <p>This metadata is treated as a declaration, not as trusted control input. PatchProof validates the routes
+              against its known taxonomy. Unknown routes are rejected and recorded in the trace. If no usable
+              declaration remains, the archive marks the metadata source as controller-derived and uses the controller
+              fallback.</p>
+
+            <p>This preserves the distinction between two facts:</p>
+
+            <ul>
+              <li>What the generator says its patch is intended to repair.</li>
+              <li>What the controller independently observed when it evaluated that patch.</li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reproducibility and Caching -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Reproducibility and Caching</h2>
+          <div class="content has-text-justified">
+            <p>Live LLM evaluation is variable by nature. PatchProof makes the experimental configuration explicit
+              rather than pretending variability does not exist.</p>
+
+            <p>Each LLM run records reproducibility metadata including:</p>
+
+            <ul>
+              <li>PatchProof source revision.</li>
+              <li>Model, provider, and endpoint.</li>
+              <li>Temperature, reasoning setting, and optional sampling seed.</li>
+              <li>Candidate and repeated-failure budgets.</li>
+              <li>A stable configuration fingerprint.</li>
+            </ul>
+
+            <p>The optional disk cache keys each response by the model, reasoning configuration, provider, endpoint,
+              temperature, seed, and prompt messages. This prevents a response from one server or sampling configuration
+              from being silently reused for another experimental condition.</p>
+
+            <pre class="mermaid">
+  flowchart LR
+    A["Run configuration"] --> B["Canonical cache context"]
+    B --> C["Model, provider, endpoint, temperature, seed"]
+    C --> D["Prompt messages"]
+    D --> E["Hashed cache key"]
+    E --> F{"Cached response exists?"}
+    F -- "yes" --> G["Reuse archived response"]
+    F -- "no" --> H["Call provider and persist response"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <p>Caching is useful for repeatable analysis and cost control. It should not be mistaken for deterministic
+              model behavior when cache misses occur. A seed is forwarded to the provider and recorded, but practical
+              determinism still depends on the provider and model honoring that seed.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cost, Tokens, and Latency -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Cost, Tokens, and Latency</h2>
+          <div class="content has-text-justified">
+            <p>PatchProof records three related but distinct measurements:</p>
+
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Measurement</th>
+                  <th>Source</th>
+                  <th>Interpretation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Prompt and completion tokens</td>
+                  <td>Provider <code>usage</code> payload when available</td>
+                  <td>Preferred token accounting.</td>
+                </tr>
+                <tr>
+                  <td>Token estimate</td>
+                  <td>Local text-length estimate when usage is absent</td>
+                  <td>Operational estimate, explicitly labeled <code>estimate</code>.</td>
+                </tr>
+                <tr>
+                  <td>Wall-clock seconds</td>
+                  <td>Local monotonic timer around the repair run</td>
+                  <td>End-to-end elapsed time for the local controller and provider calls.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>An optional price schedule maps a model to input and output price per thousand tokens and a currency.
+              PatchProof calculates a monetary cost only when complete provider-reported usage is available. If usage is
+              absent or incomplete, it records token estimates but omits cost rather than publishing a misleading
+              partial dollar amount.</p>
+
+            <p>Live benchmark summaries report total and average tokens, token source, total and average wall time, and
+              standard deviations for token and wall-clock observations. Cost summaries include the declared currency.
+              This keeps estimated token counts distinct from provider-confirmed accounting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benchmark Modes -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Benchmark Modes</h2>
+          <div class="content has-text-justified">
+            <h3>Controlled Deterministic Benchmark</h3>
+            <p>The original deterministic benchmark remains the controller-ablation study. It replays structured
+              candidate pools across the following baselines:</p>
+
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Baseline</th>
+                  <th>What it tests</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>single_shot</code></td>
+                  <td>One candidate, no correction loop.</td>
+                </tr>
+                <tr>
+                  <td><code>linear_retry</code></td>
+                  <td>Ordered retry under the same candidate budget.</td>
+                </tr>
+                <tr>
+                  <td><code>clean_context_review</code></td>
+                  <td>Ordered retry without route-aware selection or archive behavior.</td>
+                </tr>
+                <tr>
+                  <td><code>archive_no_routing</code></td>
+                  <td>Archive-compatible retry without route-aware selection.</td>
+                </tr>
+                <tr>
+                  <td><code>evidence_aware_review</code></td>
+                  <td>Bounded evidence plus candidate metadata without the full archive and policy machinery.</td>
+                </tr>
+                <tr>
+                  <td><code>full_patchproof</code></td>
+                  <td>Full PatchProof controller behavior.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <br>
+            <p>The earlier report recorded the following controlled result shape:</p>
+            <br>
+
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Baseline</th>
+                  <th style="text-align: right;">solve@budget</th>
+                  <th style="text-align: right;">95% CI</th>
+                  <th style="text-align: right;">Avg attempts</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>single_shot</code></td>
+                  <td style="text-align: right;">0.2</td>
+                  <td style="text-align: right;">0.105-0.3476</td>
+                  <td style="text-align: right;">1.0</td>
+                </tr>
+                <tr>
+                  <td><code>linear_retry</code></td>
+                  <td style="text-align: right;">0.6</td>
+                  <td style="text-align: right;">0.446-0.7365</td>
+                  <td style="text-align: right;">1.8</td>
+                </tr>
+                <tr>
+                  <td><code>clean_context_review</code></td>
+                  <td style="text-align: right;">0.6</td>
+                  <td style="text-align: right;">0.446-0.7365</td>
+                  <td style="text-align: right;">1.8</td>
+                </tr>
+                <tr>
+                  <td><code>archive_no_routing</code></td>
+                  <td style="text-align: right;">0.6</td>
+                  <td style="text-align: right;">0.446-0.7365</td>
+                  <td style="text-align: right;">1.8</td>
+                </tr>
+                <tr>
+                  <td><code>evidence_aware_review</code></td>
+                  <td style="text-align: right;">0.9</td>
+                  <td style="text-align: right;">0.7695-0.9604</td>
+                  <td style="text-align: right;">1.8</td>
+                </tr>
+                <tr>
+                  <td><code>full_darwinpatch</code></td>
+                  <td style="text-align: right;">0.9</td>
+                  <td style="text-align: right;">0.7695-0.9604</td>
+                  <td style="text-align: right;">1.8</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>This result remains intentionally narrow. It demonstrates the value of bounded evidence and
+              route-compatible metadata under a controlled candidate pool. It does not establish a live-model ranking.
+            </p>
+
+            <h3>Live LLM Benchmark</h3>
+            <p><code>benchmark-llm</code> runs the live repair loop across each unique task family in a suite. It
+              supports repeated
+              runs, bounded candidate budgets, provider selection, endpoint configuration, caching, temperature, seed,
+              reasoning, and optional pricing.</p>
+            <br>
+            <p>For each task and repetition, PatchProof records:</p>
+
+            <ul>
+              <li>Promotion status and stop reason.</li>
+              <li>Number of attempts and failure types.</li>
+              <li>Token totals, prompt tokens, completion tokens, and token source.</li>
+              <li>Cost and currency when complete provider usage and a schedule are available.</li>
+              <li>Wall-clock duration.</li>
+              <li>Candidate archive, response artifacts, patch artifacts, and controller trace.</li>
+            </ul>
+
+            <p>The result is a live measurement harness. It reports observed solve@budget and confidence intervals, but
+              does not fabricate a universal benchmark score before a real experiment is run.</p>
+
+            <h3>Live-Generated Candidate Pools</h3>
+            <p><code>benchmark --llm-generate</code> first runs a live LLM repair search to construct a candidate pool,
+              then replays
+              that pool through the deterministic baselines. The generated pool preserves patch files and metadata
+              artifacts, allowing a controlled comparison of baseline policies against the same live-generated
+              proposals.</p>
+
+            <br>
+            <p>This mode is useful when the research question is not only "which model solved a task?" but also "how
+              does each controller baseline behave when given the same generated candidates?"</p>
+
+            <h3></h3>
+            <p>PatchProof can compare multiple models under the same suite and budget. Supplying
+              <code>--llm-model</code> more than once invokes a model-matrix experiment.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Model-Matrix Evaluation -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Model-Matrix Evaluation</h2>
+          <div class="content has-text-justified">
+            <p>PatchProof can compare multiple models under the same suite and budget. Supplying
+              <code>--llm-model</code> more than once invokes a model-matrix experiment.
+            </p>
+
+            <pre class="mermaid" style="background-color: white; align-items: center;">
+flowchart TD
+    A["Shared suite, budget, repetitions, and gate policy"] --> B["Model A live benchmark"]
+    A --> C["Model B live benchmark"]
+    A --> D["Model N live benchmark"]
+    B --> E["Per-model artifacts"]
+    C --> E
+    D --> E
+    E --> F["Merged JSON and Markdown matrix"]
+    F --> G["Comparative HTML report"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <p>The matrix report presents:</p>
+            <ul>
+              <li>Model and provider identity.</li>
+              <li>Task family and repetition.</li>
+              <li>Promotion status and stop reason.</li>
+              <li>Number of attempts and failure types.</li>
+              <li>Total tokens, prompt tokens, completion tokens, and token source.</li>
+              <li>Total cost with currency when available.</li>
+              <li>Total wall-clock time and standard deviation.</li>
+              <li>Per-task solve@budget table, with the highest observed score highlighted for each task.</li>
+            </ul>
+
+            <p>The matrix is a comparative artifact, not an automatic claim of statistical superiority. Confidence
+              intervals and repeated runs make uncertainty visible, but proper conclusions still depend on the number
+              and diversity of tasks, the provider setup, and the sampling policy.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Multi-File Repair Coverage -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Multi-File Repair Coverage</h2>
+          <div class="content has-text-justified">
+            <p>PatchProof expands beyond the earlier single-file task families with coordinated multi-file repairs:</p>
+
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Allowed repair surface</th>
+                  <th>Example of coordinated behavior</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>csv_report</code></td>
+                  <td>Two source modules</td>
+                  <td>Row normalization and report summary behavior.</td>
+                </tr>
+                <tr>
+                  <td><code>pricing_cart</code></td>
+                  <td>Two source modules</td>
+                  <td>Cart and pricing behavior.</td>
+                </tr>
+                <tr>
+                  <td><code>order_service</code></td>
+                  <td><code>shop/pricing.py</code>, <code>shop/inventory.py</code>, and <code>shop/checkout.py</code>
+                  </td>
+                  <td>Rounding, validation, inventory, and checkout flow.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>The <code>order_service</code> task is intentionally scope-restricted to these three files. A candidate
+              that changes the catalog, specification, or tests is rejected by the scope guard before it can be
+              promoted.</p>
+            <br>
+            <p>The multi-file suite demonstrates coordinated changes and scope control. It does not claim that
+              PatchProof has solved large production repositories or arbitrary architectural changes.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reports and Artifacts -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Reports and Artifacts </h2>
+          <div class="content has-text-justified">
+            <p>PatchProof writes artifacts as part of the execution model, not as an afterthought.</p>
+
+            <table class="table is-fullwidth is-striped">
+              <thead>
+                <tr>
+                  <th>Artifact</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>candidate_archive.json</code></td>
+                  <td>Candidate lineage, gate outcomes, evidence, routes, fingerprints, metadata source, token
+                    information, cost, and reproducibility metadata.</td>
+                </tr>
+                <tr>
+                  <td><code>controller_trace.jsonl</code></td>
+                  <td>Event-by-event repair-search trace.</td>
+                </tr>
+                <tr>
+                  <td><code>llm/</code> response and patch files</td>
+                  <td>Original model responses and extracted or converted patch artifacts.</td>
+                </tr>
+                <tr>
+                  <td><code>showcase_report.html</code></td>
+                  <td>One-task narrative report with problem, timeline, evidence, gates, promoted patch, and artifact
+                    links.</td>
+                </tr>
+                <tr>
+                  <td>Benchmark JSON and Markdown</td>
+                  <td>Baseline or live-run summaries for programmatic and human review.</td>
+                </tr>
+                <tr>
+                  <td><code>model_matrix_report.html</code></td>
+                  <td>Side-by-side comparison of model families and per-task outcomes.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <pre class="mermaid" style="background-color: white; align-items: center;">
+flowchart LR
+    A["Run artifacts"] --> B["Candidate archive"]
+    A --> C["Controller trace"]
+    A --> D["LLM responses and patches"]
+    B --> E["Showcase report"]
+    B --> F["Benchmark summaries"]
+    F --> G["Model-matrix report"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Policy Selection -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Policy Selection</h2>
+          <div class="content has-text-justified">
+            <p>The guarded policy experiment from the earlier work remains available. It splits cases into train,
+              validation, and held-out test partitions. Policies are tuned on train data, selected using validation
+              results, and evaluated on the held-out test split only after selection.</p>
+
+            <pre class="mermaid">
+  flowchart LR
+    A["Source benchmark suite"] --> B["Train split"]
+    A --> C["Validation split"]
+    A --> D["Held-out test split"]
+    B --> E["Policy tuning"]
+    C --> F["Policy selection"]
+    F --> G["Selected policy"]
+    G --> D
+    D --> H["Final report only"]
+    </pre>
+            <script type="module">
+              import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            </script>
+
+            <p>This protects against selecting a repair budget or stopping policy based on the same held-out cases used
+              to report its final result.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What this Demonstrates -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">What PatchProof Demonstrates </h2>
+          <div class="content has-text-justified">
+            <p>PatchProof demonstrates a practical reliability pattern for LLM coding agents:</p>
+
+            <ol>
+              <li><strong>Live model output can be governed by the same hard gates as a deterministic repair
+                  controller.</strong></li>
+              <p>A live LLM candidate is a proposal, not a promotion.</p>
+
+              <li><strong>Self-correction can be verifier-grounded and information-bounded.</strong></li>
+              <p>The next attempt is informed by compact gate evidence rather than an unrestricted transcript of hidden
+                failures.
+              </p>
+
+              <li><strong>Live experiments can retain research-grade provenance.</strong></li>
+              <p>Provider, endpoint, model, sampling configuration, seed, cache context, source revision, usage, and
+                cost metadata are part of the run record.
+              </p>
+
+              <li><strong>Model comparisons should share the same task suite and verification boundary.</strong></li>
+              <p>The model matrix is designed to compare observed reliability, cost, and latency without changing the
+                gates or repair budget between models.</p>
+
+              <li><strong>A repair result should remain inspectable after it completes.</strong></li>
+              <p>Archives, traces, response files, patches, static reports, and summary artifacts make promotion and
+                rejection explainable.</p>
+            </ol>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Remaining Limitations -->
+  <section class="section hero is-grey">
+    <div class="container is-max-desktop" style="width: 100%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Remaining Limitations</h2>
+          <div class="content has-text-justified">
+            <p>PatchProof is a rigorous technical harness, not a claim of universal autonomous software engineering.
+              Important limitations remain:</p>
+
+            <ul>
+              <li>The deterministic benchmark still uses curated candidate pools. This is intentional for controlled
+                ablation, but it is not a substitute for a broad live-model study.</li>
+
+              <li>Live benchmark results depend on the provider, model version, endpoint behavior, prompt format,
+                sampling configuration, and task suite. A cache or seed improves reproducibility but does not guarantee
+                deterministic provider behavior.</li>
+
+              <li>The included tasks are Python repairs and compact multi-file workflows. They do not represent
+                long-running product development, complex build systems, security-sensitive deployment pipelines, or
+                very large repositories.</li>
+
+              <li>Release-gate tests simulate a hidden boundary within repository-controlled tasks. They are not a full
+                replacement for independent real-world acceptance testing.</li>
+
+              <li>Cost is reported only when a provider returns complete usage data and the user supplies a matching
+                price schedule. This is deliberate, because incomplete accounting should not be presented as a precise
+                monetary measurement.</li>
+
+              <li>Generator-declared metadata is useful provenance, not proof that the model's self-description is
+                correct. PatchProof validates route names but continues to rely on gate outcomes for promotion.</li>
+
+              <li>The model matrix reports comparative observations and uncertainty. It does not by itself establish
+                causal superiority or broad statistical generalization.</li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conclusion -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Conclusion</h2>
+          <div class="content has-text-justified">
+            <p>PatchProof carries the earlier DarwinPatch reliability controller into live LLM evaluation without
+              abandoning the original project's careful claims.</p>
+
+            <br>
+            <p>The strongest version of the current claim is:</p>
+            <blockquote>
+              PatchProof provides gate-verified repair search and reproducible benchmarks for coding agents. It
+              evaluates curated or live-generated patches through hard gates, bounded evidence, route-aware repair,
+              archived provenance, and comparative reporting across models and providers.
+            </blockquote>
+
+            <p>Note that PatchProof does not promise that every coding task can be repaired automatically. It provides the
+              engineering and research machinery needed to ask a more useful question: when a model proposes a patch,
+              what evidence shows that the patch was safe, verified, reproducible, and worth promoting?</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTex</h2>
+      <pre><code>@article{
+        patchproof, 
+        title={PatchProof: Gate-Verified Repair Search and Reproducible Benchmarks for Coding Agents}, 
+        author={Taneem Ullah Jan},
+        year={2026}
+      }
+      </code></pre>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content" style="text-align: center;">
+            <p>
+              Website template adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
+                target="_blank">here</a>.
+            </p>
+            <p> <a href="https://info.flagcounter.com/48VZ"><img
+                  src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+                  border="0"></a> </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

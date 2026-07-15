@@ -107,6 +107,44 @@
             style="width:100%; border:0px; border-spacing:0px; border-collapse:separate; margin-right:auto; margin-left:auto;">
             <tbody>
 
+              <!-- patchproof -->
+              <tr onmouseout="patchproof_stop()" onmouseover="patchproof_start()" bgcolor="#F5F5F7">
+                <td style="padding:16px;width:20%;vertical-align:middle;">
+                  <div class="one">
+                    <img src='./images/patchproof_image.png' width=100%>
+                  </div>
+                  <script type="text/javascript">
+                    function patchproof_start() {
+                      document.getElementById('patchproof').style.opacity = "1";
+                    }
+
+                    function patchproof_stop() {
+                      document.getElementById('patchproof').style.opacity = "0";
+                    }
+                    patchproof_stop()
+                  </script>
+                </td>
+                <td style="padding:8px;width:80%;vertical-align:middle">
+                  <a href="./patchproof" target="_blank" rel="noopener noreferrer">
+                    <span class="papertitle">PatchProof: Gate-Verified Repair Search and Reproducible Benchmarks for
+                      Coding Agents
+                    </span> </a>
+                  <br>
+                  <br>
+                  <strong>Taneem Ullah Jan</strong>
+                  <br>
+                  [<a href="./patchproof" target="_blank" rel="noopener noreferrer">project page</a>]
+                  <p>
+                    A gate-verified repair search framework for coding agents that ensures reproducibility,
+                    verifiability, and auditable lineage of code patches.
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td><br></td>
+              </tr>
+
               <!-- darwinpatch -->
               <tr onmouseout="darwinpatch_stop()" onmouseover="darwinpatch_start()" bgcolor="#F5F5F7">
                 <td style="padding:16px;width:20%;vertical-align:middle;">
