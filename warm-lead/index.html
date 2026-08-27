@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <title>WarmLead</title>
+  <meta name="description"
+    content="WarmLead: Cache Economics and Productive Idle Time in Dual-Agent LLM Harnesses. WarmLead is a research project that explores cache economics and productive idle time in dual-agent LLM harnesses.">
+  <meta name="keywords"
+    content="WarmLead, cache economics, productive idle time, dual-agent, LLM harnesses, multi-agent, applied intelligence, LLMs, AI systems, AI research">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/warm-lead/">
+
+  <meta property="og:title" content="WarmLead: Cache Economics and Productive Idle Time in Dual-Agent LLM Harnesses">
+  <meta property="og:description"
+    content="WarmLead is a research project that explores cache economics and productive idle time in dual-agent LLM harnesses.">
+  <meta property="og:url" content="https://taneemishere.github.io/warm-lead/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/warm-lead.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WarmLead">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/warm-lead.png">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "WarmLead: Cache Economics and Productive Idle Time in Dual-Agent LLM Harnesses",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/warm-lead/",
+      "description": "WarmLead is a research project that explores cache economics and productive idle time in dual-agent LLM harnesses.",
+      "datePublished": "2026-07-21",
+      "dateModified": "2026-07-21",
+      "keywords": "WarmLead, cache economics, productive idle time, dual-agent, LLM harnesses, multi-agent, applied intelligence, LLMs, AI systems, AI research",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link rel="stylesheet" href="./stylesheet.css">
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  </script>
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <header class="page-header">
+
+      <h1>
+        <span class="accent">WarmLead</span>: Cache Economics and Productive Idle Time in Dual-Agent LLM Harnesses
+      </h1>
+
+      <br>
+      <p class="author-note">Research and development work conducted</p>
+      <p class="author-note">by</p>
+      <p class="author-name">
+        <a href="https://taneemishere.github.io" target="_blank" rel="noopener noreferrer"> Taneem Ullah Jan</a>
+      </p>
+      <!-- <br> -->
+
+      <a href="https://github.com/taneemishere/warm-lead" target="_blank" rel="noopener noreferrer" class="btn"
+        id="btn-github">
+        <!-- GitHub icon -->
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+              0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89
+              -3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27
+              2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82
+              2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55
+              .38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+        </svg>
+        Code
+      </a>
+
+    </header>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">The problem</h2>
+
+      <p>
+        Cognition&apos;s <a href="https://cognition.com/blog/devin-fusion" target="_blank"
+          rel="noopener noreferrer">Devin
+          Fusion</a> describes a two-agent harness. One is an expensive frontier model (the lead) which plans, decides,
+        and reviews, while the second, a cheaper model (the sidekick) does the mechanical work. Their post ends with an
+        open invitation. Provider prompt caches mostly expire after 5 minutes of inactivity, and whenever one agent
+        works the other idles, so the reader is encouraged to think about how to engineer around this.
+      </p>
+
+      <p>
+        The stakes are easy to state. A lead agent carries a context that grows into the hundreds of thousands of
+        tokens. While the sidekick works, that context sits in a cache with a 5-minute fuse. If it expires, the next
+        lead turn re-writes the whole thing at full price, which on Anthropic API costs 12.5 times more than a cached
+        read of the same tokens. A single expiry can wipe out what the delegation saved.
+      </p>
+
+      <p>I spent a quite some time building a solution and an answer. It splits into two separate questions: how to keep
+        or cheaply rebuild the cache <strong>(an economics problem)</strong>, and what the lead should do with the idle
+        time so the spend buys more than warmth <strong>(a harness design problem)</strong>.</p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">Four actions, all priced</h2>
+
+      <p>
+        Everything the harness can do about an idle context of <strong>C</strong> tokens comes down to four actions, and
+        every one of them has a documented price:
+      </p>
+
+      <div class="table-wrap">
+
+        <table id="tbl-ai-paradigms">
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Cost on Anthropic</th>
+              <th>Wins when</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Let the cache die</td>
+              <td>1.25C re-write at next use</td>
+              <td>Very long idles</td>
+            </tr>
+            <tr>
+              <td>Heartbeat pings</td>
+              <td>0.1C per ping, one per ~4.5 min</td>
+              <td>Idles up to ~55 min</td>
+            </tr>
+            <tr>
+              <td>Pay for the 1-hour TTL at write time</td>
+              <td>2C once</td>
+              <td>Long idles known in advance</td>
+            </tr>
+            <tr>
+              <td>Let it die, compact on resume</td>
+              <td>C read + summary + 1.25C' write</td>
+              <td>Compaction was due anyway</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <p>The break-evens fall straight out of the multipliers. Heartbeats beat re-writing while n pings x 0.1C stays
+        under 1.25C, so under 12.5 ping intervals, roughly 55 minutes of idle. The 1-hour tier costs 0.75C more than a
+        normal write, which is about 8 ping intervals, so it wins when a 35-minute-plus idle is predictable at write
+        time. The last action never triggers compaction early just to save cache cost; it only applies when the harness
+        was going to compact anyway, in which case the unavoidable cache miss is the free moment to do it.</p>
+
+      <p>A scheduler that picks the cheapest expected action needs one input: an estimate of how long the idle will
+        last. That estimate turned out to be the whole game.</p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">What the simulator showed</h2>
+
+      <p>
+        The code repository contains a trace-driven simulator that replays synthetic delegation traces (loosely
+        calibrated to Cognition&apos;s published Fable-vs-Opus aggregates) and compares five policies, from naive
+        (always let the cache die) to an oracle that knows the true idle duration. Three results stood out.
+      </p>
+
+      <ol>
+        <li><strong>The scheduler&apos;s edge is provider-specific</strong>. On Anthropic, a scheduler working from a
+          noisy idle estimate cuts lead-cache cost about 58% against naive, with the oracle at 61%. But a fixed rule of
+          &ldquo;ping whenever the estimated idle is under the break-even&rdquo; gets 58.3% with no prediction machinery
+          at all. The full scheduler only clearly wins on pre-GPT-5.6 OpenAI models (83% versus 55%), because capturing
+          their free 24-hour retention requires committing to it at write time, which a static ping rule cannot do. The
+          expensive machinery pays only where the provider offers an opportunity a simple rule cannot reach.</li>
+
+        <li><strong>Estimator quality bounds everything.</strong> The scheduler stays within about 10% of the oracle
+          while the idle estimate is off by less than around 50%. Once the estimate is wrong by a factor of two, the
+          edge over static policies disappears entirely. So the interesting engineering problem is the idle-time
+          predictor, not the policy, and a sensible v0 ships the fixed rule and collects the telemetry to decide whether
+          the predictor is worth building.</li>
+
+        <li><strong>Rate limits are provider-asymmetric at fleet scale</strong>. At 1,000 concurrent sessions,
+          always-pinging consumes zero rate-limited tokens per minute on Anthropic, because cache reads are excluded
+          from input-rate limits on most Claude models. On OpenAI, cached tokens count toward TPM, and the same behavior
+          consumes roughly 719M rate-limited tokens per minute. Ping selectivity is an optimization on one provider and
+          a hard requirement on the other, so the scheduler has to be provider-aware, not just cost-aware.</li>
+      </ol>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">Two cents of ground truth</h2>
+
+      <p>
+        Simulators are only as good as their constants, so I verified the mechanism against the real Anthropic API on
+        the cheapest model, with a 6,457-token cached prefix:
+      </p>
+
+      <div class="table-wrap">
+
+        <table id="tbl-cache-timing">
+          <thead>
+            <tr>
+              <th>Step</th>
+              <th>Wall time</th>
+              <th>cache_creation</th>
+              <th>cache_read</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>First request (explicit <code>cache_control</code> breakpoint)</td>
+              <td>0:00</td>
+              <td>6,457</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>Immediate follow-up</td>
+              <td>0:06</td>
+              <td>0</td>
+              <td>6,457</td>
+            </tr>
+            <tr>
+              <td>Pre-warm ping 1 (<code>max_tokens: 0</code>)</td>
+              <td>4:09</td>
+              <td>0</td>
+              <td>6,457</td>
+            </tr>
+            <tr>
+              <td>Pre-warm ping 2 (<code>max_tokens: 0</code>)</td>
+              <td>8:11</td>
+              <td>0</td>
+              <td>6,457</td>
+            </tr>
+            <tr>
+              <td>Real request, past the original 5-min TTL</td>
+              <td>9:14</td>
+              <td>0</td>
+              <td>6,457</td>
+            </tr>
+            <tr>
+              <td>Control request after 5.5 min with no pings</td>
+              <td>14:48</td>
+              <td>6,457</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <p>
+        The pings billed zero output tokens and refreshed the TTL, exactly as documented. Without them, the cache
+        expired and the same request paid a full re-write. The whole run cost $0.019, and the script is in the
+        repository so anyone can re-run it with their own key.</p>
+
+      <p>One implementation detail bit harder than expected: the pre-warm must place an explicit
+        <code>cache_control</code> breakpoint on the shared prefix. Rely on automatic caching and the entry gets keyed
+        to the ping&apos;s placeholder message, so real traffic never hits it. You pay for a cache nobody reads.
+      </p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">What should the idle lead actually do?</h2>
+
+      <p>
+        Keeping the cache warm is bookkeeping. The sharper question is whether the lead&apos;s idle turns can do useful
+        work, because a heartbeat ping and a productive turn cost nearly the same infrastructure: both touch the warm
+        prefix.
+      </p>
+
+      <p>
+        The bar I set: an idle turn is only worth its tokens if it removes work from the critical path after the
+        sidekick returns. <strong>Compacting, summarizing, and re-planning fail that bar</strong>; they are maintenance,
+        and nothing downstream gets faster.
+      </p>
+
+      <p>The candidate I would bet on is <strong>pre-writing the verification plan</strong>. At delegation time the lead
+        already knows the acceptance criteria. While the sidekick works, the lead spends one turn drafting the concrete
+        review checklist for the in-flight change: what to check, which commands to run, what the tests should show.
+        When the sidekick returns, review starts immediately instead of burning a turn or two on re-orientation. And
+        that turn doubles as a heartbeat, so the keep-warm cost and the useful work are the same spend.</p>
+
+      <p>The obvious failure mode is staleness. If the sidekick&apos;s approach diverges from what the lead assumed, a
+        stale plan is worse than none. So the plan splits into invariant acceptance criteria, which survive any
+        implementation, and approach-conditional checks, which get validated against the sidekick&apos;s actual change
+        summary on return and regenerated on mismatch. The worst case then reduces to the no-plan world, since the
+        regeneration turn was going to be spent anyway.</p>
+
+      <p>The accounting makes this falsifiable rather than hand-wavy. The plan costs about 7,500 input-token equivalents
+        per delegation. A valid plan saves around 1.5 post-return turns at roughly 8,000 tokens each. At an assumed 30%
+        staleness rate, that nets +900 tokens per delegation, and the idea flips negative once more than 37.5% of plans
+        go stale. That staleness rate is directly measurable from replayed delegation traces, so the hypothesis has a
+        clean pass/fail condition.</p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">What this does not show</h2>
+
+      <p>
+        The verification-plan result is accounting on top of simulation, not a live harness experiment; the real test
+        needs a lead-plus-sidekick setup and replayed delegations, measured against that 37.5% threshold. I also
+        considered mid-flight checkpoint review of the sidekick&apos;s work and decided against leading with it:
+        Cognition&apos;s own Fable-vs-Opus data shows the expensive failure pattern was precisely a lead that keeps
+        pulling sidekick work back into context. If tested at all, it should be one checkpoint, only on high-judgment
+        handoffs, scored against a no-checkpoint baseline. And the live verification covers Anthropic so far; the OpenAI
+        script is written but not yet run due to budget constraints.
+      </p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">Takeaways</h2>
+
+      <p>
+        The 5-minute cache expiry looks like an infrastructure nuisance, but it decomposes into a small, fully-priced
+        decision problem with break-evens you can compute on paper and verify for two cents. The simulation&apos;s most
+        useful output was negative: the clever scheduler mostly ties a one-line static rule, and only earns its
+        complexity where a provider offers something the rule cannot reach. And the idle time itself is the more
+        interesting frontier. If the lead can reliably pre-write the review of work that has not landed yet, the cache
+        heartbeat stops being overhead and becomes the delivery vehicle for genuinely useful turns.
+      </p>
+
+      <p>
+        Everything here can be reproduced from the repository: 22 unit tests against hand-computed break-evens, the
+        simulator with all its knobs exposed, and the live experiment script. If you work on agent harnesses and see
+        something that contradicts your production numbers, I would genuinely like to hear about it. Please reach out to
+        me at <a href="mailto:taneemishere@gmail.com">taneemishere@gmail.com</a>.
+      </p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="bibtex" aria-labelledby="h-bibtex">
+      <h2 id="h-bibtex">BibTeX</h2>
+
+      <div class="bibtex-block" id="bibtex-entry" role="region" aria-label="BibTeX citation">@article{warmlead,
+        title = {"WarmLead: Cache Economics and Productive Idle Time in Dual-Agent LLM Harnesses"},
+        author = {Taneem Ullah Jan},
+        year = {2026},
+        url = {https://taneemishere.github.io/warm-lead/}
+        }</div>
+
+    </section>
+
+    <footer class="page-footer" id="page-footer">
+      <p> <a href="https://info.flagcounter.com/48VZ"><img
+            src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+            border="0"></a>
+      </p>
+    </footer>
+
+  </div>
+</body>
+
+</html>

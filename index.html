@@ -108,6 +108,44 @@
             style="width:100%; border:0px; border-spacing:0px; border-collapse:separate; margin-right:auto; margin-left:auto;">
             <tbody>
 
+              <!-- warm-lead -->
+              <tr onmouseout="warmlead_stop()" onmouseover="warmlead_start()" bgcolor="#F5F5F7">
+                <td style="padding:16px;width:20%;vertical-align:middle;">
+                  <div class="one">
+                    <img src='./images/warm-lead.png' width=100%>
+                  </div>
+                  <script type="text/javascript">
+                    function warmlead_start() {
+                      document.getElementById('warmlead').style.opacity = "1";
+                    }
+
+                    function warmlead_stop() {
+                      document.getElementById('warmlead').style.opacity = "0";
+                    }
+                    ownify_stop()
+                  </script>
+                </td>
+                <td style="padding:8px;width:80%;vertical-align:middle">
+                  <a href="./warm-lead" target="_blank" rel="noopener noreferrer">
+                    <span class="papertitle">WarmLead: Cache Economics and Productive Idle Time in Dual-Agent LLM
+                      Harnesses
+                    </span> </a>
+                  <br>
+                  <br>
+                  <strong>Taneem Ullah Jan</strong>
+                  <br>
+                  [<a href="./warm-lead" target="_blank" rel="noopener noreferrer">project page</a>]
+                  <p>
+                    A cache-liveness scheduler for lead-plus-sidekick LLM harnesses, with a cost simulator, live API
+                    verification, and a proposal for productive idle time.
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td><br></td>
+              </tr>
+
               <!-- ownify-ai -->
               <tr onmouseout="ownify_stop()" onmouseover="ownify_start()" bgcolor="#F5F5F7">
                 <td style="padding:16px;width:20%;vertical-align:middle;">
