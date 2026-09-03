@@ -36,7 +36,7 @@
 
                 <td style="padding-top:5%; width:30%; max-width:30%; text-align: left;">
 
-                  <img <img
+                  <img
                     style="padding-left: 2%; width:170px; height:170px; object-fit: cover; border-radius: 50%; display: block;"
                     alt="profile photo" src="./images/prof-picture.jpeg">
 
@@ -107,6 +107,45 @@
           <table
             style="width:100%; border:0px; border-spacing:0px; border-collapse:separate; margin-right:auto; margin-left:auto;">
             <tbody>
+
+              <!-- gate grpo -->
+              <tr onmouseout="gategrpo_stop()" onmouseover="gategrpo_start()" bgcolor="#F5F5F7">
+                <td style="padding:16px;width:20%;vertical-align:middle;">
+                  <div class="one">
+                    <img src='./images/gategrpo.png' width=100%>
+                  </div>
+                  <script type="text/javascript">
+                    function gategrpo_start() {
+                      document.getElementById('gategrpo').style.opacity = "1";
+                    }
+
+                    function gategrpo_stop() {
+                      document.getElementById('gategrpo').style.opacity = "0";
+                    }
+                    ownify_stop()
+                  </script>
+                </td>
+                <td style="padding:8px;width:80%;vertical-align:middle">
+                  <a href="./gategrpo" target="_blank" rel="noopener noreferrer">
+                    <span class="papertitle">GateGRPO: Verifier-Grounded Reinforcement Learning for Code Repair Without
+                      a Learned Reward Model
+                    </span> </a>
+                  <br>
+                  <br>
+                  <strong>Taneem Ullah Jan</strong>
+                  <br>
+                  [<a href="./gategrpo" target="_blank" rel="noopener noreferrer">project page</a>]
+                  <p>
+                    A GRPO training method for code-repair agents that uses PatchProof&apos;s hard-gate verifier as the
+                    reward signal directly, replacing single-shot rewards with multi-turn, per-gate credit to outperform
+                    supervised fine-tuning alone.
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td><br></td>
+              </tr>
 
               <!-- warm-lead -->
               <tr onmouseout="warmlead_stop()" onmouseover="warmlead_start()" bgcolor="#F5F5F7">

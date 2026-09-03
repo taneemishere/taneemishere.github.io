@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <title>GateGRPO</title>
+  <meta name="description"
+    content="GateGRPO: Verifier-Grounded Reinforcement Learning for Code Repair Without a Learned Reward Model. GateGRPO is a GRPO training method for code-repair agents that uses PatchProof&apos;s hard-gate verifier as the reward signal directly, replacing single-shot rewards with multi-turn, per-gate credit to outperform supervised fine-tuning alone.">
+  <meta name="keywords"
+    content="GateGRPO, verifier-grounded, reinforcement learning, code repair, coding agents, learned reward model, LLM harnesses, multi-agent, RL, RLHF, SFT, PPO, GRPO, DPO, LLMs, AI systems, AI research">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/gategrpo/">
+
+  <meta property="og:title"
+    content="GateGRPO: Verifier-Grounded Reinforcement Learning for Code Repair Without a Learned Reward Model">
+  <meta property="og:description"
+    content="GateGRPO is a research project that explores verifier-grounded reinforcement learning for code repair without a learned reward model.">
+  <meta property="og:url" content="https://taneemishere.github.io/gategrpo/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/gategrpo.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title"
+    content="GateGRPO: Verifier-Grounded Reinforcement Learning for Code Repair Without a Learned Reward Model">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/gategrpo.png">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "GateGRPO: Verifier-Grounded Reinforcement Learning for Code Repair Without a Learned Reward Model",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/gategrpo/",
+      "description": "GateGRPO is a GRPO training method for code-repair agents that uses PatchProof's hard-gate verifier as the reward signal directly, replacing single-shot rewards with multi-turn, per-gate credit to outperform supervised fine-tuning alone.",
+      "datePublished": "2026-09-03",
+      "dateModified": "2026-09-03",
+      "keywords": "GateGRPO, verifier-grounded, reinforcement learning, code repair, coding agents, learned reward model, LLM harnesses, multi-agent, RL, RLHF, SFT, PPO, GRPO, DPO, LLMs, AI systems, AI research",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link rel="stylesheet" href="./stylesheet.css">
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  </script>
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <header class="page-header">
+
+      <h1>
+        <span class="accent">GateGRPO</span>: Verifier-Grounded Reinforcement Learning for Code Repair Without a Learned
+        Reward Model
+      </h1>
+
+      <br>
+      <p class="author-note">Research and development work conducted</p>
+      <p class="author-note">by</p>
+      <p class="author-name">
+        <a href="https://taneemishere.github.io" target="_blank" rel="noopener noreferrer"> Taneem Ullah Jan</a>
+      </p>
+
+    </header>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">Abstract</h2>
+
+      <p>
+        We introduce GateGRPO, a reinforcement learning (RL) method for code repair that uses a deterministic hard-gate
+        verifier as the reward source instead of a learned reward model. Standard single-shot GRPO applied to <a
+          href="https://taneemishere.github.io/patchproof" target="_blank" rel="noopener noreferrer">PatchProof</a>
+        (which is a multi-turn repair harness) collapsed to near-zero reward variance because the training objective did
+        not match the multi-turn repair loop used at evaluation time. We fixed the rollout mismatch, then fixed a second
+        reward-myopia problem by replacing a terminal win-or-lose reward with per-turn, per-gate partial credit. The
+        resulting GateGRPO final checkpoint reproducibly sits above the SFT-only baseline on an 8-task held-out suite.
+        The gains are narrow but real, and the largest practical benefit is not the absolute solve rate but the
+        reduction in search cost which means fewer attempts and fewer tokens are needed to reach a verified patch. </p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">1. The Problem</h2>
+
+      <p>
+        Language models trained to repair code need a source of reward. The common approach is to train a reward model
+        or collect preference pairs, but both are expensive and both can drift away from the underlying correctness we
+        actually care about here. Hard-gate verifiers avoid this drift. A gate verifier runs concrete tests, parser
+        checks,
+        security scans and other deterministic predicates. It emits a reproducible pass-or-fail signal.</p>
+
+      <p>The gap is that the signal is sparse. Either a patch promotes through every gate and solves the task, or it
+        stops at a gate and gives the model almost no gradient. We hit this wall with our earlier PatchProof work where
+        the verifier gives a single terminal reward, and a <strong>1.5B model</strong> can generate a clean-looking
+        patch that still fails on a visible test. The policy learns nothing about which specific gate it just missed.
+      </p>
+
+      <p><strong>This project asks whether we can train a code-repair policy with GRPO using only the verifier&apos;s
+          existing per-gate outputs, without ever constructing a learned reward model?</strong></p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">2. What is GateGRPO</h2>
+
+      <p>
+        Our starting point was the <a href="https://taneemishere.github.io/patchproof" target="_blank"
+          rel="noopener noreferrer">PatchProof</a> repair-search harness and the <a
+          href="https://taneemishere.github.io/darwinpatch" target="_blank" rel="noopener noreferrer">DarwinPatch</a>
+        budgeted search controller.
+        Together they provide:
+      </p>
+
+      <ul>
+        <li>Aider-style <code>SEARCH/REPLACE</code> patch generation and parsing.</li>
+        <li>A deterministic gate pipeline: scope guard, patch applies, Python AST, secret scan, visible tests and a
+          final promotion gate.</li>
+        <li>Multi-turn search: a failed attempt becomes structured evidence, which is fed back into the next repair
+          prompt.</li>
+        <li>A frozen held-out suite of eight tasks, reserved only for evaluation.</li>
+      </ul>
+
+      <p>We trained an SFT warm-up on 26 non-held-out tasks. That model, named as SFT v9, reached 0.25
+        to 0.29 on the held-out suite in repeated runs. The goal of the RL stage was to improve on that SFT-only bar.
+      </p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">3. Method</h2>
+
+      <p>
+        GateGRPO keeps the verifier fixed and treats its per-gate outputs as a <strong>dense reward signal</strong>. We
+        implement it in three pieces: (1). a multi-turn rollout that mirrors the search harness, (2). a hard-gate reward
+        that sums
+        partial credit across turns, (3). and a GRPO update on the initial generation.
+      </p>
+
+      <h3>3.1 Multi-turn rollout</h3>
+
+      <p>
+        The standard GRPO trainer calls the reward function once per prompt. PatchProof, however, evaluates a sequence
+        of attempts. The same policy that produces a syntactically valid patch on turn one often fails a visible test,
+        and a second attempt, conditioned on the failure evidence, is what creates the solve. A single-shot reward
+        therefore measures the wrong object.</p>
+
+      <p>We replaced the static reward callback with a custom <code>rollout_func</code> that runs the full two-turn
+        PatchProof search for every training prompt:</p>
+
+      <ol>
+        <li>Generate an initial <code>SEARCH/REPLACE</code> block.</li>
+        <li>Convert it to a unified diff and run the gate pipeline.</li>
+        <li>If the patch does not promote, build an evidence-conditioned repair prompt.</li>
+        <li>Generate a second block and re-run the gates.</li>
+      </ol>
+
+      <p>Each episode returns the final verified state, the reward and the token counts from both turns.</p>
+
+      <h3>3.2 Per-gate, verifier-grounded credit</h3>
+      <p>A conventional reward would use the episode outcome: <code>1</code> if the patch promotes, <code>0</code>
+        otherwise. The problem with this binary label is that two different failures, say a scope-guard miss and a
+        visible-test miss, get the same score. The model cannot learn which part of the repair to adjust.</p>
+
+      <p>GateGRPO uses the verifier's existing per-gate scores. For each turn we compute:</p>
+
+      <blockquote><code>partial = w_scope + w_apply + w_ast + w_secret + w_visible</code></blockquote>
+
+      <p>where each <code>w</code> is a fixed weight tied to a real gate. A promotion adds a large terminal bonus. The
+        episode reward is the sum of the first-turn partial credit and the second-turn partial credit. This keeps the
+        gradient alive across the whole search instead of collapsing to a single bit.</p>
+
+      <h3>3.3 GRPO update</h3>
+      <p>We use <strong>TRL&apos;s GRPO implementation with the per-episode reward</strong>. The policy is updated on
+        the initial rollout; the second turn provides a denser reward signal but does not generate its own policy
+        gradient. This is a deliberate simplification: the first generation is the action, the two-turn search is the
+        evaluation of that action. We train for one epoch on the 26 training prompts with checkpoints saved every ten
+        steps.</p>
+
+      <figure id="fig-overview">
+        <img src="./images/GateGRPO-system-flow.png"
+          alt="Architecture diagram showing the main components of the system" width="760">
+        <figcaption>
+          Reward is the sum of per-gate partial credit from both turns, not a single terminal label.
+        </figcaption>
+      </figure>
+
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">4. Experiments</h2>
+
+      <p>
+        All experiments start from the same SFT v9 (the base warm-up) checkpoint and use the same frozen held-out suite.
+        Each held-out run uses three repetitions per task, giving 24 independent episodes. The small suite size is
+        intentional for this experiment, but it means the results should be read as a promising direction, not a
+        definitive benchmark.
+      </p>
+
+      <h3>4.1 Models and checkpoints</h3>
+
+      <ul>
+        <li><strong>SFT v9 (base warm-up):</strong> instruction-tuned Qwen2.5-Coder-1.5B on 26 non-held-out tasks.</li>
+        <li><strong>GRPO v10 (terminal reward):</strong> the same multi-turn rollout, but with a terminal <code>max(turn1,
+          turn2)</code> reward.</li>
+        <li><strong>GateGRPO:</strong> the per-turn, per-gate reward described in Section 3.2. We evaluate intermediate
+          checkpoints at training steps 10, 20 and 26.</li>
+      </ul>
+
+      <h3>4.2 Main result</h3>
+
+      <div class="table-wrap">
+        <table id="tbl-ai-paradigms">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Held-out solve rate</th>
+              <th>Solves / 24</th>
+              <th>Avg. attempts</th>
+              <th>Avg. tokens</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SFT v9</td>
+              <td>0.25 to 0.2917</td>
+              <td>6 to 7 / 24</td>
+              <td>4.54 to 4.75</td>
+              <td>25,064 to 26,528</td>
+            </tr>
+            <tr>
+              <td>GRPO v10 (terminal reward)</td>
+              <td>0.2083 to 0.25</td>
+              <td>5 to 6 / 24</td>
+              <td>4.75 to 4.96</td>
+              <td>26,761 to 28,082</td>
+            </tr>
+            <tr>
+              <td>GateGRPO step 10</td>
+              <td>0.2083</td>
+              <td>5 / 24</td>
+              <td>4.96</td>
+              <td>27,210</td>
+            </tr>
+            <tr>
+              <td>GateGRPO step 20</td>
+              <td>0.2917</td>
+              <td>7 / 24</td>
+              <td>4.54</td>
+              <td>25,823</td>
+            </tr>
+            <tr>
+              <td>GateGRPO step 26</td>
+              <td>0.333 to 0.375</td>
+              <td>8 to 9 / 24</td>
+              <td>4.21 to 4.42</td>
+              <td>23,405 to 23,824</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The SFT v9 range comes from the original held-out run and a rerun. The GRPO v10 range comes from three
+        independent held-out runs on the same terminal-reward checkpoint. The GateGRPO step 26 range comes from two
+        independent held-out runs on the final per-gate-reward checkpoint. The point estimates favor GateGRPO and the
+        ranges mostly separate from the SFT v9 range, but <code>n = 24</code> does not give strong statistical power.
+        This is a reproducible, narrow gain rather than a proven effect size. The practical signal is stronger when we
+        also look at search cost.
+      </p>
+
+      <figure id="fig-overview">
+        <img src="./images/fig_solve_rate.png" alt="Solve rate across different training steps" width="760">
+        <figcaption>
+          Solve rate across different training steps.
+        </figcaption>
+      </figure>
+
+      <h3>4.3 Search cost</h3>
+
+      <p>The GateGRPO checkpoints reduce both the number of repair attempts and the number of generated tokens needed to
+        solve a task. SFT v9 and GateGRPO step 10 both average around 4.8 attempts and 27,000 tokens. By step 26 the
+        policy averages 4.2 attempts and 23,400 tokens. In other words, the solve rate rises while the search becomes
+        cheaper. <strong>This cost reduction is an independent line of evidence that the dense reward is shaping the
+          policy toward faster repairs, not just a few lucky successes</strong>.</p>
+
+      <figure id="fig-overview">
+        <img src="./images/fig_efficiency.png" alt="Efficiency of the GateGRPO checkpoints" width="760">
+      </figure>
+
+      <h3>4.4 Diagnosing what went wrong first</h3>
+
+      <p>The final result is more useful because the path to it was failure-driven. We record the negative results as
+        carefully as the positive ones.</p>
+
+      <ul>
+        <li><strong>GRPO v6 </strong>used a single-shot reward on the original 8 tasks. Reward variance was zero which
+          the model almost never produced an Aider patch that passed <code>patch_applies</code>.</li>
+
+        <li><strong>Data scaling </strong>to 28 tasks improved SFT training accuracy but did not fix the GRPO signal.
+          Held-out transfer barely moved.</li>
+
+        <li><strong>The rollout mismatch </strong>was the real blocker that is SFT v9 already solved 54% of training
+          tasks in PatchProof's multi-turn search, but GRPO was only scoring the first turn.</li>
+
+        <li><strong>The reward shape </strong>was the final fix. Multi-turn rollout alone (v10) produced non-zero
+          variance but did not lift the held-out score. Only after we moved from a terminal
+          <code>max(turn1, turn2)</code> reward to summed per-gate partial credit did the policy improve on held-out
+          tasks.
+        </li>
+      </ul>
+
+      <p><strong>This chain is the main contribution</strong>. It shows that the hard-gate verifier can act as a reward
+        source, but only if the training loop matches the search loop and only if the reward encodes which gate failed.
+      </p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">5. Limitations and what to read into it</h2>
+
+      <p>
+        The held-out suite has only eight tasks. A one-solve swing is 0.04 on <code>solve@budget</code>, so the
+        difference between 0.29 and 0.33 should not be overstated. The result is better described as a controlled,
+        reproducible direction than as a large, general and huge improvement.
+      </p>
+
+      <p>We also did not tune the gate weights or explore alternatives to GRPO. The partial-credit weights are the same
+        ones we used for diagnostics. A different weighting, or a learned value baseline, could widen or narrow the gap.
+      </p>
+
+      <p>Finally, the policy is still only 1.5B parameters. Larger base models, longer training and harder held-out
+        tasks are the natural next steps. The current result is the v1 checkpoint against which those larger experiments
+        should be compared.</p>
+
+      <blockquote>Because this prototype was trained on a small contrainted GPU with a limited token and compute budget,
+        I kept the held-out suite to eight tasks and one training epoch and did not scale the base model, the task
+        suite, or the search budget. Therefore, if you have the resources, an open position, or a project you want to
+        collaborate on, I am open to both work and collaboration. Please reach out at <a
+          href="mailto:taneemishere@gmail.com">taneemishere@gmail.com</a>.</blockquote>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="overview" aria-labelledby="h-overview">
+      <h2 id="h-overview">6. Conclusion</h2>
+
+      <p>
+        GateGRPO replaces a learned reward model with a deterministic hard-gate verifier and trains a code-repair policy
+        through multi-turn, partial-credit rollouts. On an 8-task held-out suite the final GateGRPO checkpoint is
+        reproducibly above the SFT-only starting point and uses fewer attempts per solve. The gain is modest, but the
+        methodical chain of failures that led to it, multi-shot rollout mismatch then reward myopia, makes it a credible
+        and debuggable result. The next step is to treat this as a baseline and try to beat it with the same held-out
+        suite.
+      </p>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="bibtex" aria-labelledby="h-bibtex">
+      <h2 id="h-bibtex">BibTeX</h2>
+
+
+      <div class="bibtex-block" id="bibtex-entry" role="region" aria-label="BibTeX citation">@article{gategrpo,
+        title = {"GateGRPO: Verifier-Grounded Reinforcement Learning for Code Repair Without a Learned Reward Model"},
+        author = {Taneem Ullah Jan},
+        year = {2026},
+        url = {https://taneemishere.github.io/gategrpo/}
+        }</div>
+
+    </section>
+
+    <footer class="page-footer" id="page-footer">
+      <p> <a href="https://info.flagcounter.com/48VZ"><img
+            src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+            border="0"></a>
+      </p>
+    </footer>
+
+  </div>
+</body>
+
+</html>
