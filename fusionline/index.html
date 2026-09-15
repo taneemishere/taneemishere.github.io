@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <title>FusionLine</title>
+  <meta name="description"
+    content="FusionLine: Where Equal-Weight Retrieval Fusion Stops Helping in MCP Tool Selection. A benchmark harness for MCP tool selection that runs eight retrievers across shared registries, pinpointing where equal-weight fusion stops helping and finding Anthropic&apos;s managed tool search on par with local BM25.">
+  <meta name="keywords"
+    content="FusionLine, MCP, Model Context Protocol, tool selection, tool retrieval, benchmark, RRF fusion, BM25, dense retrieval, Anthropic tool search, evaluation harness, typescript">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/fusionline/">
+
+  <meta property="og:title"
+    content="FusionLine: Where Equal-Weight Retrieval Fusion Stops Helping in MCP Tool Selection">
+  <meta property="og:description"
+    content="A benchmark harness for MCP tool selection that runs eight retrievers across shared registries, pinpointing where equal-weight fusion stops helping and finding Anthropic&apos;s managed tool search on par with local BM25.">
+  <meta property="og:url" content="https://taneemishere.github.io/fusionline/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/fusionline.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title"
+    content="FusionLine: Where Equal-Weight Retrieval Fusion Stops Helping in MCP Tool Selection">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/fusionline.png">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "FusionLine: Where Equal-Weight Retrieval Fusion Stops Helping in MCP Tool Selection",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/fusionline/",
+      "description": "A benchmark harness for MCP tool selection that runs eight retrievers across shared registries, pinpointing where equal-weight fusion stops helping and finding Anthropic&apos;s managed tool search on par with local BM25.",
+      "datePublished": "2026-09-15",
+      "dateModified": "2026-09-15",
+      "keywords": "FusionLine, MCP, Model Context Protocol, tool selection, tool retrieval, benchmark, RRF fusion, BM25, dense retrieval, Anthropic tool search, evaluation harness, typescript",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link rel="stylesheet" href="./stylesheet.css">
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+  </script>
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <header class="page-header">
+
+      <h1>
+        <span class="accent">FusionLine</span>: Where Equal-Weight Retrieval Fusion Stops Helping in MCP Tool Selection
+      </h1>
+
+      <br>
+      <p class="author-note">Research and development work conducted</p>
+      <p class="author-note">by</p>
+      <p class="author-name">
+        <a href="https://taneemishere.github.io" target="_blank" rel="noopener noreferrer"> Taneem Ullah Jan</a>
+      </p>
+
+      <a href="https://github.com/taneemishere/fusionline" target="_blank" rel="noopener noreferrer" class="btn"
+        id="btn-github">
+        <!-- GitHub icon -->
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+              0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89
+              -3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27
+              2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82
+              2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55
+              .38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+        </svg>
+        Code
+      </a>
+
+    </header>
+
+    <hr>
+
+    <section class="section" id="problem" aria-labelledby="h-problem">
+      <h2 id="h-problem">The problem</h2>
+
+      <p>
+        An MCP agent that connects to a registry of tools faces a boring-sounding choice: which tool definitions go into
+        the prompt. When the registry has a dozen of tools, the answer is all of them. When it has forty-four thousand,
+        the answer determines both whether the agent finds what it needs and what the request costs. Every serious MCP
+        deployment now ships a router for this, and almost every router ships a benchmark number.
+      </p>
+
+      <p>
+        The problem is that none of those numbers are comparable. Anthropic&apos;s
+        <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool" target="_blank"
+          rel="noopener noreferrer">Tool Search Tool</a>,
+        Stacklok&apos;s <a
+          href="https://stacklok.com/blog/stackloks-mcp-optimizer-vs-anthropics-tool-search-tool-a-head-to-head-comparison/"
+          target="_blank" rel="noopener noreferrer">MCP Optimizer</a>,
+        StackOne&apos;s <a href="https://www.stackone.com/platform/tools-discovery/" target="_blank"
+          rel="noopener noreferrer">tool discovery</a>,
+        the <a href="https://github.com/zonlabs/mcp-ts" target="_blank" rel="noopener noreferrer">mcp-ts router</a>,
+        and a shelf of academic systems
+        (<a href="https://aclanthology.org/2025.findings-acl.1258/" target="_blank"
+          rel="noopener noreferrer">ToolRet</a>,
+        <a href="https://arxiv.org/abs/2506.01056" target="_blank" rel="noopener noreferrer">MCP-Zero</a>,
+        <a href="https://arxiv.org/abs/2508.07602" target="_blank" rel="noopener noreferrer">HGMF</a>)
+        each report accuracy on a different corpus, at a different registry size, with different metrics. A vendor that
+        reports 90% selection accuracy over a 500-tool catalog is not answering the same question as a retriever
+        evaluated over 44,000 tools, and no public artifact forces them to answer the same question.
+      </p>
+
+      <p>
+        So instead of building another router, I built the referee: <strong>FusionLine</strong>. Which is a TypeScript
+        benchmark harness that runs eight tool-selection strategies against the same registries, the same tasks, and the
+        same metric suite, and reports retrieval quality, token cost, and latency side by side. It produced four
+        findings that each survived a replication or a sanity check, and one honest negative.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="method" aria-labelledby="h-method">
+      <h2 id="h-method">What the harness measures</h2>
+
+      <p>
+        The primary corpus is ToolRet: 44,453 tools and 7,961 labeled tasks drawn from 35 source configurations (web
+        APIs, code libraries, customized tools). Ground truth joins are exact (<code>labels[].id</code> to
+        <code>tools.id</code>, verified 100%), and many tasks label a <em>set</em> of tools, so the metrics are
+        set-aware: recall@k, hit@k, set-F1, nDCG@k, MRR@k, plus estimated prompt tokens and wall-clock latency.
+      </p>
+
+      <p>
+        Every strategy implements one interface, <code>select(task, registry, k)</code>, and every task is evaluated
+        under three registry exposures: the <strong>full</strong> catalog (44K tools), the task&apos;s
+        <strong>category</strong> pool (3.4K to 37K), and its native <strong>source</strong> pool (54 to 16K). The
+        strategies under test:
+      </p>
+
+      <ul>
+        <li><code>all</code>: dump every tool definition into the prompt (the upper bound)</li>
+        <li><code>random</code>: uniform sample (the lower bound)</li>
+        <li><code>bm25</code>: lexical ranking over tool names, descriptions, and parameters</li>
+        <li><code>embed</code>: dense retrieval with precomputed sentence embeddings (MiniLM-384, or
+          the ToolRet-trained BGE-large model)</li>
+        <li><code>hybrid</code>: reciprocal rank fusion of the bm25 and embed rankings, equal weight</li>
+        <li><code>hybridw</code>: the same fusion with a tunable weight (0.3 bm25 / 0.7 dense)</li>
+        <li><code>setaware</code>: a HYSET-style label-co-occurrence baseline, trained on a held-out
+          half of each source&apos;s tasks to avoid transductive leakage</li>
+        <li><code>anthropic</code>: the managed Tool Search Tool over the live Messages API</li>
+      </ul>
+
+      <br>
+
+      <figure id="fig-overview">
+        <img src="./images/FusionLine-harness-architecture.png" alt="FusionLine harness architecture" width="760">
+        <figcaption>
+          Fig. 1. The harness pipeline. Python scripts only export data and precompute embedding vectors; the TypeScript
+          harness owns the registry, strategies, and scoring. The anthropic strategy is the same interface, backed by
+          the live Messages API.
+        </figcaption>
+      </figure>
+
+      <p>
+        The whole matrix is about 693K evaluation rows across six CSV files. MCP-Zero&apos;s published corpus (308 real
+        MCP servers, 2,797 tools) serves as an out-of-domain transfer check: each server&apos;s capability summary
+        becomes a task, and that server&apos;s tools become the label set.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="poolsize" aria-labelledby="h-poolsize">
+      <h2 id="h-poolsize">Finding 1: pool size decides more than the method</h2>
+
+      <p>
+        The same equal-weight hybrid, same tasks, same metrics, three registry sizes, plus the MCP-Zero transfer corpus:
+      </p>
+
+      <br>
+
+      <figure id="fig-overview">
+        <img src="./images/Pool-size-dominates-tool-selection accuracy.png"
+          alt="Pool size dominates tool-selection accuracy" width="760">
+        <figcaption>
+          Fig. 2. hit@10 by exposed pool size. The same methods swing ~20 points purely on how many tools the agent is
+          asked to choose among; numbers quoted on small catalogs do not transfer to a 44K registry.
+        </figcaption>
+      </figure>
+
+      <div class="table-wrap">
+        <table id="tbl-poolsize">
+          <thead>
+            <tr>
+              <th>Registry (pool size)</th>
+              <th>bm25 hit@10</th>
+              <th>embed hit@10</th>
+              <th>hybrid hit@10</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>source pools (54–16K tools)</td>
+              <td>.649</td>
+              <td>.700</td>
+              <td>.731</td>
+            </tr>
+            <tr>
+              <td>category pools (3.4–37K)</td>
+              <td>.486</td>
+              <td>.506</td>
+              <td>.573</td>
+            </tr>
+            <tr>
+              <td>full catalog (44K)</td>
+              <td>.446</td>
+              <td>.457</td>
+              <td>.525</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        All numbers are without task instructions. Adding ToolRet&apos;s instruction field lifts every cell by 8 to 10
+        points (hybrid reaches .619 on the full catalog), which independently reproduces the instruction sensitivity
+        that ToolRet&apos;s own authors report.
+      </p>
+
+      <p>
+        The cost side needs an honest denominator. The <code>all</code> baseline pays 7.8M estimated tokens per query on
+        the full catalog against ~2K for a k=10 selection, a 4,750x reduction no real deployment would ever pay. At
+        realistic pool sizes the number is smaller, dumping the median source pool costs 133K tokens, so routing buys
+        about <strong>46x</strong> (the mean is 274x, inflated by a few oversized pools). And below roughly a dozen
+        tools, dumping wins outright, since a k=10 selection costs about as many tokens as the whole catalog anyway.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="fusion" aria-labelledby="h-fusion">
+      <h2 id="h-fusion">Finding 2: hybrid fusion has a boundary, and it is sharp</h2>
+
+      <p>
+        Equal-weight RRF beats both parents at every cell of the MiniLM matrix, by as much as +8pp hit@10 over the
+        better parent. Then I swapped the dense retriever for ToolRet&apos;s own trained BGE model, and the result
+        inverted:
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-fusion">
+          <thead>
+            <tr>
+              <th>Strategy (full catalog, k=10)</th>
+              <th>w/o inst hit</th>
+              <th>w/ inst hit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>embed (BGE)</td>
+              <td>.614</td>
+              <td>.733</td>
+            </tr>
+            <tr>
+              <td>hybrid (equal RRF)</td>
+              <td>.583</td>
+              <td>.665</td>
+            </tr>
+            <tr>
+              <td>hybridw (0.3 bm25 / 0.7 dense)</td>
+              <td>.626</td>
+              <td>.726</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Fusing a strong dense ranker with a weak bm25 signal does not average the two; it drags the strong one down.
+        Down-weighting bm25 recovers the loss and edges past the dense retriever alone by 1-2pp.
+      </p>
+
+      <p>
+        The transfer check made this sharper rather than noisier. On MCP-Zero, the bundled OpenAI embeddings are the
+        <em>weak</em> parent (.692 vs bm25&apos;s .857), and the mirror image holds: equal-weight fusion adds nothing
+        (.860) and dense-favored weighting hurts (.838), while comparable parents (MiniLM .825, bm25 .857) fuse cleanly
+        to .903. The rule is symmetric in which parent is weak:
+      </p>
+
+      <ul>
+        <li>parent hit@10 gap under ~0.04: fusion gains +4 to +7pp</li>
+        <li>gap over ~0.16: fusion is neutral to harmful, and the fix is weighting toward the
+          stronger parent, not equal fusion</li>
+      </ul>
+
+      <br>
+
+      <figure id="fig-overview">
+        <img src="./images/Where-equal-weight-fusion-stops-helping.png" alt="Where equal-weight fusion stops helping"
+          width="760">
+        <figcaption>
+          Fig. 3. Each point is one corpus-and-embedder arm. When the two parent retrievers are close in hit@10,
+          equal-weight fusion gains several points over the stronger parent. When one parent dominates by more than
+          ~0.15, equal fusion is neutral or actively harmful. The boundary reproduces on two independent corpora, in
+          both directions.
+        </figcaption>
+      </figure>
+
+      <p>
+        Hybrid-by-default is the common vendor design. The data says that design has a measurable boundary condition,
+        and it is easy to check before shipping if your two retrievers differ by more than ~0.15 on your own corpus,
+        equal RRF is costing you accuracy.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="vendor" aria-labelledby="h-vendor">
+      <h2 id="h-vendor">Finding 3: managed tool search is single-shot BM25 with a billing model</h2>
+
+      <p>
+        I ran Anthropic&apos;s server-side BM25 search tool on 100 tasks against the 3,367-tool customized pool, on
+        Haiku 4.5, with a hard $1.50 spend cap (<em>due to budget constraints</em>) built into the strategy. Total
+        spend: $0.55. The harness verified the mechanism from raw responses rather than documentation: the exact model
+        snapshot <code>claude-haiku-4-5-20251001</code> answered, <code>server_tool_use</code> and
+        <code>tool_search_tool_result</code> blocks show the search genuinely running, and 1,755 input tokens per call
+        on a 3,367-tool request confirms deferred
+        schemas are never billed as context.
+      </p>
+
+      <br>
+
+      <div class="table-wrap">
+        <table id="tbl-vendor">
+          <thead>
+            <tr>
+              <th>Strategy (customized pool, k=10)</th>
+              <th>hit</th>
+              <th>recall</th>
+              <th>nDCG</th>
+              <th>latency</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>anthropic (managed, agentic)</td>
+              <td>.520</td>
+              <td>.423</td>
+              <td>.341</td>
+              <td>5.7 s</td>
+            </tr>
+            <tr>
+              <td>bm25 (60 lines, local)</td>
+              <td>.530</td>
+              <td>.470</td>
+              <td>.401</td>
+              <td>2 ms</td>
+            </tr>
+            <tr>
+              <td>embed (BGE, local)</td>
+              <td>.770</td>
+              <td>.701</td>
+              <td>.554</td>
+              <td>7 ms</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The managed service lands at or slightly below a local BM25 on the same pool, roughly 800x slower and ~$0.005
+        per task. <em>Two honest cautions are</em>: the API returns at most ~5 tools per search, so part of its recall
+        gap is discovery depth rather than ranking quality; and documentation as late as July 2026 claims Haiku lacks
+        tool-search support, yet the call worked with no beta header, so support was apparently extended since.
+      </p>
+
+      <p>
+        The other result is a hard ceiling, not a tuning knob: the API accepts a maximum of 10,000 deferred tools per
+        request. The full 44K catalog cannot be served at all. For a managed tool-search product, the largest realistic
+        MCP registries are simply out of scope today.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="setaware" aria-labelledby="h-setaware">
+      <h2 id="h-setaware">Finding 4: set-aware signals exist, but naive co-occurrence is too sparse</h2>
+
+      <p>
+        ToolRet labels are sets, and the failure analysis below shows set recovery is where methods fail, so a set-aware
+        baseline was worth testing honestly. The <code>setaware</code> strategy builds a tool-pair co-occurrence table
+        from one half of each source&apos;s tasks and evaluates on the held-out half, avoiding the transductive trap of
+        training on test labels.
+      </p>
+
+      <p>
+        <em>Result</em>: a consistent but tiny +1pp recall over the hybrid base at every registry mode. The reason is
+        structural, ~4K training label-sets spread over 44K tools leave almost no co-occurrence mass. This is a negative
+        result in favor of the framing, not against it. The raw co-occurrence is exactly why <a
+          href="https://arxiv.org/abs/2607.25718" target="_blank" rel="noopener noreferrer">HYSET</a>-style methods need
+        a learned hyperedge model rather than a lookup table.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="failures" aria-labelledby="h-failures">
+      <h2 id="h-failures">What is left after every method is tried</h2>
+
+      <p>
+        Across the full catalog at k=10, <strong>41% of tasks are missed by every retriever</strong>. That shared-miss
+        mass is the most interesting number in the project, because it is not attributable to any single method&apos;s
+        weakness.
+      </p>
+
+      <ul>
+        <li>Multi-tool tasks get a <em>higher</em> hit@10 (.594) than single-tool tasks but a much <em>lower</em>
+          recall@10 (.344 vs .468). Finding some of the required set is easy; recovering the complete set is the actual
+          problem, and it is the metric nobody&apos;s headline number reports.
+        </li>
+        <li>Per-source spread is enormous: gpt4tools scores a perfect 1.000 hit@10 while toolbench-sam scores .107. I
+          checked toolbench-sam by hand rather than trusting the number: all 197 queries join to real tools, and the
+          documentation is genuinely adversarial (code-style references like <code>API.set_location</code> answering
+          natural-language housing queries). The low score is a domain gap, not a label bug.
+        </li>
+        <li>bm25 and embed fail on different tasks: dense wins on multi-tool tasks, lexical wins on single-tool ones,
+          which is the mechanical reason fusion helps when the parents are comparably strong.
+        </li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <section class="section" id="limitations" aria-labelledby="h-limitations">
+      <h2 id="h-limitations">Limitations</h2>
+
+      <ul>
+        <li>The MCP-Zero OpenAI embeddings were computed by the dataset authors over short tool descriptions while
+          queries are paragraph-length summaries, so &ldquo;OpenAI is the weak parent&rdquo; is partly a domain gap, not
+          a verdict on the embedder.
+        </li>
+        <li><code>setaware</code> is a co-occurrence approximation of HYSET, not the published model; no public HYSET
+          implementation exists to port faithfully.
+        </li>
+        <li>Anthropic results are a 100-task calibration on one pool and one cheap model by design (<em>the budget was
+            $2.50 total</em>). Scaling to all modes needs a real budget and the Batch API.
+        </li>
+        <li>ToolRet labels describe tool <em>relevance</em>; they do not verify that a call sequence would actually
+          solve the task.
+        </li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <section class="section" id="artifact" aria-labelledby="h-artifact">
+      <h2 id="h-artifact">The artifact</h2>
+
+      <p>
+        FusionLine is a few hundreds lines of TypeScript plus two Python data-prep scripts. The harness, the result
+        CSVs, and the per-run logs are in the repository. The eval loop streams rows incrementally with a per-strategy
+        spend cap, so the paid-API runs are reproducible down to the dollar, with the entire Anthropic experiment cost
+        $0.55 and the script to re-run it takes
+        one env var.
+      </p>
+
+      <p>
+        The honest summary of everything above is as: when someone next publishes a tool-selection number, the two
+        questions worth asking are <em>how big was the pool</em> and <em>how close were the parents</em>. Both are one
+        command against a shared corpus, which was the point of building the harness in the first place.
+      </p>
+
+      <p>
+        If you work on MCP tool routing and see something that contradicts your production numbers than mine, I would
+        genuinely like to hear about it. Please reach out to me at <a
+          href="mailto:taneemishere@gmail.com">taneemishere@gmail.com</a>.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="bibtex" aria-labelledby="h-bibtex">
+      <h2 id="h-bibtex">BibTeX</h2>
+
+      <div class="bibtex-block" id="bibtex-entry" role="region" aria-label="BibTeX citation">@article{fusionline,
+        title = {"FusionLine: Where Equal-Weight Retrieval Fusion Stops Helping in MCP Tool Selection"},
+        author = {Taneem Ullah Jan},
+        year = {2026},
+        url = {https://taneemishere.github.io/fusionline/}
+        }</div>
+
+    </section>
+
+    <footer class="page-footer" id="page-footer">
+      <p> <a href="https://info.flagcounter.com/48VZ"><img
+            src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+            border="0"></a>
+      </p>
+    </footer>
+
+  </div>
+</body>
+
+</html>
