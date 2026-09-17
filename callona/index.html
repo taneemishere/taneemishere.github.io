@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <title>Callona</title>
+  <meta name="description"
+    content="Callona: Getting an 8B Speech-to-Speech Model to Reliably Answer a Business Phone. A self-hosted AI receptionist that answers at phone-call pace, with deterministic code owning the parts a small model can&apos;t be trusted with.">
+  <meta name="keywords"
+    content="Callona, AI receptionist, voice agent, speech-to-speech model, LiveKit, real-time voice AI, tool calling, voice activity detection, barge-in, neural vocoder, deterministic orchestration, FTU Solutions">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/callona/">
+
+  <meta property="og:title" content="Callona: Getting an 8B Speech-to-Speech Model to Reliably Answer a Business Phone">
+  <meta property="og:description"
+    content="A self-hosted AI receptionist on LiveKit that answers at phone-call pace: measured sub-two-second replies, forced-choice tool routing, deterministic coordinators for the fragile flows, and barge-in that survives streaming state.">
+  <meta property="og:url" content="https://taneemishere.github.io/callona/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/ftu-callona.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title"
+    content="Callona: Getting an 8B Speech-to-Speech Model to Reliably Answer a Business Phone">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/ftu-callona.png">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "Callona: Getting an 8B Speech-to-Speech Model to Reliably Answer a Business Phone",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/callona/",
+      "description": "A self-hosted AI receptionist that answers at phone-call pace, with deterministic code owning the parts a small model can&apos;t be trusted with.",
+      "datePublished": "2026-09-17",
+      "dateModified": "2026-09-17",
+      "keywords": "Callona, AI receptionist, voice agent, speech-to-speech model, LiveKit, real-time voice AI, tool calling, voice activity detection, barge-in, neural vocoder, deterministic orchestration, FTU Solutions",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link rel="stylesheet" href="./stylesheet.css">
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <header class="page-header">
+
+      <h1>
+        <span class="accent">Callona</span>: Getting an 8B Speech-to-Speech Model to Reliably Answer a Business Phone
+      </h1>
+
+      <br>
+      <p class="author-note">Research and development work conducted</p>
+      <p class="author-note">by</p>
+      <p class="author-name">
+        <a href="https://taneemishere.github.io" target="_blank" rel="noopener noreferrer">Taneem Ullah Jan</a>
+        <span style="font-weight: 400">&emsp;for&emsp;</span>
+        <a href="https://www.ftusolutions.com" target="_blank" rel="noopener noreferrer">FTU Solutions</a>
+      </p>
+
+      <div class="btn-row">
+        <a href="https://www.ftusolutions.com/callona" target="_blank" rel="noopener noreferrer" class="btn btn-outline"
+          id="btn-paper">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2zm6.93 9h-3.11a15.8 15.8 0 0 0-1.12-4.09A8.03 8.03 0 0 1 18.93 11zM12 4.07c.88 1.1 1.63 3.03 2.01 5.93H9.99c.38-2.9 1.13-4.83 2.01-5.93zM9.3 6.91A15.8 15.8 0 0 0 8.18 11H5.07a8.03 8.03 0 0 1 4.23-4.09zM4.07 13h3.11a15.8 15.8 0 0 0 1.12 4.09A8.03 8.03 0 0 1 4.07 13zM12 19.93c-.88-1.1-1.63-3.03-2.01-5.93h4.02c-.38 2.9-1.13 4.83-2.01 5.93zm2.7-2.84A15.8 15.8 0 0 0 15.82 13h3.11a8.03 8.03 0 0 1-4.23 4.09z" />
+          </svg>
+          Visit FTU Callona
+        </a>
+      </div>
+
+    </header>
+
+    <hr>
+
+    <section class="section" id="problem" aria-labelledby="h-problem">
+      <h2 id="h-problem">The Problem</h2>
+
+      <p>
+        A small-business phone line is a strange workload for modern AI. The conversations are short, repetitive, and
+        mostly scripted such as opening hours, directions, insurance, a message for the office, maybe an appointment.
+        Any frontier model handles the content of those calls without effort but are expensive. The hard part is
+        everything around the content. The caller expects an answer inside about a second, interrupts mid-sentence,
+        spells an email address out loud, reads a phone number as words, and hangs up without warning. And the business
+        would rather not stream every caller through a paid API that bills by the minute and holds the audio.
+      </p>
+
+      <p>
+        The hosted path exists and it works. A realtime speech API plus <a href="https://livekit.com" target="_blank"
+          rel="noopener noreferrer">LiveKit&apos;s</a> agent framework gets an AI receptionist running in a weekend, and
+        I know, because the first version of this system was exactly that. The question that remained, and the question
+        <a href="https://www.ftusolutions.com" target="_blank" rel="noopener noreferrer">FTU Solutions</a> has to answer
+        before putting a real phone number on the thing, is whether a self-hosted speech-to-speech model can carry the
+        same workload at the same pace or not. Not whether it can produce a good reply once. But, whether it can hold a
+        real conversation, at phone-call speed, with barge-in, tool calls, bookings, and hang-ups, reliably enough that
+        nobody on the other end can tell the difference.
+      </p>
+
+      <p>
+        The system built to answer that question is Callona. The model is an 8B-parameter speech-to-speech model with
+        tool calling built-in, caller audio goes in, response audio comes out. Around it sits a transport layer
+        (LiveKit), an agent worker written in Python, an inference server for the model, and a neural vocoder that
+        converts the model&apos;s discrete audio tokens back into waveform. All of it self-hosted on one machine.
+      </p>
+
+      <p>
+        The short answer, after building it and running live calls through it: the model carries the workload, but only
+        because the system stopped asking it to do the things an 8B model does badly. The model has three jobs:
+        transcribe the caller, pick the right tool, and speak. Everything fragile, the multi-step flows, the
+        confirmations, the arithmetic, the argument validation, is deterministic code sitting next to it. Where to draw
+        that boundary, and what evidence pushed it where it ended up, is what this report is about.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="system" aria-labelledby="h-system">
+      <h2 id="h-system">What the System Looks Like</h2>
+
+      <p>
+        A Callona call begins in a LiveKit room. For the web service, a FastAPI service mints a short-lived join
+        token and a fresh room; the same code path works for a phone call arriving over a SIP trunk, where the caller is
+        just a different kind of participant in the same room. LiveKit dispatches the room to an agent worker, which
+        joins, publishes its own audio track, subscribes to the caller&apos;s audio, and runs the conversation loop.
+      </p>
+
+      <figure id="fig-architecture">
+        <img src="./images/fig1-architecture.png" alt="Callona call path architecture" width="760">
+        <figcaption>
+          Fig. 1. The path a call takes. The caller reaches a LiveKit room, which dispatches to an agent worker that
+          orchestrates the speech model and vocoder; business config goes in, call artifacts come out.
+        </figcaption>
+      </figure>
+
+      <p>
+        Inside the worker, one turn looks like this: a voice-activity detector segments the caller&apos;s audio into
+        utterances; each finished utterance goes to the model&apos;s built-in transcription; the transcript is routed,
+        either to a deterministic coordinator that owns a structured flow, or to a small routing pass that picks a tool;
+        the model then generates a spoken reply as a stream of audio tokens; the vocoder converts those tokens to PCM in
+        chunks; and a buffered audio source plays them into the room.
+      </p>
+
+      <figure id="fig-turn-pipeline">
+        <img src="./images/fig2-turn-pipeline.png" alt="Per-turn sequence inside the agent worker" width="760">
+        <figcaption>
+          Fig. 2. One turn as a sequence: VAD segmentation, transcription, routing, generation, vocoding, and buffered
+          playout.
+        </figcaption>
+      </figure>
+
+      <p>
+        Two things are deliberately not in this picture. First, there is no cascaded STT-LLM-TTS pipeline:
+        transcription, reasoning, and synthesis all happen inside the one model, which was the challenge and which is
+        what makes the latency budget survivable at all. Second, the model never sees most of the system&apos;s tools.
+        The routing pass exposes a short list of read tools plus an escape hatch; the write tools (take a message,
+        submit an intake, book the slot, send the email) are dispatched by deterministic coordinators, not chosen by the
+        model. That asymmetry turns out to matter, and it is the subject of the routing section below.
+      </p>
+
+      <p>
+        Everything business-specific lives in a file per business: the persona and greeting, weekly hours, FAQs,
+        transfer destinations, intake questions, info packets, calendar settings.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="model" aria-labelledby="h-model">
+      <h2 id="h-model">When the Whole Pipeline Is One Model</h2>
+
+      <p>
+        It is worth one section on how the model actually looks like, because the architecture is the reason the whole
+        design works and is faster.
+      </p>
+
+      <p>
+        A conventional voice agent is three models bolted together: a speech-to-text model transcribes the caller, a
+        text LLM reasons about the transcript, and a text-to-speech model reads the reply aloud. Each stage is a
+        separate model call, a separate failure surface, and a separate latency contribution, and the text in the middle
+        throws away everything the caller&apos;s voice carried that was not words: pace, hesitation, emphasis.
+      </p>
+
+      <p>
+        This system instead runs this end-to-end speech with one model. The caller&apos;s waveform is converted to
+        audio tokens on the way in, then a single transformer backbone does all of the work in one latent space: it
+        produces the ASR transcript, reasons over what the caller meant, decides whether a tool applies, plans the reply
+        text, and generates the reply as a stream of output audio tokens. A compact neural vocoder converts each chunk
+        of those tokens into waveform. There is no text bottleneck in the middle of the loop, the model literally hears
+        the caller, including the parts of speech that a transcript would drop.
+      </p>
+
+      <figure id="fig-model">
+        <img src="./images/fig3-model.png" alt="Inside the speech-to-speech model" width="760">
+        <figcaption>
+          Fig. 3. Inside the model. One transformer does the listening, thinking, and speaking in a shared latent
+          space; the text channel carries transcripts and tool calls to the orchestrator.
+        </figcaption>
+      </figure>
+
+      <p>
+        Two consequences follow, one helpful and one that shapes the rest of this report. <em>The helpful one</em> is
+        latency and fidelity that is, one model call per turn instead of three serialized ones, with paralinguistic
+        signal intact (the model&apos;s English ASR numbers are roughly 3.5% average word error rate, which is at the
+        level where transcription stops being the bottleneck). <em>The shaping one</em> is that there is no stage to
+        swap out. When a model of such size is bad at something, and the sections below are about what it is bad at, you
+        cannot replace the weak stage with a stronger model. You have to route around it in code. That constraint is the
+        source of most of the system&apos;s design.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="latency" aria-labelledby="h-latency">
+      <h2 id="h-latency">The Latency Budget</h2>
+
+      <p>
+        Real-time is the whole product here, so it is worth putting numbers on it before anything else. These are
+        measured values from live calls, logged per turn by the workers on calls, spoken turns, and caller utterances.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-latency">
+          <thead>
+            <tr>
+              <th>Stage</th>
+              <th>Median</th>
+              <th>Observed range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Caller transcription (one utterance)</td>
+              <td>0.39 s</td>
+              <td>0.31 - 0.67 s</td>
+            </tr>
+            <tr>
+              <td>Routing pass (forced choice)</td>
+              <td>0.37 s</td>
+              <td>0.29 - 1.10 s</td>
+            </tr>
+            <tr>
+              <td>Generation to first audio byte</td>
+              <td>0.95 s</td>
+              <td>0.86 - 1.24 s</td>
+            </tr>
+            <tr>
+              <td>End of caller speech to first audible reply</td>
+              <td>~1.9 s</td>
+              <td>~1.7 - 2.1 s</td>
+            </tr>
+            <tr>
+              <td>Barge-in: detect, cancel, clear playback</td>
+              <td>&lt;0.1 s</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>Session lease at call start (prewarmed)</td>
+              <td>0.23 s</td>
+              <td>-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Once generation starts, the vocoder keeps up comfortably: it produces waveform at about 0.6x real-time per turn,
+        so audio never starves mid-sentence once playback begins, and a 250 ms jitter buffer smooths the chunk
+        boundaries.
+      </p>
+
+      <figure id="fig-latency">
+        <img src="./images/fig4-latency.png" alt="Latency breakdown per turn" width="760">
+        <figcaption>
+          Fig. 4. Where the ~1.9 s goes, measured per turn on live calls.
+        </figcaption>
+      </figure>
+
+      <p>
+        Less than two seconds from silence to reply is firmly inside what human turn-taking tolerates, and it is worth
+        repeating what produces it: an 8B model small model, not a frontier API like GTP-live. The one deliberate cost
+        is the routing pass, a serial extra round-trip of about four tenths of a second on a typical turn. A cascaded
+        pipeline could speculate the route while transcribing; a speech-to-speech model cannot, because the route
+        depends on the transcript. I accepted the extra round-trip because the alternative, trusting the model to call
+        tools on its own, fails worse than four tenths of a second. The next section answers the why.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="routing" aria-labelledby="h-routing">
+      <h2 id="h-routing">Tool Selection Is a Classification Problem</h2>
+
+      <p>
+        The single most reliable failure in the early system was invisible in production. With
+        <code>tool_choice=&quot;auto&quot;</code>, the model almost never called a tool. It did not refuse; it
+        narrated. Asked for opening hours, it would confidently say &ldquo;let me check that for you&rdquo; and then
+        keep talking. The tool sat unused while the model improvised an answer, sometimes correctly, sometimes not.
+      </p>
+
+      <p>
+        The fix was to stop asking the model to decide whether to call a tool and instead ask it which tool applies. A
+        separate routing pass runs per caller turn: same model, same system prompt, a narrowed tool list, and
+        <code>tool_choice=&quot;required&quot;</code>. Now the model must emit exactly one call, so the problem
+        collapses from <em>&ldquo;will it use a tool&rdquo;</em> (it won&apos;t) into <em>&ldquo;which of these labels
+          fits this utterance&rdquo;</em> (it will, and well). An escape hatch keeps it honest:
+        <code>answer_directly</code> is a real tool in the list, so a caller saying hello or asking the agent&apos;s
+        name does not get shoved into <code>lookup_faq</code>. In the logged calls, the router picked
+        <code>answer_directly</code> for pleasantries and open questions, <code>lookup_faq</code> for parking and
+        address questions, <code>get_business_hours</code> for schedule questions, and <code>end_call</code> for a
+        goodbye, and we have no logged case from production of it firing a tool the caller did not ask for.
+      </p>
+
+      <p>
+        Two smaller details mattered as much as the forced choice. <em>First</em>, greedy decoding: the router runs at
+        temperature 0. With sampling on, roughly one request in forty produced malformed tool-call and the server
+        rejected it; at temperature 0 the same battery ran forty-for-forty clean. Small models write
+        small structure reliably only on the greedy path. <em>Second</em>, scope: the router&apos;s conversation is just
+        the system prompt and a short routing hint, not the full call history. Less context means less anchoring, which
+        connects to the compute-versus-generate split in a later section.
+      </p>
+
+      <blockquote>The general lesson, which I suspect applies well beyond this system: a small model is a decent
+        classifier and a bad tool user. Converting tool selection into forced classification made it reliable; letting
+        it also decide whether to act made it ornamental.
+      </blockquote>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="ledger" aria-labelledby="h-ledger">
+      <h2 id="h-ledger">The Model Talks, the System Keeps the Ledger</h2>
+
+      <p>
+        Front-desk calls have a handful of flows that are conversational on the surface and bureaucratic underneath.
+        Take a message: collect the caller&apos;s name, a callback number, and the message body, confirm the number, and
+        only then file it. For example, in case of a new patient intake: ask a fixed list of questions, read back each
+        answer, accept corrections. Send an info packet: get an email address spelled out loud, read it back, wait for a
+        yes. Book an appointment: offer real available slots, let the caller pick one, confirm, and then write the
+        event.
+      </p>
+
+      <p>
+        Every one of these is a small state machine, and every one failed when the model owned the state. The failure
+        modes were consistent: it would ask for a name and immediately invent one; it would treat &ldquo;no, that&apos;s
+        not correct&rdquo; as a confirmation because it contains the word &ldquo;correct&rdquo;; it would book an
+        appointment at a time it had made up rather than one the availability check had returned; it would accept an
+        email address without the read-back that makes spelling errors recoverable. None of these are model bugs to be
+        patched with a better prompt. They are what happens when a <em>probabilistic text engine</em> is asked to
+        maintain ledger discipline across turns.
+      </p>
+
+      <p>
+        So the system took the ledger away. Each structured flow runs as a deterministic coordinator: plain code that
+        tracks which fields are filled, decides what question comes next, and validates every candidate value before it
+        is accepted. The model still talks; the coordinator decides what it is allowed to say and when the flow is done.
+        Concretely, that looks like:
+      </p>
+
+      <ul>
+        <li><strong>Grounded arguments.</strong> When the model does produce tool arguments, they are checked against
+          what the caller actually said. A <code>take_message</code> call whose name or body does not overlap the
+          caller&apos;s recorded words gets rejected as ungrounded. The model is free to propose; only the transcript
+          can dispose.</li>
+        <li><strong>Check-before-book.</strong> Booking is only permitted from the set of slots a real availability
+          lookup returned in that call. A synthesized ISO timestamp, however plausible, is not a slot.</li>
+        <li><strong>Negation-aware confirmation.</strong> &ldquo;Yes&rdquo;, &ldquo;that works&rdquo;, and
+          &ldquo;no, that&apos;s not correct&rdquo; are different utterances, and the coordinators classify them that
+          way instead of matching keywords.</li>
+        <li><strong>Read-backs as the correction path.</strong> ASR on spelled letters is the least reliable
+          transcription in the system, so the design assumes it will mishear. Email addresses and callback numbers get
+          read back to the caller, and a correction is treated as part of the flow rather than an error branch.</li>
+        <li><strong>Digit paths that bypass ASR entirely.</strong> Callback numbers can come from the caller&apos;s
+          phone number automatically, and from keypad tones on a real phone line. Digits are too important to trust to a
+          speech model on a bad line.</li>
+      </ul>
+
+      <br>
+
+      <figure id="fig-coordinator">
+        <img src="./images/fig5-coordinator.png" alt="Message-taking coordinator flowchart" width="760">
+        <figcaption>
+          Fig. 5. The message-taking coordinator: collect name and number with re-ask loops, read the number back,
+          collect the body, confirm, then file.
+        </figcaption>
+      </figure>
+
+      <p>
+        The result is that the fragile parts of a call have the failure profile of ordinary software. They can be unit
+        tested, they fail loudly, and they never invent a phone number.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="compute" aria-labelledby="h-compute">
+      <h2 id="h-compute">Generation Is Not Computation</h2>
+
+      <p>
+        The last boundary the data pushed sits between generating and computing. The model is a generator; it produces
+        fluent, well-timed speech, and it will produce that speech whether or not the content underneath was ever
+        verified. So the split is simple: <em>the system computes, the model speaks</em>. Three examples:
+      </p>
+
+      <p>
+        <strong>1. Business hours.</strong> &ldquo;Are you open on Sundays?&rdquo; is a lookup plus a tiny bit of date
+        reasoning, and the model got it wrong often enough to matter. The answer is now computed deterministically from
+        the file schedule and the business timezone, and the model is handed the sentence to speak. It speaks it well;
+        it just was never going to derive it reliably.
+      </p>
+
+      <p>
+        <strong>2. Verbatim lines.</strong> Several moments in a call must come out exactly: the greeting, the read-back
+        of an email address, the recitation of a callback number. Early versions passed these to the model with the full
+        conversation history attached, and the model did what language models do: it anchored on the recent turns and
+        paraphrased, once replaying an old refusal line in the middle of a read-back. The fix was to ask for verbatim
+        speech with minimal context, system prompt plus the single instruction, no history. Deprived of anything to
+        anchor on, it says the line.
+      </p>
+
+      <p>
+        <strong>3. Language hygiene.</strong> On a quiet line, the transcription pass occasionally emits stray
+        non-English characters as ASR noise. Two defenses ended that: an explicit transcribe-in-English instruction on
+        every utterance, and a scrub pass that drops non-Latin characters from transcripts before anything downstream
+        sees them. Related housekeeping: utterances under 0.8 seconds that transcribe to nothing are treated as noise
+        and ignored, which stopped the agent from politely answering sounds that were not speech.
+      </p>
+
+      <p>
+        One more boundary sits at the conversation level. Callers speak to the model in audio, but prior turns go back
+        into context as assistant text only, capped at twenty turns. Re-feeding the whole audio history would bloat
+        context and, worse, give the model more chances to anchor on its own earlier phrasing. Bounded, asymmetric
+        history keeps each turn&apos;s context small and keeps the model talking to the caller rather than to its own
+        transcript.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="feel" aria-labelledby="h-feel">
+      <h2 id="h-feel">Making It Feel Like a Phone Call</h2>
+
+      <p>
+        None of that design work matters if the call feels broken. Four pieces of unglamorous engineering do most of the
+        work:
+      </p>
+
+      <p>
+        <strong>Warm it up once, lease it per call.</strong> The vocoder is a stateful neural model with the usual
+        cold-start costs. At worker startup the system runs sixteen streaming warmup calls through it (about 34 seconds,
+        once) and keeps the session in a process-level cache. Each call then leases the warm session in about 0.23
+        seconds instead of paying the cold-start tax on the greeting. The lease is exclusive per worker, so concurrency
+        is a scale-out question: more workers, more calls at once.
+      </p>
+
+      <p>
+        <strong>Reset the vocoder between turns.</strong> The streaming vocoder keeps a cache across chunks so
+        consecutive chunks blend. Early on, a barge-in mid-utterance would leave that cache half-populated, and the next
+        turn crashed with a tensor shape mismatch. The fix is one line of discipline: reset the stream cache at the
+        start of every turn; resetting only at call start leaves the crash surface open. Stateful streaming components
+        and cancellation do not compose for free; somebody has to own the boundary, and it is never the streaming
+        component.
+      </p>
+
+      <p>
+        <strong>Buffer before you play.</strong> Audio tokens arrive in chunks whose timing is governed by the model,
+        not the speaker. The audio source prebuffers 250 ms before starting playback and holds a cushion after that,
+        which is what keeps chunked generation from sounding chunked.
+      </p>
+
+      <p>
+        <strong>Let the caller win.</strong> VAD detecting speech while the agent is talking triggers barge-in: cancel
+        the in-flight HTTP stream to the model server, clear the queued audio, drop the generation task. Measured
+        end-to-end, the whole cancel path runs in well under a tenth of a second, and the next turn&apos;s cache reset
+        (above) is what makes the interrupted state safe to resume from.
+      </p>
+
+      <figure id="fig-turn-states">
+        <img src="./images/fig6-turn-states.png" alt="Turn state machine with barge-in path" width="760">
+        <figcaption>
+          Fig. 6. The turn state machine: listening, speaking, and the barge-in path that cancels generation and
+          clears playback before the next turn.
+        </figcaption>
+      </figure>
+
+      <p>
+        A smaller behavior worth noting: when a caller does stop talking mid-word and the VAD fires on a blip, the 0.8 s
+        noise floor means the agent simply does not respond to it, rather than apologizing into silence.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="scope" aria-labelledby="h-scope">
+      <h2 id="h-scope">Scope of This Report</h2>
+
+      <p>Two honest edges on the evidence:</p>
+
+      <ul>
+        <li><strong>No head-to-head benchmark.</strong> The latency and reliability claims come from the live
+          calls on the self-hosted stack, not a controlled A/B against a hosted realtime API. The comparison in this
+          report is architectural: what each design asks the model to do, and what that costs.</li>
+        <li><strong>The flow catalog is domain-shaped.</strong> The coordinators cover the calls a front desk actually
+          gets (messages, intake, info packets, bookings, hours, transfers). A new business vertical gets the same
+          machinery but its own review of which flows need to be deterministic.</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <section class="section" id="takeaways" aria-labelledby="h-takeaways">
+      <h2 id="h-takeaways">Takeaways</h2>
+
+      <p>
+        The usable unit is not the model, it is the model plus the scaffolding. An 8B speech-to-speech model is good at
+        the surfaces, transcribing, routing, speaking, and bad at bookkeeping; putting the bookkeeping in code is what
+        made it production-shaped. Forced-choice routing converts unreliable tool use into reliable classification, and
+        a grounding check on arguments catches the rest. The latency budget is affordable if you warm the vocoder once,
+        stream early chunks, and buffer before playback; none of those are clever, which is the point. And the pattern
+        generalizes: anywhere a small model has to be trusted, give it a vote, not the keys.
+      </p>
+
+      <p>
+        If you work on voice agents or small-model orchestration and or anything else in the voice AI space, I would
+        genuinely like to hear or discuss about it. Please reach out at <a
+          href="mailto:taneemishere@gmail.com">taneemishere@gmail.com</a>.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="bibtex" aria-labelledby="h-bibtex">
+      <h2 id="h-bibtex">BibTeX</h2>
+
+      <div class="bibtex-block" id="bibtex-entry" role="region" aria-label="BibTeX citation">@article{callona,
+        title = {"Callona: Getting an 8B Speech-to-Speech Model to Reliably Answer a Business Phone"},
+        author = {Taneem Ullah Jan},
+        year = {2026},
+        url = {https://taneemishere.github.io/callona/}
+        }</div>
+
+    </section>
+
+    <footer class="page-footer" id="page-footer">
+      <p> <a href="https://info.flagcounter.com/48VZ"><img
+            src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+            border="0"></a>
+      </p>
+    </footer>
+
+  </div>
+</body>
+
+</html>
