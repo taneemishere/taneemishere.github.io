@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <title>GateDPO</title>
+  <meta name="description"
+    content="GateDPO: Verifier-Ordered DPO for Code Repair Without a Learned Reward Model. A deterministic gate verifier orders preference pairs for DPO; across thirteen training runs and more than fifteen hundred held-out episodes, the task corpus, not the preference algorithm, decides out-of-distribution survival.">
+  <meta name="keywords"
+    content="GateDPO, DPO, direct preference optimization, code repair, verifier, PatchProof, GateGRPO, DarwinPatch, Qwen2.5-Coder, RLHF, preference learning, reinforcement learning, LLM alignment, reward model free">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/gatedpo/">
+
+  <meta property="og:title" content="GateDPO: Verifier-Ordered DPO for Code Repair Without a Learned Reward Model">
+  <meta property="og:description"
+    content="A deterministic gate verifier orders preference pairs for DPO. Thirteen runs and 1,500+ held-out episodes later: verifier-ordered pairs work, but task-corpus diversity, not the injection schedule, is what preserves OOD capability.">
+  <meta property="og:url" content="https://taneemishere.github.io/gatedpo/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/gatedpo.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GateDPO: Verifier-Ordered DPO for Code Repair Without a Learned Reward Model">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/gatedpo.png">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "GateDPO: Verifier-Ordered DPO for Code Repair Without a Learned Reward Model",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/gatedpo/",
+      "description": "A deterministic gate verifier orders preference pairs for DPO; the task corpus, not the preference algorithm, decides out-of-distribution survival.",
+      "datePublished": "2026-09-21",
+      "dateModified": "2026-09-21",
+      "keywords": "GateDPO, DPO, direct preference optimization, code repair, verifier, PatchProof, GateGRPO, DarwinPatch, Qwen2.5-Coder, RLHF, preference learning, reinforcement learning, LLM alignment",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link rel="stylesheet" href="./stylesheet.css">
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <header class="page-header">
+
+      <h1>
+        <span class="accent">GateDPO</span>: Verifier-Ordered DPO for Code Repair Without a Learned Reward Model
+      </h1>
+
+      <br>
+      <p class="author-note">Research and development work conducted</p>
+      <p class="author-note">by</p>
+      <p class="author-name">
+        <a href="https://taneemishere.github.io" target="_blank" rel="noopener noreferrer">Taneem Ullah Jan</a>
+      </p>
+
+      <a href="https://github.com/taneemishere/gatedpo" target="_blank" rel="noopener noreferrer" class="btn"
+        id="btn-github">
+        <!-- GitHub icon -->
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+              0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89
+              -3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27
+              2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82
+              2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55
+              .38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+        </svg>
+        Code
+      </a>
+
+    </header>
+
+    <hr>
+
+    <section class="section" id="problem" aria-labelledby="h-problem">
+      <h2 id="h-problem">The Problem</h2>
+
+      <p>
+        I have trained this model family three ways now. <em>SFT</em> taught it to imitate verified patches.
+        <em>GRPO</em> taught it from a scalarized reward built out of the verifier&apos;s gate outcomes. What I had not
+        tried, and what sat oddly unexamined in the lineage, was the simplest preference method of them all:
+        <em>DPO</em>. Not because anyone doubted it would run, but because nobody had asked what the verifier&apos;s
+        structure looks like when you feed it to a preference learner instead of a policy gradient.
+      </p>
+
+      <p>
+        The reason to ask is specific. <a href="https://taneemishere.github.io/patchproof/">PatchProof</a> does not
+        return a reward. It returns a partial order: every candidate repair walks a fixed chain of hard gates
+        (<code>scope_guard</code>, <code>patch_applies</code>, <code>python_ast</code>, <code>secret_scan</code>,
+        <code>visible_tests</code>, <code>release_gate_regressions</code>, <code>promote</code>), and it dies at exactly
+        one of them. <a href="https://taneemishere.github.io/gategrpo/">GateGRPO</a> flattens that structure into a
+        scalar, which is how you end up with a training log where 65% of GRPO steps produce groups with zero advantage:
+        two candidates that both die at the <code>visible_tests</code> gate get the same reward, even if one failed five
+        tests and the other failed one. Depth and sub-evidence are real ordering information that scalarization throws
+        away.
+      </p>
+
+      <p>
+        So <em>GateDPO</em> asks the question directly: sample candidates, sort them by how deep they survive inside the
+        verifier, and train DPO on the resulting pairs. Then ask the harder question on top of it: if each new round
+        regenerates pairs from the model&apos;s own current failures, does the failure frontier march? The honest
+        answer, after thirteen training runs and more than fifteen hundred held-out evaluation episodes, is that the
+        first part works and the second part does not, and that the reason it does not is more interesting than either.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="system" aria-labelledby="h-system">
+      <h2 id="h-system">What the System Looks Like</h2>
+
+      <p>
+        One GateDPO round is a loop with five stages. The policy samples twelve first-turn repair candidates per task,
+        plus four evidence-conditioned second-turn samples for every candidate that failed with verifier feedback
+        attached. Each candidate runs the frozen gate chain and gets a depth between zero and six, where six means
+        promoted. The pair builder then constructs three kinds of preference pairs: inter-gate pairs that prefer a
+        deeper survivor over a shallower one, intra-gate pairs that prefer the same depth but better sub-evidence (fewer
+        failing tests, a closer string match), and progress pairs that prefer a second turn which advanced depth over
+        one that stalled on the same evidence. DPO trains on those pairs with a small chosen-NLL anchor, the adapter
+        merges, and the merged policy becomes the next round&apos;s sampler.
+      </p>
+
+      <figure id="fig-pipeline">
+        <img src="./images/fig1_pipeline.png" alt="GateDPO round pipeline" width="760">
+        <figcaption>
+          Fig. 1. One round of GateDPO: sample, verify to a depth, order into pairs, train, merge, evaluate. The task
+          generator sits off to the side because it turned out to matter more than anything inside the loop.
+        </figcaption>
+      </figure>
+
+      <p>
+        Two design choices are worth stating before the results, because the results only make sense with them.
+        <em>First</em>, the anchor. Plain sigmoid DPO at 1.5B parameters degenerates: the model learns to widen the
+        margin between chosen and rejected by degrading the chosen arm&apos;s likelihood, and its eval log fills with
+        <code>patch_applies</code> failures (zero to twenty three in a single run). A small cross-entropy term on the
+        chosen arm (weight 0.1) suppresses this completely. <em>Second</em>, the task generator. A separate 30B model
+        writes new buggy repositories, and a task is only admitted if its own gold patch promotes through every gate.
+        Roughly half of generated tasks fail this check and are discarded. Both choices look like engineering details.
+        Neither is.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="eval" aria-labelledby="h-eval">
+      <h2 id="h-eval">The Evaluation Suite Could Not Rank Anything</h2>
+
+      <p>
+        First, a naming note, because the rest of this write-up refers to runs by their tags. Every training run
+        produces a merged checkpoint, and the tags are: <code>r</code> followed by a round number, with a letter suffix
+        for variants (<code>b</code> for the revised recipe, <code>f</code> for the frontier-task runs). The two non-DPO
+        baselines are <code>sftv9</code>, the SFT parent that starts every run, and <code>v10b</code>, the best GateGRPO
+        checkpoint from the previous project.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-runs">
+          <thead>
+            <tr>
+              <th>Run</th>
+              <th>What it is</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>sftv9</code></td>
+              <td>the SFT baseline; every DPO run starts here</td>
+            </tr>
+            <tr>
+              <td><code>v10b</code></td>
+              <td>GateGRPO&apos;s best checkpoint (per-gate GRPO, 26 tasks)</td>
+            </tr>
+            <tr>
+              <td><code>r1</code></td>
+              <td>first DPO round on the 26-task suite, unanchored</td>
+            </tr>
+            <tr>
+              <td><code>r1b</code></td>
+              <td>first DPO round, anchored recipe, same 26 tasks</td>
+            </tr>
+            <tr>
+              <td><code>r2</code> / <code>r2b</code> / <code>r2c</code></td>
+              <td>second-round variants on the same suite</td>
+            </tr>
+            <tr>
+              <td><code>r2f</code></td>
+              <td>second round, after adding 5 fresh frontier tasks</td>
+            </tr>
+            <tr>
+              <td><code>r3</code></td>
+              <td>third round, still on the original 26 tasks</td>
+            </tr>
+            <tr>
+              <td><code>r3a</code></td>
+              <td>third round on the grown 31-task suite, again</td>
+            </tr>
+            <tr>
+              <td><code>r3b</code></td>
+              <td>third round, with 4 fresh tasks injected</td>
+            </tr>
+            <tr>
+              <td><code>r4</code></td>
+              <td>fourth cumulative round, 41-task suite</td>
+            </tr>
+            <tr>
+              <td><code>r-big</code></td>
+              <td>one round from <code>sftv9</code> on 51 tasks</td>
+            </tr>
+            <tr>
+              <td><code>r-target</code></td>
+              <td>one round from <code>sftv9</code> on a difficulty-targeted pool (51 distinct tasks)</td>
+            </tr>
+            <tr>
+              <td><code>r2f-b</code></td>
+              <td><code>r2f</code> plus one more round on that same pool</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Before the results, the finding that reframes the results. The lineage&apos;s held-out suite had eight tasks and
+        each model was evaluated with a handful of repetitions. When I started rerunning checkpoints to firm up the
+        numbers, the numbers would not hold still: the same <code>r4</code> checkpoint scored 0.50 in one run and 0.29
+        in the next, on identical settings. Pulling the per-task data apart showed why. Three of the eight tasks are
+        never solved by any model, one is solved by all of them, and the suite&apos;s entire discriminative power sits
+        in the remaining four. Every model was drawing from a heavily overlapping band (most runs land between 0.25 and
+        0.45), and the differences I had been reading as results were draws.
+      </p>
+
+      <figure id="fig-v1noise">
+        <img src="./images/fig2_v1_noise.png" alt="Repeated eval runs on the eight-task suite overlap" width="760">
+        <figcaption>
+          Fig. 2. Successive eval runs of the same checkpoints on the original eight-task suite. The bands overlap for
+          every model; no ordering survives a rerun.
+        </figcaption>
+      </figure>
+
+      <p>
+        The fix was a second suite: the original eight plus six freshly generated tasks that no model ever trained on,
+        evaluated at four repetitions per model and then repeated again until every contender had fifty six to one
+        hundred sixty eight episodes. The expanded suite separates models cleanly, which is exactly what an eval is for.
+        It also produced an uncomfortable retroactive consequence, which I will come back to: GateGRPO&apos;s reported
+        advantage over SFT was measured on the weak suite, and on the strong one it does not survive.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="anchor" aria-labelledby="h-anchor">
+      <h2 id="h-anchor">Verifier-Ordered DPO Works, and the Anchor Is Not Optional</h2>
+
+      <p>
+        The first positive result is that the method runs at all and learns. One offline round of anchored DPO on the
+        twenty six task suite produces a policy that, in-distribution, sits in the same band as a GRPO run that costs
+        roughly ten times the machinery: three minutes of pair generation and two of training, versus an online loop
+        with a verifier call on every policy step. The intra-gate pairs do measurable work here; fifty pairs in the
+        first round have a failing patch on the chosen side, teaching &ldquo;this failure is better than that
+        failure,&rdquo; and removing them or the anchor both degrade the result.
+      </p>
+
+      <p>
+        The anchor result deserves its own sentence because it is the cleanest ablation in the project. Identical pairs,
+        identical init, identical everything except the 0.1 chosen-NLL term: unanchored DPO produces a policy whose
+        patch format has partially collapsed (<code>patch_applies</code> failures rise from zero to twenty three on
+        eval), and anchored DPO produces one that has not. The failure mode is exactly the likelihood-displacement
+        pathology that the DPO literature predicts at small scale, measured rather than cited.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="drift" aria-labelledby="h-drift">
+      <h2 id="h-drift">The Frontier Does Not Migrate; the Model Drifts</h2>
+
+      <p>
+        Here is where the original hypothesis died. My proposal predicted that each round would regenerate pairs from
+        the model&apos;s own residual failures, so the failure distribution would migrate toward deeper gates as shallow
+        failures got trained away. It did not. Across four rounds on the same twenty six tasks, turn-one promotion
+        stayed flat at about sixty percent and the rejected-arm histogram stayed pinned to the
+        <code>visible_tests</code> gate. The model kept failing the same way, so the pair generator kept producing the
+        same pairs, so the next round had nothing new to learn. What iterated rounds added was not new signal but drift:
+        <code>patch_applies</code> failures on held-out eval climbed from twenty three to forty eight.
+      </p>
+
+      <figure id="fig-drift">
+        <img src="./images/fig3_drift.png" alt="patch_applies failures compound on a fixed suite" width="760">
+        <figcaption>
+          Fig. 3. Same-suite iteration: the failure distribution stays pinned at the <code>visible_tests</code> gate
+          while <code>patch_applies</code> failures compound. The frontier cannot move because the task set does not
+          change.
+        </figcaption>
+      </figure>
+
+      <p>
+        Self-consumption only self-improves while the verifier has new failures to type. On a fixed suite it has the
+        same failures to type, every round.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="ood" aria-labelledby="h-ood">
+      <h2 id="h-ood">The Task Pool, Not the Algorithm, Controls OOD</h2>
+
+      <p>
+        This is the load-bearing result, and it survived every replication I threw at it. On the expanded suite, with
+        every model at fifty six to one hundred sixty eight episodes:
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-ood">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Training pool</th>
+              <th>OOD solve</th>
+              <th>Episodes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>GateDPO <code>r2f</code></strong></td>
+              <td>26 + 5 frontier, injected</td>
+              <td><strong>0.268</strong></td>
+              <td>168</td>
+            </tr>
+            <tr>
+              <td>GateDPO <code>r2f-b</code></td>
+              <td><code>r2f</code> + 51-task targeted round</td>
+              <td>0.259</td>
+              <td>112</td>
+            </tr>
+            <tr>
+              <td>GateDPO <code>r-target</code></td>
+              <td>1 round, 51-task hard pool</td>
+              <td>0.250</td>
+              <td>56</td>
+            </tr>
+            <tr>
+              <td><strong>SFT v9 (base)</strong></td>
+              <td>none</td>
+              <td><strong>0.232</strong></td>
+              <td>168</td>
+            </tr>
+            <tr>
+              <td>GateDPO <code>r3a</code> / <code>r3b</code></td>
+              <td>3rd round, same vs +4 fresh</td>
+              <td>0.232</td>
+              <td>56</td>
+            </tr>
+            <tr>
+              <td>GateDPO <code>r-big</code></td>
+              <td>1 round, 51-task mixed pool</td>
+              <td>0.214</td>
+              <td>98</td>
+            </tr>
+            <tr>
+              <td>GateDPO <code>r4</code></td>
+              <td>4 cumulative rounds</td>
+              <td>0.205</td>
+              <td>112</td>
+            </tr>
+            <tr>
+              <td>GateGRPO <code>v10b</code></td>
+              <td>26 tasks</td>
+              <td>0.161</td>
+              <td>56</td>
+            </tr>
+            <tr>
+              <td>GateDPO <code>r1b</code></td>
+              <td>26 tasks</td>
+              <td>0.125</td>
+              <td>112</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure id="fig-ood">
+        <img src="./images/fig4_ood.png" alt="OOD solve rate by training pool" width="760">
+        <figcaption>
+          Fig. 4. The same table as a chart (<code>r4</code> at 0.205 sits inside the band and is omitted for space).
+          The diverse-pool models form one band around the SFT baseline; the two same-suite models sit clearly below
+          it.
+        </figcaption>
+      </figure>
+
+      <p>
+        Read top to bottom: every model trained on a large or grown task pool lands in a single statistical band around
+        the SFT baseline, pairwise z under 1.5 across all of them. The two models trained only on the fixed twenty six
+        task suite, one by DPO and one by GRPO, lose roughly half their OOD solve rate (<code>r2f</code> versus
+        <code>r1b</code> is z&asymp;2.9, p&asymp;0.004; SFT versus <code>r1b</code> is z&asymp;2.2, p&asymp;0.025). The
+        cleanest read: the verifier&apos;s partial order only teaches what the tasks let it measure. A fixed twenty six
+        task suite is a narrow reward surface that any optimizer overfits; a diverse verifier-typed pool behaves like
+        regularization.
+      </p>
+
+      <p>
+        What did not separate: the schedule. <code>r3a</code> and <code>r3b</code>, the third round on the same suite
+        versus the third round with four fresh tasks, came out identical at 0.2321. And <code>r-target</code> versus
+        <code>r2f-b</code> is the controlled pair for the bigger version of that question, same final pool size,
+        different schedule, one round versus injected lineage: 0.250 versus 0.259, within noise. The injection mechanism
+        I originally credited with the <code>r2f</code> result is, at every scale I could power it, indistinguishable
+        from simply having more tasks. The pool&apos;s content is the variable. How the tasks arrived is not measurably
+        one.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="gategrpo-note" aria-labelledby="h-gategrpo-note">
+      <h2 id="h-gategrpo-note">The Retroactive Note on GateGRPO</h2>
+
+      <p>
+        This belongs in its own section because it is the finding with the longest reach. The <a
+          href="https://taneemishere.github.io/gategrpo">GateGRPO write-up</a> reports <code>v10b</code> at 0.333 to
+        0.375 against SFT&apos;s 0.25 to 0.29, measured on the eight-task suite. On the expanded suite, under identical
+        settings, <code>v10b</code> scores 0.161 while the same SFT baseline scores 0.232:
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-gategrpo">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>v1 suite (8 tasks)</th>
+              <th>v2 suite (14 tasks, OOD)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GateGRPO <code>v10b</code></td>
+              <td>0.333 - 0.375</td>
+              <td>0.161</td>
+            </tr>
+            <tr>
+              <td>SFT v9</td>
+              <td>0.250 - 0.292</td>
+              <td>0.232</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The GRPO model likely never generalized better than its SFT parent at all; it was ranked by a suite that could
+        not rank. The correction is known, not speculative, and it carries a general lesson worth stating plainly: an
+        eight-task in-distribution suite is not a measurement, it is a decoration. The check is cheap and I should have
+        run it earlier: count how many tasks any model ever solves, count how many none do, and subtract both from your
+        effective sample size.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="negatives" aria-labelledby="h-negatives">
+      <h2 id="h-negatives">What Did Not Hold</h2>
+
+      <p>
+        Six claims did not survive contact with reruns, and I am keeping them because they are the informative half of
+        the work.
+      </p>
+
+      <ol>
+        <li><strong>Automatic frontier migration: refuted.</strong> The failure distribution does not march on a fixed
+          suite; it stays pinned and drifts.</li>
+        <li><strong>Per-round fresh-task injection beating same-suite iteration: null.</strong> The v1 contrast (0.375
+          versus 0.4583) did not replicate on the suite that can discriminate.</li>
+        <li><strong>Powered injection compounding: null.</strong> A second injection on a fifty one task targeted pool
+          landed exactly on its parent&apos;s value.</li>
+        <li><strong>Schedule versus content: tested, null, low power.</strong> The controlled pair exists and shows
+          0.250 versus 0.259.</li>
+        <li><strong>Beating SFT out of distribution: not achieved.</strong> The best trained model is at parity,
+          nominally above, z&lt;1.</li>
+        <li><strong>Generator diversity at scale: bounded.</strong> The fifth task batch re-converged to the fourth
+          batch&apos;s themes; the 30B generator&apos;s effective motif space is roughly thirty to forty task families,
+          which is currently the ceiling on the whole self-improvement direction.</li>
+      </ol>
+    </section>
+
+    <hr>
+
+    <section class="section" id="lineage" aria-labelledby="h-lineage">
+      <h2 id="h-lineage">Where This Leaves the Lineage</h2>
+
+      <p>
+        The lineage now reads: <a href="https://taneemishere.github.io/darwinpatch/">DarwinPatch</a>, a deterministic
+        repair controller. <a href="https://taneemishere.github.io/patchproof/">PatchProof</a>, the frozen verifier that
+        makes repair auditable. <a href="https://taneemishere.github.io/gategrpo/">GateGRPO</a>, verifier-as-reward for
+        online RL, with a now-corrected evaluation caveat. GateDPO, verifier-as-preference-oracle, whose contribution is
+        less &ldquo;a better trainer&rdquo; than a measurement of where the training signal actually lives: not in the
+        pair structure, not in the schedule, but in the corpus of tasks the verifier gets to type.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="takeaways" aria-labelledby="h-takeaways">
+      <h2 id="h-takeaways">Takeaways</h2>
+
+      <p>
+        If I had to compress thirteen training runs and the eval corpus into the shortest honest version, it is this:
+      </p>
+
+      <ol>
+        <li>A deterministic verifier can serve as a preference oracle, not just a reward signal. Ordering candidates by
+          verification depth gives DPO structure that scalarized rewards throw away, and it trains offline in minutes
+          rather than in an online RL loop.</li>
+        <li>At small scale, the anchor is the algorithm. Without the chosen-NLL term, DPO widens margins by degrading
+          the preferred patch itself, and the model quietly unlearns how to format.</li>
+        <li>Iteration is not self-improvement. Regenerating pairs from the same suite regenerates the same lessons, and
+          what compounds is drift, not capability.</li>
+        <li>The corpus is the curriculum. Every model trained on a diverse, verifier-typed task pool preserved its
+          generalization to unseen tasks; every model trained on the fixed suite lost roughly half of it, regardless of
+          whether the optimizer was DPO or GRPO.</li>
+        <li>Check whether your eval can rank before you rank with it. The suite that produced this lineage&apos;s
+          earlier headline numbers could not discriminate models at all, and correcting that retroactively weakened a
+          published claim of this project&apos;s predecessor.</li>
+      </ol>
+
+      <p>
+        The next experiment worth running is already implied by the generator saturation result. The frontier is not the
+        model&apos;s failure distribution anymore; it is the task generator&apos;s theme space. A corpus effort,
+        hundreds of genuinely distinct tasks rather than five batches of one generator&apos;s motifs, is what would
+        decide whether diverse-pool GateDPO crosses SFT or asymptotes at it. The harness is ready; the bottleneck is the
+        teacher&apos;s imagination.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="closing" aria-labelledby="h-closing">
+      <h2 id="h-closing">Closing Note</h2>
+
+      <p>
+        This work was done on a single constrained GPU with a 1.5B-parameter base model, a small training suite, and a
+        task generator whose theme space turned out to be the limiting factor. I did not scale the base model, the
+        corpus, the candidate count, or the evaluation budget beyond what one machine could hold. Whether the same
+        diversity effect is what protects larger models, and whether a bigger and genuinely varied task corpus pushes
+        the trained policy past its SFT parent rather than merely beside it, are questions I could not answer with the
+        compute resources I have.
+      </p>
+
+      <p>
+        If you work on <strong>preference learning</strong>, <strong>verifier-based RL</strong>, <strong>self-improving
+          repair agents</strong>, or <strong>small-model alignment</strong>, and see something that contradicts your own
+        numbers, I would genuinely like to hear about it. And if you have the resources, an open position, or a project
+        you want to collaborate on, I am open to both work and collaboration. Please reach out at <a
+          href="mailto:taneemishere@gmail.com">taneemishere@gmail.com</a>.
+      </p>
+
+      <p>
+        Everything in this report can be reproduced from the repository linked above, and the earlier entries in this
+        lineage are worth reading alongside it: the
+        <a href="https://taneemishere.github.io/gategrpo">GateGRPO write-up</a> covers the online-RL sibling of this
+        method, and the evaluation caveat described here applies to it directly.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="bibtex" aria-labelledby="h-bibtex">
+      <h2 id="h-bibtex">BibTeX</h2>
+
+      <div class="bibtex-block" id="bibtex-entry" role="region" aria-label="BibTeX citation">@article{gatedpo,
+        title = {"GateDPO: Verifier-Ordered DPO for Code Repair Without a Learned Reward Model"},
+        author = {Taneem Ullah Jan},
+        year = {2026},
+        url = {https://taneemishere.github.io/gatedpo/}
+        }</div>
+
+    </section>
+
+    <footer class="page-footer" id="page-footer">
+      <p> <a href="https://info.flagcounter.com/48VZ"><img
+            src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+            border="0"></a>
+      </p>
+    </footer>
+
+  </div>
+</body>
+
+</html>

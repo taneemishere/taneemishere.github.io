@@ -108,6 +108,45 @@
             style="width:100%; border:0px; border-spacing:0px; border-collapse:separate; margin-right:auto; margin-left:auto;">
             <tbody>
 
+              <!-- gatedpo -->
+              <tr onmouseout="gatedpo_stop()" onmouseover="gatedpo_start()" bgcolor="#F5F5F7">
+                <td style="padding:16px;width:20%;vertical-align:middle;">
+                  <div class="one">
+                    <img src='./images/gatedpo.png' width=100%>
+                  </div>
+                  <script type="text/javascript">
+                    function gatedpo_start() {
+                      document.getElementById('gatedpo').style.opacity = "1";
+                    }
+
+                    function gatedpo_stop() {
+                      document.getElementById('gatedpo').style.opacity = "0";
+                    }
+                    gatedpo_stop()
+                  </script>
+                </td>
+                <td style="padding:8px;width:80%;vertical-align:middle">
+                  <a href="./gatedpo" target="_blank" rel="noopener noreferrer">
+                    <span class="papertitle">GateDPO: Verifier-Ordered DPO for Code Repair Without a Learned Reward
+                      Model
+                    </span> </a>
+                  <br>
+                  <br>
+                  <strong>Taneem Ullah Jan</strong>
+                  <br>
+                  [<a href="./gatedpo" target="_blank" rel="noopener noreferrer">project page</a>]
+                  <p>
+                    A deterministic gate verifier orders candidate repairs into DPO preference pairs; across thirteen
+                    training runs, task-corpus diversity, not the algorithm or schedule, turns out to control
+                    out-of-distribution generalization.
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td><br></td>
+              </tr>
+
               <!-- ftu-callona -->
               <tr onmouseout="callona_stop()" onmouseover="callona_start()" bgcolor="#F5F5F7">
                 <td style="padding:16px;width:20%;vertical-align:middle;">
@@ -216,8 +255,8 @@
                   [<a href="./gategrpo" target="_blank" rel="noopener noreferrer">project page</a>]
                   <p>
                     A GRPO training method for code-repair agents that uses PatchProof&apos;s hard-gate verifier as the
-                    reward signal directly, replacing single-shot rewards with multi-turn, per-gate credit to outperform
-                    supervised fine-tuning alone.
+                    reward signal directly, replacing single-shot rewards with multi-turn, per-gate credit for denser
+                    training signal.
                   </p>
                 </td>
               </tr>
