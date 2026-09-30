@@ -57,6 +57,23 @@ span.highlight {
   background-color: #ffffd0;
 }
 
+/* rounded "box" rows for the projects table */
+tr.box td {
+  background: #F5F5F7;
+}
+
+tr.box.hl td {
+  background: #ffffd0;
+}
+
+tr.box td:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+tr.box td:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
 .colored-box {
   color: black;
   padding: 20px;
