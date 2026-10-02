@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <title>GateRSI</title>
+  <meta name="description"
+    content="GateRSI: Gate-Verified Recursive Self-Improvement for Knowledge Agents, from Memory to Weights. A recursive self-improvement system for knowledge agents that reuses one deterministic gate verifier to order memory, curriculum, and weights; gate-verified DPO lifts every base model to the same solve ceiling, up to a 3.3x improvement over the untrained model.">
+  <meta name="keywords"
+    content="GateRSI, recursive self-improvement, RSI, knowledge agents, RAG, GateDPO, DPO, direct preference optimization, verifier, verified experience store, task forge, difficulty frontier, citation grounding, retrieval grounded QA, LoRA, Qwen, RLHF, preference learning, LLM alignment, self-improving agents, harness, self-improving LLMs">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/gatersi/">
+
+  <meta property="og:title"
+    content="GateRSI: Gate-Verified Recursive Self-Improvement for Knowledge Agents, from Memory to Weights">
+  <meta property="og:description"
+    content="A recursive self-improvement system for knowledge agents that reuses one deterministic gate verifier to order memory, curriculum, and weights; gate-verified DPO lifts every base model to the same solve ceiling, up to a 3.3x improvement over the untrained model.">
+  <meta property="og:url" content="https://taneemishere.github.io/gatersi/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/gatersi.png">
+  <meta property="og:image:width" content="2200">
+  <meta property="og:image:height" content="2200">
+  <meta property="og:image:alt" content="GateRSI system diagram; Frontier, Episode, Gates, Promote, Weights and Forge around the verified store">
+  <meta property="og:site_name" content="Taneem Ullah Jan">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@taneemishere">
+  <meta name="twitter:creator" content="@taneemishere">
+  <meta name="twitter:title"
+    content="GateRSI: Gate-Verified Recursive Self-Improvement for Knowledge Agents, from Memory to Weights">
+  <meta name="twitter:description"
+    content="A recursive self-improvement system for knowledge agents that reuses one deterministic gate verifier to order memory, curriculum, and weights; gate-verified DPO lifts every base model to the same solve ceiling, up to a 3.3x improvement over the untrained model.">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/gatersi.png">
+  <meta name="twitter:image:alt" content="GateRSI system diagram; Frontier, Episode, Gates, Promote, Weights and Forge around the verified store">
+
+  <link rel="icon" type="image/png" sizes="96x96" href="../favicon.png">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../favicon.png">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "GateRSI: Gate-Verified Recursive Self-Improvement for Knowledge Agents, from Memory to Weights",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/gatersi/",
+      "description": "A recursive self-improvement system for knowledge agents that reuses one deterministic gate verifier to order memory, curriculum, and weights; gate-verified DPO lifts every base model to the same solve ceiling, up to a 3.3x improvement over the untrained model.",
+      "datePublished": "2026-10-02",
+      "dateModified": "2026-10-02",
+      "keywords": "GateRSI, recursive self-improvement, RSI, knowledge agents, RAG, GateDPO, DPO, direct preference optimization, verifier, verified experience store, task forge, difficulty frontier, citation grounding, retrieval grounded QA, LoRA, Qwen, RLHF, preference learning, LLM alignment, self-improving agents, harness, self-improving LLMs",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link rel="stylesheet" href="./stylesheet.css">
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <header class="page-header">
+
+      <h1>
+        <span class="accent">GateRSI</span>: Gate-Verified Recursive Self-Improvement for Knowledge Agents, from Memory
+        to Weights
+      </h1>
+
+      <br>
+      <p class="author-note">Research and development work conducted</p>
+      <p class="author-note">by</p>
+      <p class="author-name">
+        <a href="https://taneemishere.github.io" target="_blank" rel="noopener noreferrer">Taneem Ullah Jan</a>
+      </p>
+
+    </header>
+
+    <p>
+      I introduce GateRSI, a system in which a question-answering agent improves itself on three surfaces at once, and
+      every surface is ordered by the same deterministic verifier. The verifier is a fixed pipeline of four gates that
+      checks whether an episode really retrieved, whether every claim it asserts is supported by what it cited, whether
+      its citation marks resolve, and whether the answer is in the state the task requires. Around that verifier I built
+      three loops: <strong>1)</strong> a verified experience store that distills promoted episodes into reusable
+      artifacts and applies them to future prompts, <strong>2)</strong> a task frontier that measures difficulty bands
+      under live rollouts and a forge that generates new tasks where the agent is weak, and <strong>3)</strong> <a
+        href="https://taneemishere.github.io/gatedpo/">GateDPO</a>, which turns gate verdicts into preference pairs and
+      trains a LoRA adapter on them. Across four model scales from 3B to a 30B mixture-of-experts, GateDPO lifts the
+      gate-verified solve rate from 15%, 61%, 46%, and 76% to 49%, 76%, 76%, and 80%. Every tuned model converges to the
+      same wall near 31 of 41 tasks, which turns out to be the suite&apos;s real difficulty ceiling rather than the
+      method&apos;s limit. The lift transfers to a held-out corpus the pairs never saw, holds on a public
+      retrieval-grounding benchmark, and costs nothing measurable on a small general-capability probe.
+    </p>
+
+    <hr>
+
+    <section class="section" id="problem" aria-labelledby="h-problem">
+      <h2 id="h-problem">1. The Problem</h2>
+
+      <p>
+        A knowledge agent that answers questions from a corpus fails in ways that are specific enough to fix. It
+        fabricates a retrieval it never ran. It answers fluently without citing anything. It produces a partial answer
+        to a question that required every clause. It refuses a task it could have solved, or answers a task whose only
+        correct move was refusal. Each of those failures is detectable, and each detection is a candidate signal for
+        improvement.
+      </p>
+
+      <p>
+        The hard part is not detecting failure but trusting the detector enough to learn from it. Self-improvement
+        needs an ordering signal: this attempt was better than that one, this artifact helped, this task is still too
+        hard. The usual sources are a learned judge, which drifts from the correctness we actually care about, or a
+        terminal reward, which tells the model it failed but not where exactly. The judge&apos;s drift is not
+        hypothetical; any preference signal that scores style as a proxy for correctness is one a sufficiently motivated
+        policy will learn to imitate. The alternative I had built in earlier repair work is a deterministic gate
+        pipeline that checks concrete predicates and emits a reproducible pass or fail at each stage. [<a
+          href="https://taneemishere.github.io/darwinpatch/">DarwinPatch</a>, <a
+          href="https://taneemishere.github.io/patchproof/">PatchProof</a>, <a
+          href="https://taneemishere.github.io/gategrpo/">GateGRPO</a>]
+      </p>
+
+      <p>
+        The question this project asks is whether one such verifier can drive an entire recursive self-improvement
+        system. Not one training signal but three, corresponding to the three places an agent can actually change: what
+        it remembers into its prompt, what it is asked to practice, and its weights. The choice of corpus-grounded
+        question answering as the substrate is deliberate. Retrieval is inspectable, citation is checkable, gold answers
+        are contractible, and every predicate sits close to the text that proves or disproves it. If a verifier can run
+        a self-improvement system anywhere, it is here first.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="system" aria-labelledby="h-system">
+      <h2 id="h-system">2. What is GateRSI</h2>
+
+      <p>
+        The unit of work is an episode. A task hands the agent a question, a corpus of markdown documents, and a gold
+        answer kept hidden from the model. The agent retrieves documents, answers under a strict contract, and may try
+        again with a bounded evidence packet describing what the last attempt got wrong. An episode promotes only when
+        every gate in a fixed order passes.
+      </p>
+
+      <p>
+        The contract is the thing the gates verify. A correct episode ends in a JSON tail with an
+        <code>answer_state</code> field, inline <code>[Dk]</code> citation marks inside the answer text that point at
+        retrieved documents, and for refusals a reason of at most twelve words:
+      </p>
+
+      <pre><code>{
+    &quot;answer_state&quot;: &quot;answered&quot;,
+    &quot;answer&quot;: &quot;Contractor badges are issued at reception [D2] and expire weekly [D5].&quot;,
+    &quot;cited_docs&quot;: [&quot;D2&quot;, &quot;D5&quot;]
+}</code></pre>
+
+      <p>
+        Nothing about the contract is natural to an instruction-tuned model, which is exactly why it makes a good
+        training target: the gap between what models produce and what the contract requires is the gap the system
+        teaches. An episode that runs out of attempts without promoting is stopped, with a reason code
+        (<code>candidate_budget_exhausted</code>, <code>repeated_failure_limit</code>) and the first gate it failed,
+        so failures carry structure rather than just a zero.
+      </p>
+
+      <p>Three loops sit around the episode loop:</p>
+
+      <ul>
+        <li><strong>The experience store.</strong> Promoted and failed episodes are distilled into artifacts,
+          structured pieces of what worked. Artifacts are applied to later episodes whose tasks resemble the ones that
+          produced them.</li>
+        <li><strong>The task frontier.</strong> A difficulty probe assigns every task to a band, from solved through
+          learnable and edge to frontier, and a forge generates new tasks from the corpus aimed at the bands where the
+          agent is weak.</li>
+        <li><strong>GateDPO.</strong> The same gate pipeline that evaluates an episode also orders training pairs.
+          Promoted samples become chosen responses, failed samples become rejected ones, and a LoRA-DPO update moves
+          the model toward the contract directly.</li>
+      </ul>
+
+      <p>The evaluation suite has 41 tasks across three fictional corpora:</p>
+
+      <div class="table-wrap">
+        <table id="tbl-corpora">
+          <thead>
+            <tr>
+              <th>Corpus</th>
+              <th>Docs</th>
+              <th>Tasks</th>
+              <th>Content shape</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>acme</td>
+              <td>5</td>
+              <td>10 curated + 9 forged</td>
+              <td>Company policies: leave, expenses, security, onboarding</td>
+            </tr>
+            <tr>
+              <td>nimbus</td>
+              <td>5</td>
+              <td>1 curated + 7 forged</td>
+              <td>SaaS operator docs: rate limits, badges, provisioning</td>
+            </tr>
+            <tr>
+              <td>meridian</td>
+              <td>5</td>
+              <td>14 forged</td>
+              <td>Incident-response runbooks: severities, handoffs, postmortems</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Eleven tasks are curated by hand, and each carries a labeled deck of fixed episodes (no evidence, ungrounded
+        claim, wrong fact, grounded correct) so the offline benchmark can replay them deterministically. The thirty
+        forged tasks were produced by the forge itself and admitted under its gate. The harness runs against two
+        hosted API providers and against local checkpoints served, so every claim below is measured on real model
+        calls rather than replayed pools. Where a replay does appear, it replays recorded trajectories through the
+        real verifier rather than trusting a log.
+      </p>
+
+      <p>
+        The harness is held to the same standard as the agent: over 160 tests pin every gate, replay and live paths
+        are asserted to agree rather than assumed to, and every number in this report comes from recorded run
+        artefacts kept for audit.
+      </p>
+
+      <figure id="fig-loop">
+        <img src="./images/fig1_loop.png" alt="The three GateRSI loops around one verified store" width="760">
+        <figcaption>
+          Fig. 1. The three loops around one verified store. Work flows clockwise through the ring; each stage writes
+          into the shared store at the center.
+        </figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="section" id="verifier" aria-labelledby="h-verifier">
+      <h2 id="h-verifier">3. The Verifier</h2>
+
+      <p>
+        The verifier is the piece everything else trusts, so it gets a section of its own. Four gates run in a fixed
+        order, each returning a pass, a fail, and a failure fingerprint. The order is the order of dependency: you
+        cannot check grounding before there is evidence, you cannot resolve citations before there are claims, and the
+        answer state is judged last, on an answer that has already survived the checks below it.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-gates">
+          <thead>
+            <tr>
+              <th>Gate</th>
+              <th>What it checks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>evidence_retrieved</code></td>
+              <td>The episode retrieved at least one corpus document, and every retrieved id exists in the index. No
+                fabricated retrieval.</td>
+            </tr>
+            <tr>
+              <td><code>grounding</code></td>
+              <td>Every extracted claim is supported by the union of documents actually cited. Numeric claims need
+                verbatim evidence; a claim cannot ride on a supported sibling.</td>
+            </tr>
+            <tr>
+              <td><code>citation_resolution</code></td>
+              <td>Every <code>[Dk]</code> mark resolves to a retrieved document that exists in the corpus. Marks
+                pointing at nothing fail.</td>
+            </tr>
+            <tr>
+              <td><code>answer_state</code></td>
+              <td>The declared state matches the required one. For questions the gold must be recoverable from the
+                answer; for refusal tasks the model must refuse and carry a contract-valid reason.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Two of these gates were rebuilt while the system was live, and the failures are worth recording because they
+        changed what the verifier measures.
+      </p>
+
+      <p>
+        The first version of <code>answer_state</code> scored gold coverage with symmetric token F1. The broad eval
+        then showed three tasks failing in every mode while the models were actually right: a correct answer phrased
+        more verbosely than the gold was punished for the extra words. The fix was to score gold containment with a
+        numeric veto, so a correct-but-verbose answer promotes while a wrong number still fails.
+      </p>
+
+      <p>
+        The second version still tolerated a structural scramble. Given the gold &ldquo;credentials are posted at
+        reception and rotate weekly&rdquo;, an answer about where the badge office sits plus an unrelated fact about key
+        rotation could hit the same tokens without asserting either claim. The current version checks claim-level
+        entailment: the gold is split into clauses, each clause must be entailed by the answer, and each clause is bound
+        to the entity the question asks about so the premise and hypothesis share a subject. Verified on a real
+        <strong>DeBERTa cross-encoder</strong>, the scramble case scores neutral at 1.0 while the correct two-sentence
+        answer still promotes. A mechanical subject anchor (the question&apos;s topic minus the words the gold itself
+        echoes) keeps the binding honest, and an on-topic-premise fallback rescues anaphora like &ldquo;the credentials
+        rotate weekly&rdquo; that per-sentence scoring cannot resolve alone.
+      </p>
+
+      <p>
+        Grounding is pluggable for the same reason. The default checker is a deterministic coverage proxy, and I keep it
+        honest about what it is: fast, reproducible, and blind to some paraphrases. An NLI backend (the same DeBERTa
+        stack) and a bounded-LLM-judge backend implement the identical claim contract at higher confidence, so the
+        proxy&apos;s known gaps are a tier boundary rather than a hidden assumption. Missing verdicts fail closed
+        everywhere: a checker that cannot produce a judgment counts as a fail, never as a pass.
+      </p>
+
+      <p>
+        This layering mechanism matters for the rest of the report. When GateDPO uses gate verdicts to order pairs,
+        the ordering is only as good as the weakest gate; a verifier that tolerated verbose answers or structural
+        scrambles would have poisoned the training data in ways no amount of compute repairs.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="store" aria-labelledby="h-store">
+      <h2 id="h-store">4. The Verified Experience Store</h2>
+
+      <p>
+        The first loop improves the agent without touching its weights. When an episode promotes, the store distills
+        what made it work into an artifact; when a later episode on a related task begins, matching artifacts are
+        injected into the prompt. Four artifact kinds exist today, each with its own engagement rule:
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-artifacts">
+          <thead>
+            <tr>
+              <th>Kind</th>
+              <th>Engages when</th>
+              <th>What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>routing_rule</code></td>
+              <td>The previous episode failed with a specific failure type</td>
+              <td>Overrides the critic&apos;s next-route decision with the learned one</td>
+            </tr>
+            <tr>
+              <td><code>decomposition</code></td>
+              <td>Trigger terms match the task question</td>
+              <td>Issues the artifact&apos;s subqueries alongside the base query and unions the retrieved sets
+                (multi-hop
+                evidence)</td>
+            </tr>
+            <tr>
+              <td><code>distillation</code></td>
+              <td>Trigger terms match the task question</td>
+              <td>Prunes retrieved chunks below a score ratio so the model sees distilled context</td>
+            </tr>
+            <tr>
+              <td><code>refusal_calibration</code></td>
+              <td>Trigger terms match an abstention-capable task</td>
+              <td>Live: injects a distilled abstention instruction into the prompt; replay: prefers the trajectory
+                that already abstains</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Two design details carry the honesty of this loop. <strong>First</strong>, artifacts engage conditionally, not
+        globally: a trigger that matches nothing fires nowhere, and a trigger declared but empty is rejected at
+        production time rather than silently applying everywhere. Composition is one composed effect per search, so
+        artifact order can never change which context is produced. <strong>Second</strong>, in curated replay the
+        trajectory pools are recorded, so a retrieval artifact cannot rewrite history; it acts at episode selection
+        instead, preferring the pool episode whose retrieved set is what the artifact would have produced on this
+        corpus, run through the real BM25 index. That is the honest offline analogue of its live effect, and the
+        promotion gate measures it the same way either way. And <code>artifact_used</code> is tracked per episode: a
+        solve is credited to the store only when an artifact the agent actually applied participated. That discipline
+        exists because hosted models are best-effort deterministic even at fixed seed, and I watched four tasks improve
+        across reruns with no artifact involved at all.
+      </p>
+
+      <p>
+        The offline control makes the mechanism legible before any model call happens. On the ten-task controlled
+        suite, replaying the fixed episode decks:
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-controlled">
+          <thead>
+            <tr>
+              <th>Controlled suite, replayed decks</th>
+              <th>Solved / 10</th>
+              <th>Avg attempts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Single-shot</td>
+              <td>0</td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>Linear retry</td>
+              <td>3</td>
+              <td>2.8</td>
+            </tr>
+            <tr>
+              <td>Evidence-routed</td>
+              <td>10</td>
+              <td>2.2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        <em>That gap is the harness, not the model</em>: routing retries by which gate failed is what turns budget into
+        solves. On top of that, with artifacts applied the curated suite stays at 11 of 11 including the refusal task.
+      </p>
+
+      <p>
+        The live evidence is the part that carries the claim across providers. The refusal-contract task fails bare in
+        two distinct shapes depending on the provider: on one hosted API the bare run fabricated an answer, on the
+        other it refused correctly but in a contract-violating form. Stored artifacts promote it in one or two
+        attempts on every model tried:
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-refusal">
+          <thead>
+            <tr>
+              <th>Refusal task, bare to stored</th>
+              <th>Attempts to promote</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>nvidia/nemotron-3-ultra-550b-a55b (two hosted APIs)</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>moonshotai/kimi-k3</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>z-ai/glm-5.3-flash</td>
+              <td>2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        A broader sweep on kimi-k3 over nine tasks produced 7 of 9 bare and 9 of 9 stored, and the live frontier pass
+        (next section) showed named tasks flipping from edge or frontier to solved-in-one specifically when their
+        artifacts engaged.
+      </p>
+
+      <p>
+        The store is also where the refusal contract lives. That fact matters for reading the weight-side results
+        later, so I say it plainly: refusal behavior in GateRSI is taught by artifacts at prompt time, not by the
+        weights.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="frontier" aria-labelledby="h-frontier">
+      <h2 id="h-frontier">5. The Frontier and the Forge</h2>
+
+      <p>
+        The third loop decides what the agent should practice next. A difficulty probe runs tasks against the
+        store-relative agent and assigns each to a band:
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-bands">
+          <thead>
+            <tr>
+              <th>Band</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>solved</td>
+              <td>Promotes without help</td>
+            </tr>
+            <tr>
+              <td>learnable</td>
+              <td>A stored artifact flips it to solved</td>
+            </tr>
+            <tr>
+              <td>edge</td>
+              <td>Resolves on some seeds but not others</td>
+            </tr>
+            <tr>
+              <td>frontier</td>
+              <td>Unsolved</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Because the probe runs live episodes, the bands measure what the model actually does rather than what a
+        replayed pool did. The live pass over all 41 tasks on kimi-k3 gives a real distribution rather than
+        single-task anecdotes: 31 solved, 2 learnable, 2 edge, 6 frontier. Store-conditioned flips are concrete and
+        named in the run artefacts: <code>nimbus_rate_limit</code>, <code>beacon_export</code>, and
+        <code>parental_leave_refusal</code> moved from edge or frontier to solved-in-one with their artifacts applied.
+      </p>
+
+      <figure id="fig-bands">
+        <img src="./images/fig2_bands.png" alt="Difficulty band assignment across the 41-task suite" width="760">
+        <figcaption>
+          Fig. 2. Band assignment under a live kimi-k3 rollout, seed 42. Frontier tasks are the forge&apos;s generation
+          targets.
+        </figcaption>
+      </figure>
+
+      <p>
+        The forge closes the loop. It samples corpus chunks, asks a model to draft task candidates from them, and
+        admits a candidate only if its gold answer itself promotes under the gates: the gold-must-promote rule. Over
+        three corpora it produced the thirty forged tasks in the suite, and its own gate did real filtering work along
+        the way: for the meridian corpus, kimi offered 21 candidates and only 14 survived admission, the rest rejected
+        for golds the corpus could not support. The forge is not just a generator; it is a verified generator, and
+        every task it ships was solvable at creation time.
+      </p>
+
+      <p>
+        The bands are also relative to the store, which is what makes them a curriculum rather than a ranking. A task
+        that is frontier today becomes learnable tomorrow because the store learned something adjacent, and that
+        movement is the signal the forge and the sampler both consume.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="gatedpo" aria-labelledby="h-gatedpo">
+      <h2 id="h-gatedpo">6. GateDPO</h2>
+
+      <p>The second loop takes the verifier&apos;s ordering into the weights. One round looks like this:</p>
+
+      <figure id="fig-pipeline">
+        <img src="./images/fig3_pipeline.png" alt="One GateDPO round: sample, verify, pair, train, evaluate"
+          width="760">
+        <figcaption>
+          Fig. 3. One GateDPO round. The verifier is frozen and acts as the preference oracle; the task forge feeds
+          new tasks into the sampled suite.
+        </figcaption>
+      </figure>
+
+      <h3 id="h-round">6.1 The round</h3>
+
+      <p>
+        <strong>Sampling.</strong> For every task in the suite, the base policy generates eight first-attempt episodes
+        at the real agent prompt through a vLLM server, plus up to two repair-depth rounds in which the first
+        failure&apos;s evidence packet is fed back into the prompt. Every sample is gate-verified, so the training data
+        carries real verdicts rather than assumed ones.
+      </p>
+
+      <p>
+        <strong>Canonicalization.</strong> The first full sampling run produced almost no usable pairs, and the reason
+        was instructive: the base model almost never emits <code>[Dk]</code> marks at all, so about 92% of its
+        failures were empty-citation grounding failures on answers whose content was often right. Rejecting every
+        answer for a surface violation would have trained the model on noise. The fix is canonicalization: the model
+        declares which documents it used in the JSON tail, the harness appends the marks mechanically, and the
+        rewritten answer is re-gated under the same checker and the same mark map the prompt offered. Promoted
+        rewrites become chosen data; the transformation is auditable, the model still supplies all the content, and no
+        foreign text enters the answer.
+      </p>
+
+      <p>
+        <strong>Pair construction.</strong> Within a task and prompt group, chosen responses are the ones with
+        unanimous pass verdicts across every checker; any single failing checker demotes a response to rejected. The
+        pair count is therefore bounded by pass and fail co-occurrence rather than by configuration, and a per-group
+        cap (12 by default) keeps a single task from dominating the mix.
+      </p>
+
+      <p>
+        <strong>Training and evaluation.</strong> TRL&apos;s DPO trainer on LoRA adapters, then the tuned adapter is
+        served
+        by vLLM&apos;s LoRA support and run through the identical gate-verified solve sweep as the base: three attempts
+        per
+        task, a solve counting any promoted episode, seeds 42 and 7.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-setup">
+          <thead>
+            <tr>
+              <th>Setup</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Trainer</td>
+              <td>TRL DPOTrainer, LoRA adapters</td>
+            </tr>
+            <tr>
+              <td>beta / lr</td>
+              <td>0.1 / 5e-5</td>
+            </tr>
+            <tr>
+              <td>LoRA</td>
+              <td>r=16, alpha=32, batch 4 x accum 4, max length 3072</td>
+            </tr>
+            <tr>
+              <td>Samples per task</td>
+              <td>8 first-attempt + 2 repair-depth rounds</td>
+            </tr>
+            <tr>
+              <td>Hardware</td>
+              <td>2 x H100 80GB</td>
+            </tr>
+            <tr>
+              <td>Wall-clock per round</td>
+              <td>~15 min sampling + 30-60 min LoRA-DPO + ~10 min eval</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="h-scaling">6.2 The scaling result</h3>
+
+      <p>
+        I ran the full pipeline on four base models: Qwen2.5-3B-Instruct, Qwen3-4B-Instruct-2507, Qwen2.5-7B-Instruct,
+        and Qwen3-30B-A3B-Instruct-2507, a sparse mixture-of-experts.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-scaling">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Episodes sampled</th>
+              <th>Pairs</th>
+              <th>Base (s42)</th>
+              <th>Tuned (s42)</th>
+              <th>Tuned (s7)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Qwen2.5-3B</td>
+              <td>1,182</td>
+              <td>156</td>
+              <td>6 / 41 (15%)</td>
+              <td><strong>20 / 41 (49%)</strong></td>
+              <td>19 / 41 (46%)</td>
+            </tr>
+            <tr>
+              <td>Qwen3-4B-2507</td>
+              <td>805</td>
+              <td>51</td>
+              <td>25 / 41 (61%)</td>
+              <td><strong>31 / 41 (76%)</strong></td>
+              <td>31 / 41 (76%)</td>
+            </tr>
+            <tr>
+              <td>Qwen2.5-7B</td>
+              <td>397</td>
+              <td>55</td>
+              <td>19 / 41 (46%)</td>
+              <td><strong>31 / 41 (76%)</strong></td>
+              <td>29 / 41 (71%)</td>
+            </tr>
+            <tr>
+              <td>Qwen3-30B-A3B-2507</td>
+              <td>488</td>
+              <td>15</td>
+              <td>31 / 41 (76%)</td>
+              <td><strong>32 / 41 (78%)</strong></td>
+              <td>33 / 41 (80%)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure id="fig-scaling">
+        <img src="./images/fig4_scaling.png" alt="Base to tuned solve counts across four model scales" width="760">
+        <figcaption>
+          Fig. 4. Base to tuned, seed 42. The tuned dots cluster at 31 to 33 of 41 regardless of where the base
+          started.
+        </figcaption>
+      </figure>
+
+      <p>Three observations carry most of the weight.</p>
+
+      <p>
+        <strong>The lift is inverse to base strength.</strong> The 3B gains 3.3x, the 7B about 1.6x, the 4B 1.24x, and
+        the 30B only a few points. The three largest tuned models all land at 31 to 33 of 41 while the 3B more than
+        triples to 20, and the newest-generation MoE base already sits at the wall untrained. GateDPO equalizes models
+        more than it boosts them, which I return to in section 8.
+      </p>
+
+      <p>
+        <strong>The pairs tell the same story from the data side.</strong> The 3B produced 156 usable pairs across 26
+        tasks; the 30B produced 15. The stronger the base, the rarer pass and fail co-occur, and at the ceiling the
+        training signal dries up on its own. The method is self-limiting rather than something that keeps optimizing
+        past the useful point.
+      </p>
+
+      <p>
+        <strong>Generation recency beat parameter count in this suite.</strong> The 2507-generation 4B starts at 61%
+        while the older 7B starts at 46%. Where the model was trained matters more than how big it is, at least at
+        this scale.
+      </p>
+
+      <h3 id="h-overopt">6.3 The over-optimization regime</h3>
+
+      <p>
+        The champion configs above are deliberately mild, and the neighboring configs show why. On the 3B, two epochs
+        drop the solve rate to 11 of 41, three epochs hold 17 of 41, and a wider pair cap (24 per prompt group, 341
+        pairs against 156) drops to 14 of 41. The regressed models are not producing gibberish; inspection showed them
+        mark-dumping, emitting citation-shaped tokens in the wrong structure, which the gates then correctly reject.
+        One epoch on verifier-ordered pairs is the sweet spot, and the fact that more optimization measurably hurts is
+        itself evidence that the ordering signal is real: the model is moving toward the measured contract, not toward
+        free-form text quality.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-ablation">
+          <thead>
+            <tr>
+              <th>3B variant</th>
+              <th>Solved / 41 (seed 42)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1 epoch, 156 pairs (chosen)</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>1 epoch, cap 24 (341 pairs)</td>
+              <td>14</td>
+            </tr>
+            <tr>
+              <td>2 epochs</td>
+              <td>11</td>
+            </tr>
+            <tr>
+              <td>3 epochs</td>
+              <td>17</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure id="fig-ablation">
+        <img src="./images/fig5_ablation.png" alt="Over-optimization regime on the 3B model" width="760">
+        <figcaption>
+          Fig. 5. The over-optimization regime on the 3B. One epoch on verifier-ordered pairs is the sweet spot; more
+          optimization regresses into mark-dumping that the gates correctly reject.
+        </figcaption>
+      </figure>
+
+      <h3 id="h-holdout">6.4 Held-out-domain generalization</h3>
+
+      <p>
+        The strongest version of the memorization objection is easy to test: build pairs only from tasks whose answers
+        come from two corpora, then evaluate on the third corpus the pairs never saw. I trained the 4B and the 7B on
+        acme and nimbus tasks only, and evaluated both on the fourteen meridian tasks.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-meridian">
+          <thead>
+            <tr>
+              <th></th>
+              <th>meridian base</th>
+              <th>meridian tuned (acme+nimbus pairs)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Qwen3-4B-2507</td>
+              <td>7 / 14</td>
+              <td><strong>9 / 14</strong></td>
+            </tr>
+            <tr>
+              <td>Qwen2.5-7B</td>
+              <td>6 / 14</td>
+              <td><strong>8 / 14</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure id="fig-meridian">
+        <img src="./images/fig6_meridian.png" alt="Held-out-domain transfer on meridian tasks" width="760">
+        <figcaption>
+          Fig. 6. Held-out-domain transfer. Pairs built only from acme and nimbus still lift the meridian corpus for
+          both models.
+        </figcaption>
+      </figure>
+
+      <p>
+        The holdout-tuned 4B matches the fully-trained model&apos;s own 9 of 14 on those tasks, which means the lift is
+        the contract transferring, citation discipline, evidence use, and answer shape, not the meridian tasks being
+        memorized. That is the result that makes the scaling numbers mean something: the adapters learn how to answer
+        verifiably, not what to answer.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="external" aria-labelledby="h-external">
+      <h2 id="h-external">7. External Checks</h2>
+
+      <p>
+        A purpose-built suite can always be accused of measuring what the system was built to do, so I ran two
+        external probes.
+      </p>
+
+      <p>
+        <strong><a href="https://arxiv.org/html/2309.01431v2">RGB</a>, the retrieval-grounding benchmark.</strong> The
+        <code>en_refine</code> split pairs 300 answerable questions with 300 negatives-only rows. I converted each row
+        into a GateRSI task: the supplied documents become the corpus, the annotated answer becomes the gold, and a
+        negatives row becomes a task whose gold is refusal. Every row then runs through the identical gates, base and
+        tuned alike.
+      </p>
+
+      <p>
+        Two findings. <em>First</em>, raw extraction accuracy saturates on this benchmark when positives are
+        supplied: 95.3 and 98.0 alias-F1 for the 7B and 30B, before and after tuning. That arm is not discriminative and
+        I report it only for completeness. The discriminative number is the share of produced answers that pass all four
+        gates, which rises at every scale: 4B from 7.7% to 19.3%, 7B from 4.0% to 29.3%, 30B from 16.3% to 22.0%. On a
+        benchmark the model never trained on, the tuned adapter produces contract-valid answers 1.3x to 7.3x as often.
+      </p>
+
+      <figure id="fig-rgb">
+        <img src="./images/fig7_rgb.png" alt="Gate-pass rate on the RGB answerable arm" width="760">
+        <figcaption>
+          Fig. 7. Gate-pass rate on the RGB answerable arm, 300 rows per model.
+        </figcaption>
+      </figure>
+
+      <div class="table-wrap">
+        <table id="tbl-rgb">
+          <thead>
+            <tr>
+              <th>RGB en_refine</th>
+              <th>ans gate-pass</th>
+              <th>neg refused</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>4B base / tuned</td>
+              <td>7.7 / 19.3%</td>
+              <td>46.7 / 43.7%</td>
+            </tr>
+            <tr>
+              <td>7B base / tuned</td>
+              <td>4.0 / 29.3%</td>
+              <td>51.7 / 48.7%</td>
+            </tr>
+            <tr>
+              <td>30B base / tuned</td>
+              <td>16.3 / 22.0%</td>
+              <td>3.3 / 3.3%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The <em>Second</em> finding is that the negatives arm shows what scale does to refusal. The 7B base refuses
+        51.7% of no-answer rows; the 30B base refuses only 3.3%. Bigger models answer confidently where no answer exists
+        in the corpus. Tuning nudges refusal rates down slightly rather than up, which is expected: GateDPO trains the
+        answer contract, and the refusal contract lives in the store (section 4), not in the weights. The two loops
+        cover different failure modes, and this benchmark is where that split is visible from outside.
+      </p>
+
+      <p>
+        <strong>General capability.</strong> A twenty-question MMLU-style mini probe scores 18 of 20 on every model,
+        before and after tuning, with identical misses both directions (a multiplication slip and a binary-vs-decimal
+        unit question). The adapter does not buy the contract at the price of general ability, at least at this
+        resolution.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="converged" aria-labelledby="h-converged">
+      <h2 id="h-converged">8. What Converged, and What is Left</h2>
+
+      <p>
+        The cleanest finding in the project is the ceiling itself. Across every eval sweep, the union of solved tasks
+        is 38 of 41, and the three strongest tuned models land at 31 to 33. The ~76% wall is the suite&apos;s realizable
+        difficulty under this contract, not the method&apos;s limit. <em>What remains unsolved is itself instructive:
+          three tasks were never solved by any model, any config, or any seed, and one more was solved exactly once
+          across twenty sweeps.</em>
+      </p>
+
+      <p>
+        <strong>Multi-clause golds.</strong> The two tasks nothing ever solved,
+        <code>an_engineer_silences_an_alert</code> and <code>an_engineer_wants_to_suppress</code>, carry meridian golds
+        that demand every clause of an incident procedure, &ldquo;silence for 24h max AND suppress auto-renewal AND page
+        immediately&rdquo; and shapes like it. The models answer the prominent clause and drop the rest, and the
+        claim-entailment gate correctly rejects the partial answer. Here the verifier is right and the models are
+        incomplete; the failure is real capability, not measurement noise.
+      </p>
+
+      <p>
+        <strong>Paraphrase reach.</strong> <code>nimbus_rate_limit</code> also never solved, and
+        <code>what_is_triggered</code> fails on the smaller tuned models while the 30B solves it. These sit at the
+        boundary between the coverage proxy&apos;s documented blind spots and genuine retrieval-difficulty; the NLI and
+        judge tiers exist for exactly this gap.
+      </p>
+
+      <p>
+        <strong>Refusal-without-signal.</strong> The parental-leave refusal task requires a contract-valid refusal.
+        Pair-generation sampling never produced one from any base model, so no chosen pairs exist for it and GateDPO
+        literally cannot teach it: the data the method needs does not exist for this task. Across all twenty eval
+        sweeps it has promoted exactly once, on a second attempt by a regressed variant. It is the honest boundary of
+        weights-only training, and it is exactly the boundary the store covers, since the distilled calibration
+        instruction promotes this task in one live attempt.
+      </p>
+
+      <p>
+        These three classes are also a map of which loop owns which problem: refusal shape is the store&apos;s, phrasing
+        coverage is the checker&apos;s, and partial completeness is genuinely the model&apos;s. That division is the
+        design working as intended rather than a coincidence; the point of three loops is that each catches what the
+        others structurally cannot.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="coupling" aria-labelledby="h-coupling">
+      <h2 id="h-coupling">9. How the Loops Feed Each Other</h2>
+
+      <p>
+        The system&apos;s claim is not three loops but one verifier shared by all of them, and the coupling is where
+        that pays off. The frontier&apos;s live-measured bands tell the forge where to generate; the forge&apos;s
+        gold-must-promote admission keeps the suite honest as it grows; the grown suite is what the sampler draws
+        GateDPO pairs from; the trained adapter raises the base rate, which re-bands the frontier, which retargets the
+        forge. And the store covers the failure class that produces no weight-side signal at all. Removing any one loop
+        leaves the others functional but blind in a specific direction: no forge means a frozen suite, no frontier means
+        no targeting, no store means refusal lives nowhere, no GateDPO means the prompt does all the work.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="limitations" aria-labelledby="h-limitations">
+      <h2 id="h-limitations">10. Limitations and What to Read Into It</h2>
+
+      <p>
+        The suite is purpose-built and modest in size: 41 tasks over three fictional corpora. It is the right size for
+        a controlled, gate-verified comparison, and the results should be read as a reproducible direction rather than
+        a definitive benchmark number. The RGB external check and the held-out-domain test exist precisely to bound
+        that objection, but a public benchmark with a refusal arm at scale would be a stronger one. Live runs carry
+        two seeds; hosted-model determinism is best-effort even at fixed seed. Gate-pass rates on RGB land in the 20
+        to 30% range, not the 80% range, so the contract is only partially internalized even after tuning. The pair
+        yield shrinks toward zero as bases strengthen, so multi-round GateDPO on strong bases needs the frontier to
+        supply harder tasks rather than more epochs on easy ones. And the whole system rests on the verifier being
+        right: section 3 records two times it was wrong and how I caught it, and there is no reason to believe a third
+        is not still hiding.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="takeaways" aria-labelledby="h-takeaways">
+      <h2 id="h-takeaways">11. Takeaways</h2>
+
+      <p>
+        One deterministic verifier can serve as the trust root for prompt-side memory, curriculum generation, and
+        weight updates at once, which is the claim this project set out to test. The concrete results worth keeping:
+        gate-verified DPO lifts weak bases by up to 3.3x and converges every base I tried to the same suite ceiling,
+        the lift transfers to a corpus the pairs never saw, external grounding-benchmark gains are real though more
+        modest, and refusal behavior belongs in the prompt-side loop because the weights-side cannot generate its own
+        training data for it. The most useful next step is already built: letting the live-measured frontier bands
+        feed the forge, so the suite grows exactly where the current model still fails.
+      </p>
+
+      <p>
+        If you work on <strong>self-improving agents</strong>, <strong>verifier-based training</strong>, or
+        <strong>memory-and-weights systems</strong>, and see something interesting or that contradicts your own
+        numbers, I would genuinely like to hear about it. And if you have the compute, resources, an open position, or
+        a project you want to collaborate on, I am open to both work and collaboration. Please do not hesitate to
+        reach out at <a href="mailto:taneemishere@gmail.com">taneemishere@gmail.com</a>.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="bibtex" aria-labelledby="h-bibtex">
+      <h2 id="h-bibtex">BibTeX</h2>
+
+      <div class="bibtex-block" id="bibtex-entry" role="region" aria-label="BibTeX citation">@article{gatersi,
+        title = {"GateRSI: Gate-Verified Recursive Self-Improvement for Knowledge Agents, from Memory to Weights"},
+        author = {Taneem Ullah Jan},
+        year = {2026},
+        url = {https://taneemishere.github.io/gatersi/}
+        }</div>
+
+    </section>
+
+    <footer class="page-footer" id="page-footer">
+      <p> <a href="https://info.flagcounter.com/48VZ"><img
+            src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+            border="0"></a>
+      </p>
+    </footer>
+
+  </div>
+</body>
+
+</html>
