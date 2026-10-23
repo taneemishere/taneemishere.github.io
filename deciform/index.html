@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <title>DeciForm</title>
+  <meta name="description"
+    content="DeciForm: Structured Field Extraction Without Generative Decoding. Structured objects from System One decision models. Schema in, validated object out, and every field carries its confidence and an audit trail.">
+  <meta name="keywords"
+    content="DeciForm, LLMs, System One Models, Decision Models, Baseten, TypeSafe, Agents, JSON, JSON Schema, JSON Structure">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/deciform/">
+
+  <meta property="og:title" content="DeciForm: Structured Field Extraction Without Generative Decoding">
+  <meta property="og:description"
+    content="Structured objects from System One decision models. Schema in, validated object out, and every field carries its confidence and an audit trail.">
+  <meta property="og:url" content="https://taneemishere.github.io/deciform/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/deciform.png">
+  <meta property="og:image:width" content="2200">
+  <meta property="og:image:height" content="2200">
+  <meta property="og:image:alt" content="DeciForm system diagram, Structured objects, no generative decoding">
+  <meta property="og:site_name" content="Taneem Ullah Jan">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@taneemishere">
+  <meta name="twitter:creator" content="@taneemishere">
+  <meta name="twitter:title" content="DeciForm: Structured Field Extraction Without Generative Decoding">
+  <meta name="twitter:description"
+    content="Structured objects from System One decision models. Schema in, validated object out, and every field carries its confidence and an audit trail.">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/deciform.png">
+  <meta name="twitter:image:alt" content="DeciForm system diagram, Structured objects, no generative decoding">
+
+  <link rel="icon" type="image/png" sizes="96x96" href="../favicon.png">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../favicon.png">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "DeciForm: Structured Field Extraction Without Generative Decoding",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/deciform/",
+      "description": "Structured objects from System One decision models. Schema in, validated object out, and every field carries its confidence and an audit trail.",
+      "datePublished": "2026-10-02",
+      "dateModified": "2026-10-02",
+      "keywords": "DeciForm, LLMs, System One Models, Decision Models, Baseten, TypeSafe, Agents, JSON, JSON Schema, JSON Structure",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link rel="stylesheet" href="./stylesheet.css">
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <header class="page-header">
+
+      <h1>
+        <span class="accent">DeciForm</span>: Structured Field Extraction Without Generative Decoding
+      </h1>
+
+      <br>
+      <p class="author-note">Research and development work conducted</p>
+      <p class="author-note">by</p>
+      <p class="author-name">
+        <a href="https://taneemishere.github.io" target="_blank" rel="noopener noreferrer">Taneem Ullah Jan</a>
+      </p>
+
+      <a href="https://github.com/taneemishere/deciform" target="_blank" rel="noopener noreferrer" class="btn"
+        id="btn-github">
+        <!-- GitHub icon -->
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+              0-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89
+              -3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27
+              2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82
+              2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55
+              .38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+        </svg>
+        Code
+      </a>
+
+    </header>
+
+    <p>
+      I built DeciForm, a small library that turns a Pydantic schema into a program of typed decision questions, answers
+      them in batched rounds on a System One decision model, and hands only the fields that fail a fitted confidence bar
+      to a generative fallback. On live endpoints the 9B decision model scores .929 on Banking77 across all 77 options,
+      .895 on RTE, and .68 to .95 across a procedurally labeled fintech suite, all with calibrated probabilities per
+      field. The larger 27B model lifts the hard fields by up to 13 points. Escalating the lowest-confidence fields to a
+      550B generative model adds a further point and a half at about a quarter of fields sent up, a modest gain that
+      says more about the category than the curve.
+    </p>
+
+    <hr>
+
+    <section class="section" id="problem" aria-labelledby="h-problem">
+      <h2 id="h-problem">The Problem</h2>
+
+      <p>
+        A decision model does one thing well. You hand it a state and a set of typed questions, and it returns a
+        probability distribution per question. Pick one of these options, yes or no, rate on a scale. The answers are
+        calibrated, they arrive in tens of milliseconds, and the model never generates a token it was not asked about.
+      </p>
+
+      <p>
+        Applications do not want answers to questions. They want objects. An expense review has a category, a violation
+        flag, a severity, a set of flags, maybe a reviewer, and a note. A support triage has a team, an urgency, a
+        sentiment, and a draft reply. Each of those fields has its own shape, its own confidence, and its own
+        consequence when the model is wrong.
+      </p>
+
+      <p>
+        Between the primitive and the object sits a layer nobody ships. Someone has to walk the schema and decide
+        which question type each field becomes. Someone has to batch the questions so a round trip is not wasted.
+        Someone has to handle the optional branch, where asking the child's question is itself a decision. Someone has
+        to turn a probability into a policy, decide which fields can be trusted and which need a second opinion from a
+        bigger model. And someone has to record all of it, because a decision you cannot explain is not a decision you
+        can deploy.
+      </p>
+
+      <p>
+        The second problem is the one most pipelines already feel. Teams reach for a large language model for these
+        fields because that is what they have. A chat model answering thirty independent typed questions costs thirty
+        calls, returns uncalibrated text, and has to be parsed back into the structure it just destroyed. Decision
+        models exist precisely to remove that waste, but the ecosystem around them currently offers the wire protocol
+        and nothing above it.
+      </p>
+
+      <p>
+        DeciForm is the missing layer. <code>jsonformer</code> made the same argument in 2023 about structure (<a
+          href="https://github.com/1rgs/jsonformer">GitHub repo</a>). Do not trust the model with the skeleton. Fill the
+        skeleton in code and let the model do only what it must.
+      </p>
+
+    </section>
+
+    <hr>
+    <section class="section" id="system" aria-labelledby="h-system">
+      <h2 id="h-system">What the System Looks Like</h2>
+
+      <p>You write the schema. Everything else is the library's job.</p>
+
+      <pre><code>class TicketTriage(BaseModel):
+    category: Literal["billing", "bug", "account", "feature_request", "other"]
+    is_urgent: bool
+    sentiment: Literal["angry", "neutral", "positive"]
+    priority: int = Field(ge=1, le=5)
+    needs_human: Literal["none", "support", "engineering"] | None = None
+    reply_draft: str = ""
+
+sf = Deciform(
+    backend=SystemOneBackend(model=SystemOneBackend.ELEPHANT),
+    fallback=OpenAIGenerativeBackend(base_url=..., model=..., api_key=...),
+    escalation=EscalationPolicy(threshold=0.8, debias_k=3),
+)
+result = sf.extract(TicketTriage, state=ticket_json)</code></pre>
+
+      <figure id="fig-pipeline">
+        <img src="./images/fig1_architecture.png"
+          alt="The deciform extraction pipeline: schema to compiled questions to batched decision rounds to escalation policy to fallback to validated result"
+          width="760">
+        <figcaption>
+          Fig. 1. The extract path. The schema compiles into typed questions, the decision backend answers independent
+          fields in one batched round, the escalation policy holds each field against a fitted threshold, and whatever
+          falls below goes to a generative fallback before final validation.
+        </figcaption>
+      </figure>
+
+      <p>
+        The walk over this schema produces six questions. <code>Literal</code> fields become
+        <code>choice</code>, <code>bool</code> becomes <code>noul</code>, a bounded <code>int</code> becomes
+        <code>score</code>, a <code>list[Literal]</code> becomes one <code>noul</code> per member, and
+        <code>Optional[T]</code> gets a presence <code>noul</code> that gates its children. The
+        <code>reply_draft</code> string asks nothing at all, since no decision primitive produces free text. Round one
+        asks every independent question plus the <code>needs_human</code> presence gate in a single batched call. If
+        the gate fires, round two asks which kind of human. Then each field's top probability is checked against the
+        policy threshold, the weak ones plus the draft go to the fallback, and the whole thing is assembled and
+        validated.
+      </p>
+
+      <p>The object is only half of what comes back. Each field carries a receipt as well.</p>
+
+      <pre><code>== field traces ==
+category       elephant           top=0.91  kept
+is_urgent      elephant           top=0.94  kept
+sentiment      elephant           top=0.96  kept
+priority       generative         top=0.60  escalated
+needs_human    generative         top=0.62  escalated
+reply_draft    generative                   generative</code></pre>
+
+      <p>
+        The traces are the product as much as the object is. Which backend answered, at what confidence, which fields
+        were skipped because a gate stayed closed, which were escalated, and how many tokens the whole extract
+        consumed.
+      </p>
+
+      <p>
+        A short use case, stated plainly. A pipeline triages fifty thousand records a day against a fixed policy. An
+        LLM per record is a budget and a latency problem. A decision model plus handwritten glue is an engineering
+        problem that gets quietly rewritten, and quietly broken, per schema. With the layer in place it is
+        <code>sf.extract(Model, record)</code>, around half a second, one batched call, calibrated confidence per
+        field, and an audit trail a compliance review can read.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="numbers" aria-labelledby="h-numbers">
+      <h2 id="h-numbers">What the Numbers Say</h2>
+
+      <p>
+        Three backends were compared live across four task suites. elephant-1 and mammoth-1 are hosted decision
+        models at 9B and 27B. The third backend is a chat model treated as a decision model by reading first-token
+        logprobs over option letters, the trick from the recent work on LLMs as decision models. The suites are real
+        benchmarks plus a procedurally labeled fintech suite where the gold answers are deterministic.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-results">
+          <thead>
+            <tr>
+              <th>task · field</th>
+              <th>elephant-1 (9B)</th>
+              <th>mammoth-1 (27B)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>banking77 · intent (77 options)</td>
+              <td>.929 · ece .013 · flip .024</td>
+              <td>.937 · ece .010 · flip .020</td>
+            </tr>
+            <tr>
+              <td>rte · entailment</td>
+              <td>.895</td>
+              <td>.946</td>
+            </tr>
+            <tr>
+              <td>sst5 · rating (5-way)</td>
+              <td>.538</td>
+              <td>.568</td>
+            </tr>
+            <tr>
+              <td>fintech · category</td>
+              <td>.837 · flip .095</td>
+              <td>.886 · flip .053</td>
+            </tr>
+            <tr>
+              <td>fintech · violation</td>
+              <td>.890</td>
+              <td>.945</td>
+            </tr>
+            <tr>
+              <td>fintech · severity</td>
+              <td>.682</td>
+              <td>.734</td>
+            </tr>
+            <tr>
+              <td>fintech · flags</td>
+              <td>.781</td>
+              <td>.915</td>
+            </tr>
+            <tr>
+              <td>fintech · reviewer (Optional)</td>
+              <td>.356*</td>
+              <td>.327</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        *The fintech reviewer row reflects the post-fix presence gate; the other rows predate the rephrase.
+      </p>
+
+      <p>
+        The LLM readout backend reached .82 on RTE before rate limits cut the run short, which puts a generic chat
+        model within striking distance of the 9B specialist on a single-question task. It does not scale, since it
+        pays one call per question where a decision model pays one per round, but it makes the library's
+        &ldquo;any LLM is a decision backend&rdquo; path real rather than aspirational.
+      </p>
+
+      <figure id="fig-gap">
+        <img src="./images/fig2_model_gap.png"
+          alt="Dumbbell chart of per-field accuracy from elephant-1 to mammoth-1, sorted by gap" width="760">
+        <figcaption>
+          Fig. 2. Per-field accuracy, elephant to mammoth, sorted by the size of the gap. The 27B model earns its
+          latency exactly where the field is hard. On the easy intent task they are nearly identical.
+        </figcaption>
+      </figure>
+
+      <p>Three findings are worth more than the table.</p>
+
+      <p>
+        <strong>The option-order robustness is real.</strong> Prior work reported flip rates near thirty percent on
+        some open decision models, meaning the model changes its answer when the option order rotates. Measured on
+        these backends the rate is two to nine percent, and the optional <code>debias_k</code> rotation-averaging in
+        the library is a safety margin rather than a necessity.
+      </p>
+
+      <p>
+        <strong>The evaluation caught a bug in my own code.</strong> Score answers arrive as a level index from zero
+        to k minus one, not in the schema's value space. The assembly layer was clamping the index directly, so SST-5
+        initially scored near random. Fixing the mapping doubled accuracy, and adding per-level semantic labels on top
+        of that gained only two more points. The harness earning its keep on the very tool it was built to measure is
+        the best argument for building it.
+      </p>
+
+      <p>
+        <strong>Calibrated abstention is honest, not magic.</strong> <code>EscalationPolicy.fit</code> takes a labeled
+        calibration slice and a target error rate and produces per-field thresholds. On fintech it placed
+        <code>policy_violation</code> at &tau;=0.66 and <code>category</code> near &tau;=1.0, which is the fitting
+        procedure saying, correctly, that elephant cannot promise ten percent error on category at any threshold. The
+        fitted policy refusing a promise it cannot keep is exactly what it is for.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="escalation" aria-labelledby="h-escalation">
+      <h2 id="h-escalation">The Fallback Has to Earn the Tail</h2>
+
+      <p>
+        The claim this architecture lives or dies on is that a cheap decision model handles the confident bulk and a
+        strong generative model covers the tail. So it was measured, not assumed. One hundred twenty held-out fintech
+        records. elephant answers every field. A generative fallback produces every field once. The curve is then
+        computed offline for every threshold &tau;, where a field goes to whichever side its confidence dictates.
+      </p>
+
+      <p>
+        The first run, with a 30B chat model as the fallback, inverted. Escalation made things worse, monotonically,
+        and full escalation scored 0.29 against elephant's 0.68. Part of that was rate-limit attrition in the fallback
+        calls. The larger part was real. A generalist thirty-billion-parameter model is simply worse at typed
+        decisions than a purpose-built nine-billion one, so moving probability mass onto it destroys accuracy.
+      </p>
+
+      <p>The second run, with a 550B model, is the honest picture.</p>
+
+      <figure id="fig-pareto">
+        <img src="./images/fig3_escalation_pareto.png"
+          alt="Accuracy versus escalation share curve peaking around a quarter of fields escalated, with elephant and mammoth baselines"
+          width="760">
+        <figcaption>
+          Fig. 3. Accuracy versus escalation share. The curve is flat at the elephant baseline, climbs about a point
+          and a half near a quarter of fields escalated, then gives it back as the fallback takes over. mammoth alone
+          still wins outright.
+        </figcaption>
+      </figure>
+
+      <p>
+        The read is threefold. Escalation works, modestly, at plus 1.5 points for a quarter of the fields sent up.
+        The fallback has to earn its tail, because the 550B giant only ties elephant when it does everything, which
+        is the strongest possible argument for the decision-model category itself. And mammoth alone at 0.758 remains
+        the best single answer, which is the honest ceiling a two-model setup should be compared against. The fitted
+        operating point at 61 percent escalation scored 0.672, which is what happens when the policy is told to
+        promise something the underlying model cannot deliver.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="breaks" aria-labelledby="h-breaks">
+      <h2 id="h-breaks">Where It Breaks</h2>
+
+      <p>The limitations are measured, not hedged.</p>
+
+      <p>
+        <strong>Optional presence gates remain the weakest field.</strong> The original gate asked
+        &ldquo;Does the state specify a value for X?&rdquo;, a literal-presence question that under-fires whenever a
+        record needs a value it does not yet contain. Rephrasing it as an applicability question
+        (&ldquo;Should 'reviewer' be assigned a value for this record?&rdquo;) lifted reviewer accuracy from .331 to
+        .356, with gate precision .79 and recall .83. Lowering the gate threshold to 0.3 pushed recall to .89 but cut
+        accuracy to .314, because over-firing forces the model to invent a reviewer where none is needed. The
+        residual error now sits mostly in the child choice itself, not the gate.
+      </p>
+
+      <p>
+        <strong>Generative fallbacks have a reliability tax.</strong> Under sustained rate limiting the fallback
+        failed sixteen percent of calls in the first experiment. Those count as wrong answers, which is fair, but it
+        means the architecture's benefit is bounded by the weakest call in the chain.
+      </p>
+
+      <p>
+        <strong>Chat-model readout is slow by construction.</strong> One call per question against a rate-limited
+        endpoint makes a three-thousand-row benchmark an all-day job. It is a valid backend, not a fast one.
+      </p>
+
+      <p>
+        <strong>The fintech suite is synthetic.</strong> Its labels are deterministic and defensible, but
+        <code>severity</code> and <code>reviewer</code> encode an internal convention a model cannot fully infer,
+        which inflates the apparent difficulty of those fields relative to a human-labeled suite.
+      </p>
+
+      <p>
+        <strong>Score criteria are only as semantic as you write them.</strong> Numeric levels carry no meaning for a
+        decision model. The <code>level_labels</code> mechanism exists because a bare &ldquo;1 to 5&rdquo; asks the
+        model to guess what a five means.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="lineage" aria-labelledby="h-lineage">
+      <h2 id="h-lineage">Lineage</h2>
+
+      <p>
+        The name and the thesis both honor
+        <a href="https://github.com/1rgs/jsonformer">jsonformer</a> by Rahul Sengottuvelu. The structure is yours.
+        Let the model do only what it must.
+      </p>
+
+      <p>
+        If you work on <strong>decision models</strong>, <strong>structured extraction</strong>, or
+        <strong>calibrated abstention</strong>, and see something interesting or that contradicts these numbers, I
+        would genuinely like to hear about it. And if you have the compute, resources, an open position, or a project
+        you want to collaborate on, I am open to both work and collaboration. Please do not hesitate to reach out at
+        <a href="mailto:taneemishere@gmail.com">taneemishere@gmail.com</a>.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="bibtex" aria-labelledby="h-bibtex">
+      <h2 id="h-bibtex">BibTeX</h2>
+
+      <div class="bibtex-block" id="bibtex-entry" role="region" aria-label="BibTeX citation">@article{deciform,
+        title = {"DeciForm: Structured Field Extraction Without Generative Decoding"},
+        author = {Taneem Ullah Jan},
+        year = {2026},
+        url = {https://taneemishere.github.io/deciform/}
+        }</div>
+
+    </section>
+
+    <footer class="page-footer" id="page-footer">
+      <p> <a href="https://info.flagcounter.com/48VZ"><img
+            src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+            border="0"></a>
+      </p>
+    </footer>
+
+  </div>
+</body>
+
+</html>
