@@ -1,0 +1,397 @@
+/* ─────────────────────────────────────────────────
+   Fonts  (matches the main portfolio stylesheet.css)
+───────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,500;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap");
+
+/* ─────────────────────────────────────────────────
+   Reset / Base
+───────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #111111;
+  font: 18px / 1.65 "Crimson Pro", Georgia, serif;
+  font-weight: 400;
+}
+
+/* ─────────────────────────────────────────────────
+   Layout wrapper
+───────────────────────────────────────────────── */
+.page-wrapper {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ─────────────────────────────────────────────────
+   Links  (palette from portfolio)
+───────────────────────────────────────────────── */
+a {
+  color: #1772d0;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #f09228;
+  text-decoration: underline;
+}
+
+/* ─────────────────────────────────────────────────
+   Header / Hero block
+───────────────────────────────────────────────── */
+.page-header {
+  text-align: center;
+  padding: 56px 0 32px;
+}
+
+.page-header h1 {
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1.22;
+  margin: 0 0 20px;
+  color: #111111;
+}
+
+/* accent colour for the project name part */
+.page-header h1 .accent {
+  color: red;
+}
+
+/* Author note block */
+.author-note {
+  font-size: 1rem;
+  color: #555555;
+  margin: 0 0 6px;
+  font-style: italic;
+  text-align: center;   /* override global p { text-align: justify } */
+}
+
+/* Author name link row */
+.author-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 24px;
+  text-align: center;   /* override global p { text-align: justify } */
+}
+
+/* ─────────────────────────────────────────────────
+   Action buttons
+───────────────────────────────────────────────── */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 20px;
+  border-radius: 24px;
+  font: 600 0.88rem "Crimson Pro", serif;
+  letter-spacing: 0.02em;
+  border: 1.5px solid #111111;
+  background: #111111;
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.btn:hover,
+.btn:focus {
+  background: #f09228;
+  border-color: #f09228;
+  color: #ffffff;
+  text-decoration: none;
+}
+.btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* Ghost / outline variant */
+.btn-outline {
+  background: #ffffff;
+  color: #111111;
+}
+.btn-outline:hover,
+.btn-outline:focus {
+  background: #f09228;
+  border-color: #f09228;
+  color: #ffffff;
+}
+
+/* ─────────────────────────────────────────────────
+   Divider
+───────────────────────────────────────────────── */
+hr {
+  border: none;
+  border-top: 1px solid #dddddd;
+  margin: 48px 0;
+}
+
+/* ─────────────────────────────────────────────────
+   Section spacing
+───────────────────────────────────────────────── */
+.section {
+  margin: 0 0 48px;
+}
+
+/* ─────────────────────────────────────────────────
+   Headings
+───────────────────────────────────────────────── */
+h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 14px;
+  color: #111111;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 28px 0 10px;
+  color: #222222;
+}
+
+h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 20px 0 8px;
+  color: #333333;
+}
+
+/* ─────────────────────────────────────────────────
+   Body text
+───────────────────────────────────────────────── */
+p {
+  margin: 20px 0 14px;
+  text-align: justify;
+}
+
+/* ─────────────────────────────────────────────────
+   Lists
+───────────────────────────────────────────────── */
+ul,
+ol {
+  margin: 0 0 14px;
+  padding-left: 1.6em;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+/* ─────────────────────────────────────────────────
+   Blockquote
+───────────────────────────────────────────────── */
+blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  border-left: 4px solid #1772d0;
+  background: #f8f9ff;
+  color: #333333;
+  border-radius: 0 6px 6px 0;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ─────────────────────────────────────────────────
+   Inline code & code blocks
+───────────────────────────────────────────────── */
+code {
+  font-family: "Ubuntu Mono", "Courier New", monospace;
+  font-size: 0.88em;
+  background: #f3f4f6;
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #c0392b;
+}
+
+pre {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  margin: 0 0 20px;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  border-radius: 0;
+}
+
+/* ─────────────────────────────────────────────────
+   Mermaid diagrams
+───────────────────────────────────────────────── */
+pre.mermaid {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px 20px;
+  text-align: center;
+  overflow-x: auto;
+}
+
+/* ─────────────────────────────────────────────────
+   Tables
+───────────────────────────────────────────────── */
+.table-wrap {
+  overflow-x: auto;
+  margin: 0 0 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+thead th {
+  background: #f3f4f6;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 2px solid #d1d5db;
+}
+
+tbody td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: top;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+/* ─────────────────────────────────────────────────
+   Figures – images & videos
+───────────────────────────────────────────────── */
+figure {
+  margin: 0 0 28px;
+  text-align: center;
+}
+
+figure img,
+figure video {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  display: block;
+  margin: 0 auto;
+}
+
+figcaption {
+  margin-top: 8px;
+  font-size: 0.88rem;
+  color: #666666;
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────────────
+   BibTeX block
+───────────────────────────────────────────────── */
+.bibtex-block {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font-family: "Ubuntu Mono", "Courier New", monospace;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  white-space: pre;
+  margin: 0 0 20px;
+  color: #111111;
+}
+
+/* ─────────────────────────────────────────────────
+   References list
+───────────────────────────────────────────────── */
+.references-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.references-list li {
+  padding: 6px 0 6px 24px;
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.95rem;
+}
+
+.references-list li::before {
+  content: attr(data-ref);
+  position: absolute;
+  left: 0;
+  color: #888888;
+  font-weight: 600;
+}
+
+.references-list li:last-child {
+  border-bottom: none;
+}
+
+/* ─────────────────────────────────────────────────
+   Footer
+───────────────────────────────────────────────── */
+.page-footer {
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+  padding: 24px 0;
+  font-size: 0.88rem;
+  color: #888888;
+}
+
+.page-footer a {
+  color: #888888;
+}
+.page-footer a:hover {
+  color: #f09228;
+}
+
+/* ─────────────────────────────────────────────────
+   Responsive tweaks
+───────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+  }
+  .page-header {
+    padding: 36px 0 24px;
+  }
+  .page-header h1 {
+    font-size: 1.7rem;
+  }
+}

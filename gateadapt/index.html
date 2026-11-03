@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <title>GateAdapt</title>
+  <meta name="description"
+    content="GateAdapt: Measurement-Gated Admission for Self-Modifying Agent Harnesses. Typed mutation artifacts carrying deterministic scope predicates, paired measurement on the declared region, a SAFFRON-style multiplicity budget for region-targeted synthesis, and a lifecycle that re-audits and revokes. On planted ground truth the gate commits no harmful artifact at any effect size; where the substrate can power a verdict it resolves, producing a scope-corrected live commit worth +0.115 on a frozen audit deck.">
+  <meta name="keywords"
+    content="GateAdapt, adaptive harness, self-modifying agents, agent harness, mutation admission, measurement gating, SAFFRON, alpha-investing, false discovery rate, Terminal-Bench, RGB benchmark, AutoHarness, LLM agents, docker episodes, harness evolution, verifier, self-improving agents">
+  <meta name="author" content="Taneem Ullah Jan">
+  <link rel="canonical" href="https://taneemishere.github.io/gateadapt/">
+
+  <meta property="og:title"
+    content="GateAdapt: Measurement-Gated Admission for Self-Modifying Agent Harnesses">
+  <meta property="og:description"
+    content="Typed mutation artifacts, paired measurement on the declared region, a SAFFRON-style multiplicity budget, and a lifecycle that re-audits and revokes. No harmful commit at any effect size on planted ground truth; a +0.115 scope-corrected live commit where the substrate can power a verdict.">
+  <meta property="og:url" content="https://taneemishere.github.io/gateadapt/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://taneemishere.github.io/images/gateadapt.png">
+  <meta property="og:image:width" content="2200">
+  <meta property="og:image:height" content="2200">
+  <meta property="og:image:alt" content="GateAdapt system diagram, measurement-gated admission for self-modifying agent harnesses">
+  <meta property="og:site_name" content="Taneem Ullah Jan">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@taneemishere">
+  <meta name="twitter:creator" content="@taneemishere">
+  <meta name="twitter:title"
+    content="GateAdapt: Measurement-Gated Admission for Self-Modifying Agent Harnesses">
+  <meta name="twitter:description"
+    content="Typed mutation artifacts, paired measurement on the declared region, a SAFFRON-style multiplicity budget, and a lifecycle that re-audits and revokes. No harmful commit at any effect size on planted ground truth; a +0.115 scope-corrected live commit where the substrate can power a verdict.">
+  <meta name="twitter:image" content="https://taneemishere.github.io/images/gateadapt.png">
+  <meta name="twitter:image:alt" content="GateAdapt system diagram, measurement-gated admission for self-modifying agent harnesses">
+
+  <link rel="icon" type="image/png" sizes="96x96" href="../favicon.png">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../favicon.png">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "name": "GateAdapt: Measurement-Gated Admission for Self-Modifying Agent Harnesses",
+      "author": {
+        "@type": "Person",
+        "name": "Taneem Ullah Jan",
+        "url": "https://taneemishere.github.io"
+      },
+      "url": "https://taneemishere.github.io/gateadapt/",
+      "description": "A gate pipeline that governs admission of harness mutations on evidence: typed mutation artifacts carrying deterministic scope predicates, paired measurement on the declared region, a SAFFRON-style multiplicity budget for region-targeted synthesis, and a lifecycle that re-audits and revokes.",
+      "datePublished": "2026-11-03",
+      "dateModified": "2026-11-03",
+      "keywords": "GateAdapt, adaptive harness, agent harness, mutation admission, measurement gating, SAFFRON, alpha-investing, Terminal-Bench, RGB, AutoHarness, self-improving agents",
+      "inLanguage": "en"
+    }
+  </script>
+
+  <link rel="stylesheet" href="./stylesheet.css">
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <header class="page-header">
+
+      <h1>
+        <span class="accent">GateAdapt</span>: Measurement-Gated Admission for Self-Modifying Agent Harnesses
+      </h1>
+
+      <br>
+      <p class="author-note">Research and development work conducted</p>
+      <p class="author-note">by</p>
+      <p class="author-name">
+        <a href="https://taneemishere.github.io" target="_blank" rel="noopener noreferrer">Taneem Ullah Jan</a>
+      </p>
+
+      <a href="../files/gateadapt.pdf" target="_blank" rel="noopener noreferrer" class="btn" id="btn-paper">
+        <!-- Paper icon -->
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
+          <path
+            d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+        </svg>
+        Paper
+      </a>
+
+    </header>
+
+    <p>
+      We introduce GateAdapt, a gate pipeline that governs the one decision every self-modifying agent system has to
+      make: whether a proposed change to the agent&apos;s harness is admitted on evidence, rejected on evidence, or
+      held as unproven. The question matters because a line of recent systems now rewrites agent harnesses
+      automatically, and the only such system that ships a re-auditable history certifies its edits on evidence too
+      weak to certify anything. In its own repository, an unchanged harness flips the outcome on 6 of 20 development
+      tasks between runs, yet its admission rule accepted edits decided on smaller diffs than that noise floor.
+      GateAdapt treats each proposed change as a typed mutation artifact carrying a deterministic scope predicate,
+      measures it on paired episodes over the region the artifact claims, spends a shared SAFFRON-style <a
+        href="#ref-6">[6]</a> multiplicity budget on region-targeted synthesis for artifacts that remain
+      inconclusive, and keeps committed artifacts under lifecycle checks that can revoke what interaction or drift
+      makes harmful. On a planted benchmark with constructed ground truth the gate commits no harmful artifact at
+      any effect size; on live substrates it abstains on what it cannot certify, including a container-task arm
+      where abstention meant committing nothing, while resolving a scope-corrected improvement worth +0.115 on a
+      frozen audit deck where measurement had enough power. Replayed against the comparator&apos;s own shipped
+      history, the gate commits exactly the rounds with real measured gains, rejects the round with measured harm,
+      and abstains on the two rounds the comparator kept on evidence inside its own noise band.
+    </p>
+
+    <hr>
+
+    <section class="section" id="problem" aria-labelledby="h-problem">
+      <h2 id="h-problem">1. The Problem</h2>
+
+      <p>
+        An LLM agent is a model plus a harness: the system prompt, the tool schemas, the retrieval policy, the turn
+        budgets, the answer contract. In earlier work, <a href="https://taneemishere.github.io/gatersi"
+          target="_blank" rel="noopener noreferrer">GateRSI</a> <a href="#ref-12">[12]</a> treated the harness as
+        fixed and verified what flowed through it, <a href="https://taneemishere.github.io/gatedpo" target="_blank"
+          rel="noopener noreferrer">GateDPO</a> <a href="#ref-13">[13]</a> turned those verdicts into training
+        pairs, and <a href="https://taneemishere.github.io/gategrpo" target="_blank"
+          rel="noopener noreferrer">GateGRPO</a> <a href="#ref-14">[14]</a> grounded the same verifier family in
+        reinforcement learning (RL) for repair. The next move, which a line of recent systems now makes, is to let
+        the harness rewrite itself. AutoHarness <a href="#ref-1">[1]</a>, MemoHarness <a href="#ref-10">[10]</a>,
+        A-Evolve <a href="#ref-11">[11]</a>, HarnessEvolve <a href="#ref-8">[8]</a>, and HarnessCompass <a
+          href="#ref-9">[9]</a> all iterate prompts and agent code against task feedback, and the question that
+        decides whether any of them can be trusted is how an edit gets admitted.
+      </p>
+
+      <p>
+        The honest answer, from the only system that ships a re-auditable history, is on a diff too small to
+        measure. AutoHarness <a href="#ref-1">[1]</a> (the work from Huy X. Dang, not the same-named work from
+        Xinghua et al. <a href="#ref-2">[2]</a>) decides keep-or-reject on a single-shot pass-rate diff over a
+        20-task development split drawn from AppWorld <a href="#ref-3">[3]</a>, with a unit-test pass rate as
+        tiebreak. Its own repository contains the countermeasure to that rule: a noise run re-evaluating the
+        <em>unchanged</em> harness on the same 20 tasks flips the outcome on 6 of them. Pure re-measurement noise on
+        that deck is plus or minus 30 points. Two edits it kept were decided on +15 and +10 point diffs, inside the
+        noise band. The gate rule cannot tell those apart from the real +35 point gain of the first round, and the
+        shipped history shows that it did not.
+      </p>
+
+      <p>
+        Before building the alternative, we also audited what exists for re-auditability. That is, whether a third
+        party can re-decide each admission from data the system actually ships.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-survey">
+          <thead>
+            <tr>
+              <th>system</th>
+              <th>per-edit verdicts shipped?</th>
+              <th>runnable harness states?</th>
+              <th>re-auditable?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AutoHarness <a href="#ref-1">[1]</a></td>
+              <td>kept/rejected per round + optimizer logs</td>
+              <td>harness files evolve per commit</td>
+              <td><strong>yes</strong></td>
+            </tr>
+            <tr>
+              <td>MemoHarness <a href="#ref-10">[10]</a></td>
+              <td>no shipped edit history</td>
+              <td>states constructible, not shipped</td>
+              <td>reproducible, not re-auditable</td>
+            </tr>
+            <tr>
+              <td>A-Evolve <a href="#ref-11">[11]</a></td>
+              <td>no verdict history</td>
+              <td>evolution infrastructure only</td>
+              <td>no</td>
+            </tr>
+            <tr>
+              <td>HarnessEvolve <a href="#ref-8">[8]</a></td>
+              <td>paper only</td>
+              <td>no</td>
+              <td>no</td>
+            </tr>
+            <tr>
+              <td>HarnessCompass <a href="#ref-9">[9]</a></td>
+              <td>paper only</td>
+              <td>no</td>
+              <td>no</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        This is the actual measurement problem GateAdapt is built on, and we give it a name: the measurement
+        asymmetry. The same small deck which cannot certify harm cannot certify help either. An evidence-gated
+        system therefore abstains where a naive gate commits, on the regression the naive gate admits and on the
+        real gain it happens to find. An honest system has to price both sides, and every number below is that
+        accounting.
+      </p>
+
+      <p>
+        This report argues for measurement-gated admission, where each edit is evaluated on the region it declares
+        rather than on a whole-suite diff. This is the admission rule harness evolution needs on substrates where
+        per-edit effects are small relative to deck noise, meaning essentially every substrate that exists today.
+        The contributions are:
+      </p>
+
+      <ul>
+        <li><strong>A gate pipeline</strong> that turns admission into a measured decision: a typed mutation
+          artifact declares a scope, paired episodes measure the change on exactly that region, and a frozen audit
+          deck carried through the run reports every claim.</li>
+        <li><strong>A multiplicity-budgeted synthesis stage</strong> that resolves inconclusive artifacts on
+          region-targeted fresh items rather than widening the test, with a budget-matched control isolating its
+          contribution.</li>
+        <li><strong>A lifecycle stage</strong> in which commits stay provisional: interaction probes across
+          committed artifacts and a drift re-audit can revoke what measured evidence turns against.</li>
+        <li><strong>An evaluation</strong> across a planted benchmark, a live retrieval-QA substrate,
+          containerized agent tasks, and a replay of the only shipped third-party history, with the costs of
+          discipline disclosed rather than hidden.</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <section class="section" id="pipeline" aria-labelledby="h-pipeline">
+      <h2 id="h-pipeline">2. The GateAdapt pipeline</h2>
+
+      <p>
+        The admission object is a <strong>mutation artifact</strong>: a typed harness change (a prompt patch, a
+        tool-schema change, a retrieval rule, a budget rule, an output contract, a routing rule, or a memory rule)
+        carrying a <strong>deterministic scope predicate</strong> over task features. No model sits inside the
+        predicate, so the scope an artifact claims is executable: &quot;the refusal half of the suite&quot;,
+        &quot;tasks marked hard&quot;, or simply &quot;all tasks&quot; names a region the gate can enumerate
+        exactly, count, and price. A scope that matches nothing is a fact the pipeline can state rather than a
+        blind spot.
+      </p>
+
+      <p>
+        Four decks carry the honesty invariant. The <strong>development deck</strong> is where admission is decided
+        and the only deck that may grow. The <strong>frozen audit deck</strong> is fixed at declaration and carries
+        every reported claim; the pipeline refuses writes to it by construction. A <strong>held-out test
+          deck</strong> appears only in the final report. A <strong>fresh-item probe reserve</strong> powers the
+        pre-commit transfer check. The invariant is executable rather than conventional. Nothing that votes on
+        admission can contaminate what reports the outcome.
+      </p>
+
+      <p>Four gates run in a fixed order per artifact, each emitting a verdict and a record:</p>
+
+      <ol>
+        <li><strong>G0, structural.</strong> Schema and scope well-formedness plus leakage detection: a payload
+          may not enumerate held-out items. Shared precondition, spends no budget.</li>
+        <li><strong>G1, measurement.</strong> Paired per-item episodes on the declared scope, base arm against
+          mutated arm, produce a commit, a reject, an inconclusive verdict, or a scope-correction verdict; any
+          commit must additionally pass a transfer probe on the fresh-item reserve.</li>
+        <li><strong>G2, synthesis.</strong> Direction-blind by construction: only the discordant region is
+          described, fresh items are synthesized there and split into selection and test halves, and measurement
+          repeats on a cumulative test pool for up to three rounds before the artifact records an abstention.</li>
+        <li><strong>G3, lifecycle.</strong> Leave-one-out replay, a pairwise interaction probe across committed
+          artifacts, a scope audit, re-measurement of each committed region&apos;s marginal effect, and
+          deprecate-with-rollback. Commits are provisional. An artifact whose interaction with an
+          already-committed partner reads negative is revoked, and a drift re-audit re-measures every committed
+          artifact when the task population shifts.</li>
+      </ol>
+
+      <figure id="fig-pipeline">
+        <img src="./images/fig1_gate_pipeline.png"
+          alt="The GateAdapt admission pipeline: G0, G1, G2, G3 over the deck layer" width="760">
+        <figcaption>
+          Fig. 1. The admission pipeline. G0 and G1 are cheap; G2 spends a shared multiplicity pool resolving what
+          G1 could not; G3 keeps auditing after admission. The decks below are the honesty invariant: only the
+          development deck may grow.
+        </figcaption>
+      </figure>
+
+      <figure id="fig-lifecycle">
+        <img src="./images/fig2_lifecycle.png"
+          alt="The lifecycle of a committed artifact through marginal read, interaction probe, and drift re-audit"
+          width="760">
+        <figcaption>
+          Fig. 2. What commit means here. Admission starts the auditing, it does not end it.
+        </figcaption>
+      </figure>
+
+      <p>
+        Multiplicity is a SAFFRON-style <a href="#ref-6">[6]</a> alpha-investing <a href="#ref-7">[7]</a> pool. The
+        run starts with alpha-wealth 0.10 split into four equal looks. A look that produces a decided verdict
+        refunds its alpha, whereas an unresolved look forfeits it. When the pool is spent, later artifacts in the
+        same family record a spent-budget verdict instead of absorbing a free test.
+      </p>
+
+      <p>
+        The verdicts an artifact can earn are <strong>commit</strong>, <strong>reject</strong>, <strong>abstain
+          with record</strong> (a terminal abstention that keeps its evidence trail so a later run can re-decide
+        it with more data), and <strong>scope-corrected commit</strong>, where the last is a commit onto an
+        honestly narrowed region rather than the declared one. Every verdict is terminal and recorded.
+      </p>
+
+      <p>
+        Two design choices are worth stating up front, because the results only make sense with them. First,
+        abstention is a verdict, not a failure. The gate is allowed to spend real budget trying to resolve an
+        artifact and still end at a recorded abstention. Second, the audit deck never participates in decisions.
+        Every comparison in this report between gates is a within-run measurement on a frozen slice the admission
+        logic never saw.
+      </p>
+
+      <p>
+        The comparators are embedded as gate conditions, not described. The <strong>naive gate</strong> is the
+        comparator&apos;s shipped rule reimplemented <a href="#ref-1">[1]</a>: a whole-deck dev diff plus a
+        tiebreak. The <strong>abstain-only gate</strong> abstains wherever measurement is inconclusive but never
+        synthesizes. The <strong>marginal gate</strong> admits on a marginal-diff threshold. The
+        <strong>budget-matched control</strong> gets the same evaluation budget as the full pipeline but spends it
+        on random fresh items instead of region-targeted ones.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="evaldesign" aria-labelledby="h-evaldesign">
+      <h2 id="h-evaldesign">3. Evaluation design</h2>
+
+      <p>Six arms cover the full decision surface, from constructed truth to the comparator&apos;s own history:</p>
+
+      <div class="table-wrap">
+        <table id="tbl-program">
+          <thead>
+            <tr>
+              <th>arm</th>
+              <th>substrate</th>
+              <th>model</th>
+              <th>what it tests</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>planted benchmark</td>
+              <td>constructed mutations, synthetic items</td>
+              <td>none (constructed)</td>
+              <td>verdict correctness vs known truth, power curves</td>
+            </tr>
+            <tr>
+              <td>live retrieval-QA arm</td>
+              <td>RGB <a href="#ref-4">[4]</a>, 600 task variants</td>
+              <td><code>openai/gpt-oss-20b</code></td>
+              <td>the real loop on a public slice</td>
+            </tr>
+            <tr>
+              <td>container-task arm</td>
+              <td>37 Terminal-Bench <a href="#ref-5">[5]</a> tasks, docker episodes</td>
+              <td><code>nemotron-3.5-lightning-30b-a3b</code></td>
+              <td>the same gates over real containers</td>
+            </tr>
+            <tr>
+              <td>breadth grid</td>
+              <td>corpus-grounded QA on the GateRSI substrate <a href="#ref-12">[12]</a></td>
+              <td><code>nemotron-3-ultra-550b-a55b</code>, <code>lightning-30b</code></td>
+              <td>model-robustness of the abstain bound</td>
+            </tr>
+            <tr>
+              <td>drift replay</td>
+              <td>planted regime shift</td>
+              <td>none (constructed)</td>
+              <td>lifecycle re-audit under drift</td>
+            </tr>
+            <tr>
+              <td>third-party replay</td>
+              <td>AutoHarness <a href="#ref-1">[1]</a> shipped history (Qwen3.5-9B/27B panels)</td>
+              <td>replayed, not run</td>
+              <td>per-artifact decision quality on real third-party data</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        All reported live results are derived from recorded run artifacts: run reports, per-episode outcome
+        records, and run logs. Where a measurement repeats an earlier draw, it replays the recorded outcome rather
+        than re-sampling it.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="planted" aria-labelledby="h-planted">
+      <h2 id="h-planted">4. Planted ground truth</h2>
+
+      <p>
+        The controlled arm is a constructed benchmark. It features 7 planted mutation classes, 4 effect sizes, 5
+        gate conditions, and 100 replicates, where ground truth is built in so every verdict can be scored as
+        correct or wrong outright. The pre-registered scorecard came out <strong>7 pass, 4 fail</strong> at the
+        pre-registered size of 20 development items. The four fails share a single underlying mechanism rather
+        than being four distinct bugs. Scope correction, pairwise interaction detection, narrow-scope commits, and
+        inconclusive resolution all require powered evidence about a subregion or a pair. At 20 items, a true
+        subregion holds only 5 to 7 elements, falling below the operators&apos; resolution floor. A re-run at
+        larger decks shows that three of the four cross their thresholds (narrow-scope commits at 320 items,
+        misscoped scope-correction at 640, interaction detection at 320). The fourth stays a fail as registered,
+        and correctly so. Its pooled denominator mixes artifacts that have no effect to find with artifacts that
+        have an underpowered one, and abstaining on a non-effect is the correct terminal, not a miss.
+      </p>
+
+      <p>
+        The safety side of the scorecard never failed at any size. Artifacts planted to regress the suite were
+        committed 0% of the time at every effect size, while the naive gate committed them 48% of the time at the
+        smallest delta. Inert and shortcut artifacts were committed at 2% and under 1%; the naive gate commits
+        roughly half of both. The advantage in resolved verdicts over the budget-matched control is significant at
+        every delta of 5 points or more (McNemar p &lt; 0.0005). This finding supports the synthesis claim that
+        spending the same budget on region-targeted fresh items resolves more than spending it at random.
+      </p>
+
+      <p>
+        The honest read is the asymmetry itself, now measured on constructed truth. Verdict safety saturates
+        early, while verdict resolution has a higher data floor. Resolution at the fidelity the scorecard asks for
+        needs development decks on the order of a few hundred items per artifact, roughly 30x the registered
+        size. Abstention is cheap; resolution costs items.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="live" aria-labelledby="h-live">
+      <h2 id="h-live">5. The live retrieval-QA arm</h2>
+
+      <p>
+        The first live arm runs the real loop on a public slice. It materializes 300 RGB <a href="#ref-4">[4]</a>
+        rows as 600 task variants (an answerable and a refusal twin per row) through the GateRSI <a
+          href="#ref-12">[12]</a> substrate, ensuring retrieval, prompt patches, and verdicts are all live. Two
+        runs bracket the finding.
+      </p>
+
+      <p>
+        <strong>First run</strong> (a 30-item development deck, a 40-item probe reserve, a 200-item frozen audit
+        deck, 2 episode draws per arm, 9 mutations, 1,058 fresh episodes). The gate resolved nothing it could
+        certify. It rejected a mutation that would emit ungrounded answers on the refusal half of the slice and
+        abstained on everything else, in four cases because that family&apos;s multiplicity budget was already
+        spent. The development deck grew from 30 to 182 items through synthesis while the audit stayed frozen.
+        The naive gate committed three edits for a net +0.030 that decomposes honestly into one real find (+0.074
+        on an answer-grounding patch), one lucky commit of an artifact declared harmful (measured +0.070; the
+        expected harm never materialized), and one admission that landed inert (-0.020). The abstain-only gate
+        abstained on 8 of 9 items and committed once on its tiebreak read, admitting an artifact expected to be
+        inert that measured <strong>-0.080</strong> on the frozen audit. The rule that abstains without resolving
+        cannot tell &quot;no evidence&quot; from &quot;mild harm&quot;, and its one blind admission cost the slice
+        9.5 points. That is the run that establishes the harm-avoidance half on a real substrate.
+      </p>
+
+      <p>
+        <strong>Powered run</strong> (an 80-item development deck, a 100-item probe reserve, the same frozen
+        audit deck, 3 draws, four decisive mutations, and 267 fresh episodes). This is where the commit half
+        landed. The gate&apos;s scope scan narrowed a weak-hit-pruning retrieval mutation onto the region where
+        its effect is powered (the refusal half, marginal +0.20 on 100 items) and committed it there. This
+        produced the first live commit-side resolution, worth <strong>+0.115</strong> on the frozen audit. A
+        second mutation was then committed on the strength of its measured conditional gain over that committed
+        partner and subsequently revoked when the lifecycle interaction probe re-measured the pair. This marked
+        the first live commit-revoke lifecycle with the third gate running end-to-end on real episodes. The two
+        remaining decisive mutations were rejected on measurement.
+      </p>
+
+      <p>
+        The honest cost is stated plainly. The naive gate committed the same retrieval artifact globally and read
+        +0.145 on audit, because the edit was mildly positive even outside its powered region. Region-limited
+        admission left about +0.03 on the table. That is the price of knowing where the effect lives, and the same
+        conservative bias shows up in every arm.
+      </p>
+
+      <p>
+        Episode economics are stated for the record. The gate spent 161 episodes to resolve the stream, while the
+        naive gate spent 99 without the ability to determine which actions earned them, and the abstain-only gate
+        spent 7 while resolving nothing.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="container" aria-labelledby="h-container">
+      <h2 id="h-container">6. The container-task arm</h2>
+
+      <p>
+        The heaviest substrate runs Terminal-Bench tasks as real container episodes. Each measurement draw is a
+        full agent loop inside a per-task docker image, up to 12 turns against a hosted model endpoint, judged by
+        the task&apos;s own verifier. Across 37 tasks using <code>nemotron-3.5-lightning-30b-a3b</code>, the same
+        gates were evaluated in three runs over five mutations.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-docker">
+          <thead>
+            <tr>
+              <th>run</th>
+              <th>decks (dev/probe/audit)</th>
+              <th>draws</th>
+              <th>GateAdapt</th>
+              <th>naive gate</th>
+              <th>abstain-only</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>baseline</td>
+              <td>8/8/16</td>
+              <td>2</td>
+              <td>5 abstains, audit +0.000</td>
+              <td>3 commits, audit +0.000 (net: +0.0625 and -0.0625)</td>
+              <td>5 abstains</td>
+            </tr>
+            <tr>
+              <td>powered</td>
+              <td>14/8/14</td>
+              <td>8</td>
+              <td>5 abstains, audit +0.000</td>
+              <td>2 commits, audit <strong>+0.214</strong></td>
+              <td>5 abstains</td>
+            </tr>
+            <tr>
+              <td>control</td>
+              <td>8/8/16</td>
+              <td>6</td>
+              <td>5 abstains, audit +0.000</td>
+              <td>3 commits, audit +0.125</td>
+              <td>5 abstains</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure id="fig-docker">
+        <img src="./images/fig3_docker.png"
+          alt="Frozen-audit delta per gate per container run; GateAdapt and abstain-only flat while the naive gate swings"
+          width="760">
+        <figcaption>
+          Fig. 3. Frozen-audit delta per gate per run. GateAdapt and the abstain-only gate are flat in every
+          configuration; the naive gate&apos;s reads swing with the deck draw.
+        </figcaption>
+      </figure>
+
+      <p>Three findings, in order of sharpness:</p>
+
+      <ul>
+        <li><strong>The abstain wall is a corpus bound, not a draws bound.</strong> The gate&apos;s five verdicts
+          are identical across 2, 6, and 8 draws per arm and across development decks of 8 and 14 items. The
+          control run, using the same deck draw at three times the draws, isolates it. What binds is the item
+          count in the region, not arm depth. This is the third substrate where the measurement floor does the
+          binding.</li>
+        <li><strong>The naive gate is unstable across runs.</strong> Its commit set churned every run. A
+          recovery-skill patch it committed in the baseline run (marginal <strong>-0.0625</strong>, an admitted
+          regression the aggregate hides because a companion commit&apos;s +0.0625 cancels it exactly) was
+          rejected later, while a concise-prompt patch was rejected and then committed. Furthermore, one mutation
+          whose scope predicate targets tasks marked hard, while every task in this corpus is marked easy, was
+          committed on its tiebreak <strong>in all three runs with zero on-region episodes</strong>. This
+          empty-scope commit is deterministic, making it an artifact of the rule rather than bad luck.</li>
+        <li><strong>The honest cost is real here too.</strong> In the powered run the naive gate&apos;s commits
+          netted +0.214 on the frozen audit, a genuine gain the gate refused to certify. Discipline&apos;s
+          conservative bias is in full view. The same mechanism that refused a -0.0625 regression refused a
+          +0.214 gain, because at 14 items neither could be told apart from noise.</li>
+      </ul>
+
+      <p>
+        Because each draw is a full container episode, the three runs share an episode cache keyed on task and
+        mutation content: 947 draws across 222 keys were measured once and replayed, and they remain available for
+        a larger-corpus attempt.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="breadth-drift" aria-labelledby="h-breadth-drift">
+      <h2 id="h-breadth-drift">7. Breadth and drift</h2>
+
+      <p>Two smaller arms bound the same finding from other directions.</p>
+
+      <p>
+        <strong>Breadth.</strong> The abstention bound is model-robust. The same five-mutation grid re-run on two
+        endpoints about 18x apart in size (<code>nemotron-3-ultra-550b-a55b</code> and
+        <code>lightning-30b-a3b</code>), with 6 deck resamples each, produced <strong>60 out of 60 recorded
+          abstentions</strong>. A weaker model does not make the gate fabricate a commit it cannot support; it
+        produces the same disciplined abstention, decision for decision.
+      </p>
+
+      <p>
+        <strong>Drift.</strong> This is a constructed replay of a peak-then-decline history. Artifacts committed
+        honestly in the first regime have their true effect inverted when the task population shifts to the
+        second, and the latent regime feature is one scopes cannot declare on, so only re-measurement can see the
+        drift. With the lifecycle re-audit off, stale artifacts accumulate and the deployment score collapses
+        toward zero or below (down to -0.468 at the largest delta). With it on, the re-audit revokes 54 to 99% of
+        committed drifting artifacts depending on harm magnitude and retains the stable portion of the peak
+        everywhere. An artifact whose scope has starved on the new distribution is flagged and <em>kept</em>,
+        because absent data is not evidence of decline.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="replay" aria-labelledby="h-replay">
+      <h2 id="h-replay">8. Replaying the comparator&apos;s own history</h2>
+
+      <p>
+        The last arm is the direct one: AutoHarness <a href="#ref-1">[1]</a> ships per-task pass/fail panels for
+        every round on the same 20 tasks, so its keep/reject history can be re-decided under measurement
+        discipline with no episodes at all. Each round&apos;s shipped panel is the paired measurement; the gate
+        re-decides the artifact.
+      </p>
+
+      <div class="table-wrap">
+        <table id="tbl-replay-9b">
+          <thead>
+            <tr>
+              <th>round</th>
+              <th>their call (9b)</th>
+              <th>gate replay</th>
+              <th>paired read</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>r1</td>
+              <td>KEPT</td>
+              <td><strong>commit</strong></td>
+              <td>0.15 -&gt; 0.45, +0.30</td>
+            </tr>
+            <tr>
+              <td>r2</td>
+              <td>REJECTED</td>
+              <td>abstain + record</td>
+              <td>+0.00</td>
+            </tr>
+            <tr>
+              <td>r3</td>
+              <td>REJECTED</td>
+              <td><strong>reject</strong></td>
+              <td>-0.25</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table id="tbl-replay-27b">
+          <thead>
+            <tr>
+              <th>round</th>
+              <th>their call (27b)</th>
+              <th>gate replay</th>
+              <th>paired read</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>r1</td>
+              <td>KEPT</td>
+              <td><strong>commit</strong></td>
+              <td>0.20 -&gt; 0.55, +0.35</td>
+            </tr>
+            <tr>
+              <td>r2</td>
+              <td><strong>KEPT</strong></td>
+              <td>abstain + record</td>
+              <td>+0.15 (paired sign test p = 0.25)</td>
+            </tr>
+            <tr>
+              <td>r3</td>
+              <td><strong>KEPT</strong></td>
+              <td>abstain + record</td>
+              <td>+0.10 (paired sign test p = 0.69)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure id="fig-replay">
+        <img src="./images/fig4_replay.png"
+          alt="AutoHarness shipped calls beside the gate replay verdicts for all six rounds" width="760">
+        <figcaption>
+          Fig. 4. The comparator&apos;s calls against the gate&apos;s replay, per round. The divergences are the
+          two weak 27b keeps.
+        </figcaption>
+      </figure>
+
+      <p>
+        The gate commits exactly the rounds with real measured gains, rejects the round with measured harm, and
+        abstains where evidence is underpowered, including the two rounds the comparator committed on diffs
+        smaller than its own measured noise floor. The naive-admission failure is visible in shipped history
+        rather than hypothesized. The honest framing is kept. The comparator&apos;s aggregate outcome was still
+        strongly positive on its held-out evaluation (+29.8 and +36.9 points from the ReAct baseline to the final
+        harness), so the replay does not show a naive gate losing this particular stream. What it isolates is
+        decision quality per artifact. The weak commits were certified anyway, on evidence that could not certify
+        them.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="discussion" aria-labelledby="h-discussion">
+      <h2 id="h-discussion">9. Discussion</h2>
+
+      <p>
+        Across a constructed substrate, two live substrates, a container arm, a drift arm, and a third
+        party&apos;s shipped history, one law held without exception. <strong>The measurement floor binds before
+          anything else does</strong>. Abstention is cheap and safe; resolution is possible but has a price in
+        items, and the price is quantified (development decks on the order of a few hundred per artifact for
+        scope operators). The gate never admitted a harmful artifact anywhere, and it never committed on empty or
+        noise-level evidence; it paid for that by refusing real gains this report discloses (+0.03 of diffuse
+        gain on the retrieval slice, +0.214 on the container arm, and a reject of an artifact that had read +0.074
+        under a different deck draw). The naive gate&apos;s failure modes are all measured rather than asserted:
+        an admitted regression, a commit backed by zero on-region episodes, verdict churn across deck draws, and
+        weak keeps inside its own noise band in shipped history.
+      </p>
+
+      <p>
+        The commit-side evidence exists where the substrate can power it. This includes a scope-corrected +0.115
+        on the retrieval slice, and the full admit-interact-revoke lifecycle on live episodes. Where the
+        substrate cannot power it, a 37-task corpus or a 20-item development deck, the gate says so, which is the
+        point of a gate.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="limitations" aria-labelledby="h-limitations">
+      <h2 id="h-limitations">10. Limitations</h2>
+
+      <ul>
+        <li><strong>The container-arm commit-side datapoint does not exist.</strong> Three runs at the corpus
+          maximum produced identical abstains. Reaching a measured container commit needs a larger task corpus, a
+          stronger model, or larger-effect mutations. The current evidence says the 37-task deck is the binding
+          constraint, not the gate.</li>
+        <li><strong>Single seeded runs</strong> underlie the live retrieval-QA verdicts and each container
+          configuration. The breadth arm covers deck resampling and model swap; the powered live run does not
+          have a resample replicate.</li>
+        <li><strong>The live-arm domain is one kind of task</strong> (retrieval QA) plus one kind of container
+          workload (easy-difficulty terminal tasks). No claim is made about code-repair or multi-app substrates,
+          where the episode costs would be higher and the same power arithmetic would apply.</li>
+        <li><strong>Replay decides, it does not re-run.</strong> The comparator contrast re-decides shipped
+          per-item panels under the gate rule, per artifact; it does not re-execute their optimizer loop.</li>
+        <li><strong>The pipeline&apos;s significance statistic is conservative</strong> (a paired sign test on
+          discordant items). Where a tighter test exists it is noted; directions never differed.</li>
+        <li><strong>One cached container draw wobbled.</strong> A single audit base-arm outcome (1 of 16)
+          differed between the baseline and control runs as the shared cache churned during the campaign;
+          snapshots bound it, and within-run comparisons are unaffected.</li>
+        <li><strong>Measurement gating costs episodes.</strong> Resolving the powered live stream took 161
+          episodes where abstaining took 7. On expensive substrates the budget question is real: the cache
+          amortizes, but a gate that measures is not free.</li>
+      </ul>
+
+      <p>
+        The natural next steps are known but simply expensive. These include a larger container corpus to power
+        a measured commit-side verdict, resampled replicates for the powered live run, and a solver-scale replay
+        that re-executes the comparator&apos;s optimizer loop rather than re-deciding its panels. I could not run
+        those at this project&apos;s scale on the compute I have, and I would rather say so than pretend the
+        single-seeded numbers are more than they are. If you work on <strong>adaptive harnesses</strong>,
+        <strong>agent evaluation</strong>, or <strong>verifier-gated self-improvement</strong> and see something
+        here that contradicts your own numbers, I would genuinely like to hear about it. And if you have the
+        compute resources, an open position, or a project you want to collaborate on, I am open to both work and
+        collaboration. Please reach out at <a
+          href="mailto:taneemishere@gmail.com">taneemishere@gmail.com</a>.
+      </p>
+    </section>
+
+    <hr>
+
+    <section class="section" id="references" aria-labelledby="h-references">
+      <h2 id="h-references">References</h2>
+
+      <ol class="references-list" id="ref-list">
+
+        <li data-ref="[1]" id="ref-1">
+          Dang, H.
+          <em>AutoHarness</em> (the comparator system audited and replayed in this report). Shipped harness
+          history, dev panels, and noise runs.
+          <a href="https://github.com/huyxdang/AutoHarness" target="_blank"
+            rel="noopener noreferrer">github.com/huyxdang/AutoHarness</a>
+        </li>
+
+        <li data-ref="[2]" id="ref-2">
+          Lou, X., Lázaro-Gredilla, M., Dedieu, A., Wendelken, C., Lehrach, W., &amp; Murphy, K. P.
+          <em>AutoHarness: improving LLM agents by automatically synthesizing a code harness.</em>
+          arXiv preprint arXiv:2603.03329, 2026. (Same-named, independent line of work: harness synthesis for game
+          environments.)
+          <a href="https://arxiv.org/abs/2603.03329" target="_blank" rel="noopener noreferrer">arXiv:2603.03329</a>
+        </li>
+
+        <li data-ref="[3]" id="ref-3">
+          Trivedi, H., Khot, T., Hartmann, M., Manku, R., Dong, V., Li, E., Gupta, S., Sabharwal, A., &amp;
+          Balasubramanian, N.
+          <em>AppWorld: A Controllable World of Apps and People for Benchmarking Interactive Coding Agents.</em>
+          In <em>ACL 2024</em>.
+          <a href="https://arxiv.org/abs/2407.18901" target="_blank" rel="noopener noreferrer">arXiv:2407.18901</a>
+        </li>
+
+        <li data-ref="[4]" id="ref-4">
+          Chen, J., Lin, H., Han, X., &amp; Sun, L.
+          <em>Benchmarking Large Language Models in Retrieval-Augmented Generation.</em>
+          In <em>AAAI 2024</em>. Data: github.com/chen700564/RGB.
+          <a href="https://arxiv.org/abs/2309.01431" target="_blank" rel="noopener noreferrer">arXiv:2309.01431</a>
+        </li>
+
+        <li data-ref="[5]" id="ref-5">
+          Merrill, M. A., Shaw, A. G., et al.
+          <em>Terminal-Bench: Benchmarking Agents on Hard, Realistic Tasks in Command Line Interfaces.</em>
+          In <em>ICLR 2026</em>.
+          <a href="https://arxiv.org/abs/2601.11868" target="_blank" rel="noopener noreferrer">arXiv:2601.11868</a>
+        </li>
+
+        <li data-ref="[6]" id="ref-6">
+          Ramdas, A., Zrnic, T., Wainwright, M., &amp; Jordan, M.
+          <em>SAFFRON: an Adaptive Algorithm for Online Control of the False Discovery Rate.</em>
+          In <em>ICML 2018</em>, PMLR 80.
+          <a href="https://arxiv.org/abs/1802.09098" target="_blank" rel="noopener noreferrer">arXiv:1802.09098</a>
+        </li>
+
+        <li data-ref="[7]" id="ref-7">
+          Foster, D. P., &amp; Stine, R. A.
+          <em>α-investing: a procedure for sequential control of expected false discoveries.</em>
+          <em>Journal of the Royal Statistical Society B</em>, 70(2):429-444, 2008.
+          <a href="https://doi.org/10.1111/j.1467-9868.2007.00643.x" target="_blank"
+            rel="noopener noreferrer">doi:10.1111/j.1467-9868.2007.00643.x</a>
+        </li>
+
+        <li data-ref="[8]" id="ref-8">
+          Jiang, W., et al.
+          <em>HarnessEvolve: Learning from Reference Trajectories for Reliable Agent Self-Evolution.</em>
+          arXiv preprint arXiv:2609.00829, 2026.
+          <a href="https://arxiv.org/abs/2609.00829" target="_blank" rel="noopener noreferrer">arXiv:2609.00829</a>
+        </li>
+
+        <li data-ref="[9]" id="ref-9">
+          Zhang, L., et al.
+          <em>HarnessCompass: Guiding Automatic Harness Evolution toward Generalizable and Effective Agent
+            Harnesses.</em>
+          arXiv preprint arXiv:2608.01918, 2026.
+          <a href="https://arxiv.org/abs/2608.01918" target="_blank" rel="noopener noreferrer">arXiv:2608.01918</a>
+        </li>
+
+        <li data-ref="[10]" id="ref-10">
+          Hwong, H.
+          <em>MemoHarness.</em>
+          <a href="https://github.com/HowieHwong/MemoHarness" target="_blank"
+            rel="noopener noreferrer">github.com/HowieHwong/MemoHarness</a>
+        </li>
+
+        <li data-ref="[11]" id="ref-11">
+          A-EVO Lab.
+          <em>A-Evolve.</em>
+          <a href="https://github.com/A-EVO-Lab/a-evolve" target="_blank"
+            rel="noopener noreferrer">github.com/A-EVO-Lab/a-evolve</a>
+        </li>
+
+        <li data-ref="[12]" id="ref-12">
+          Taneem Ullah Jan.
+          <em>GateRSI: Gate-Verified Recursive Self-Improvement for Knowledge Agents.</em>
+          Technical report, 2026. The substrate the live and breadth arms run on.
+          <a href="https://taneemishere.github.io/gatersi" target="_blank"
+            rel="noopener noreferrer">taneemishere.github.io/gatersi</a>
+        </li>
+
+        <li data-ref="[13]" id="ref-13">
+          Taneem Ullah Jan.
+          <em>GateDPO: Verifier-Ordered DPO for Code Repair Without a Learned Reward Model.</em>
+          Technical report, 2026.
+          <a href="https://taneemishere.github.io/gatedpo" target="_blank"
+            rel="noopener noreferrer">taneemishere.github.io/gatedpo</a>
+        </li>
+
+        <li data-ref="[14]" id="ref-14">
+          Taneem Ullah Jan.
+          <em>GateGRPO: Verifier-Grounded Reinforcement Learning for Code Repair Without a Learned Reward
+            Model.</em>
+          Technical report, 2026.
+          <a href="https://taneemishere.github.io/gategrpo" target="_blank"
+            rel="noopener noreferrer">taneemishere.github.io/gategrpo</a>
+        </li>
+
+      </ol>
+
+    </section>
+
+    <hr>
+
+    <section class="section" id="bibtex" aria-labelledby="h-bibtex">
+      <h2 id="h-bibtex">BibTeX</h2>
+
+      <div class="bibtex-block" id="bibtex-entry" role="region" aria-label="BibTeX citation">@article{gateadapt,
+        title = {"GateAdapt: Measurement-Gated Admission for Self-Modifying Agent Harnesses"},
+        author = {Taneem Ullah Jan},
+        year = {2026},
+        url = {https://taneemishere.github.io/gateadapt/}
+        }</div>
+
+    </section>
+
+    <footer class="page-footer" id="page-footer">
+      <p> <a href="https://info.flagcounter.com/48VZ"><img
+            src="https://s01.flagcounter.com/mini/48VZ/bg_FFFFFF/txt_000000/border_CCCCCC/flags_0/" alt=""
+            border="0"></a>
+      </p>
+    </footer>
+
+  </div>
+</body>
+
+</html>
